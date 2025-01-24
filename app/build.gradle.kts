@@ -1,7 +1,12 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.firebaseCrashlytics)
+    alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.hilt)
+    id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.googleServices)
 }
-
 android {
     namespace = "com.project.asas"
     compileSdk = 34
@@ -23,18 +28,55 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.activity)
     implementation(libs.constraintlayout)
+
+    implementation(libs.firebaseBom)
+    implementation(libs.firebaseAuth)
+    implementation(libs.firebaseFirestore)
+    implementation(libs.firebaseCrashlytics)
+    implementation(libs.firebaseStorage)
+
+    implementation(libs.navigationFragment)
+    implementation(libs.navigationUi)
+
+    implementation(libs.lifecycleRuntime)
+    implementation(libs.lifecycleViewmodel)
+    implementation(libs.lifecycleLivedata)
+
+    implementation(libs.glide)
+    implementation(libs.lottie)
+    implementation(libs.imagepicker)
+    implementation(libs.imageslideshow)
+
+    implementation(libs.hiltAndroid)
+    kapt(libs.hiltCompiler)
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofitGson)
+    implementation(libs.retrofitRxjava3)
+    implementation(libs.okhttpLogging)
+
+    implementation(libs.kotlinStdlib)
+    implementation(libs.rxandroid)
+
+    implementation(libs.datastorePreferences)
+    implementation(libs.datastorePreferencesCore)
+
     testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.testextjunit)
+    androidTestImplementation(libs.espresso)
+
+    implementation(libs.fragment)
+    implementation(libs.activity)
+}
+hilt {
+    enableAggregatingTask = true
 }
