@@ -1,5 +1,4 @@
-plugins {
-    alias(libs.plugins.androidApplication)
+plugins { alias(libs.plugins.androidApplication)
     alias(libs.plugins.firebaseCrashlytics)
     alias(libs.plugins.kotlinKapt)
     alias(libs.plugins.kotlinAndroid)
@@ -80,6 +79,9 @@ dependencies {
 
     implementation(libs.fragment)
     implementation(libs.activity)
+
+    implementation (libs.onboarder)
+
 }
 hilt {
     enableAggregatingTask = true

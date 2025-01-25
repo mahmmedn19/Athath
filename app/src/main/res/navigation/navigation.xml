@@ -3,12 +3,52 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation"
-    app:startDestination="@id/mainActivity"
+    app:startDestination="@id/homeFragment"
     >
-
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.project.asas.MainActivity"
-        android:label="MainActivity"
-        />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.project.asas.ui.home_screen.HomeFragment"
+        android:label="Home Fragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_userSelectionFragment"
+            app:destination="@id/userSelectionFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/userSelectionFragment"
+        android:name="com.project.asas.ui.user_selection_fragment.UserSelectionFragment"
+        android:label="User Selection Fragment" >
+        <action
+            android:id="@+id/action_userSelectionFragment_to_loginFragment"
+            app:destination="@id/loginFragment">
+            <argument
+                android:name="userType"
+                app:argType="string"
+                android:defaultValue="Customer" />
+        </action>
+    </fragment>
+    <!-- Login Fragment -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.project.asas.ui.LoginFragment"
+        android:label="Login Fragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
+            />
+        <action
+            android:id="@+id/action_loginFragment_to_vendorRegisterFragment"
+            app:destination="@id/vendorRegisterFragment"
+            />
+    </fragment>
+    <!-- Register Fragment -->
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.project.asas.ui.RegisterFragment"
+        android:label="Register Fragment" />
+    <!-- Vendor Register Fragment -->
+    <fragment
+        android:id="@+id/vendorRegisterFragment"
+        android:name="com.project.asas.VendorRegisterFragment"
+        android:label="Vendor Register Fragment" />
 </navigation>

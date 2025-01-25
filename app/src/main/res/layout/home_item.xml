@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="item"
+            type="com.project.asas.model.Product"
+            />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="8dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <!-- Product Image -->
+            <ImageView
+                android:id="@+id/productImage"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ai_furniture1"
+                android:contentDescription="Product Image" />
+
+            <!-- Favorite Icon -->
+            <ImageView
+                android:id="@+id/favIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_favorite"
+                android:background="@color/black_transparent_image"
+                android:padding="4dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="8dp"
+                android:contentDescription="Favorite Icon" />
+
+            <!-- Product Info Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/productImage"
+                android:orientation="vertical"
+                android:paddingTop="8dp">
+
+                <!-- Product Title -->
+                <TextView
+                    android:id="@+id/productName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Product Title"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/md_theme_primary"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+                <!-- Product Description -->
+                <TextView
+                    android:id="@+id/productDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Short description about the product."
+                    android:textSize="14sp"
+                    android:textColor="@color/md_theme_secondary"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:layout_marginTop="4dp" />
+
+                <!-- Product Price -->
+                <TextView
+                    android:id="@+id/productPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$120"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/md_theme_primaryContainer"
+                    android:layout_marginTop="8dp" />
+
+                <!-- Color Indicators -->
+                <LinearLayout
+                    android:id="@+id/colorContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Colors: "
+                        android:textSize="14sp"
+                        android:textColor="@color/md_theme_secondary"
+                        android:textStyle="bold" />
+
+                    <!-- Example color circles -->
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="4dp"
+                        android:background="@color/md_theme_error"
+                        android:layout_marginEnd="4dp" />
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:background="@color/md_theme_secondary"
+                        android:layout_marginEnd="4dp" />
+                </LinearLayout>
+
+                <!-- Quantity -->
+                <TextView
+                    android:id="@+id/productQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Available: 3 pcs"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

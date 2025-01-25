@@ -2,6 +2,7 @@
 # Android SDK
 compileSdk = "34"
 minSdk = "24"
+onboarder = "1.0.4"
 targetSdk = "34"
 
 # Version Numbers
@@ -73,6 +74,7 @@ hiltAndroid = { group = "com.google.dagger", name = "hilt-android", version.ref 
 hiltCompiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 
 # Networking
+onboarder = { module = "com.codemybrainsout.onboarding:onboarder", version.ref = "onboarder" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofitGson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 retrofitRxjava3 = { group = "com.squareup.retrofit2", name = "adapter-rxjava3", version.ref = "retrofit" }
