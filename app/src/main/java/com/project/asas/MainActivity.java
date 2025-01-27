@@ -5,6 +5,7 @@ import static com.project.asas.ui.utils.LocalLang.setLocale;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,12 +15,13 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 
 import com.project.asas.databinding.ActivityMainBinding;
+import com.project.asas.ui.base.BaseFragment;
 import com.project.asas.ui.on_boarding.OnboardingActivity;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BaseFragment.ToolbarHandler {
     private ActivityMainBinding binding;
     private NavController navController;
 
@@ -44,6 +46,36 @@ public class MainActivity extends AppCompatActivity {
             // Launch onboarding activity
             startActivity(new Intent(this, OnboardingActivity.class));
             prefs.edit().putBoolean("isFirstLaunch", false).apply();
+        }
+    }
+
+    @Override
+    public void setToolbarTitle(String title) {
+        binding.toolbar.setTitle(title);
+        binding.toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        binding.toolbar.setSubtitleTextColor(getResources().getColor(R.color.white));
+        //navigationBar color
+        getWindow().setNavigationBarColor(getResources().getColor(R.color.white));
+    }
+
+    @Override
+    public void showBackButton(boolean show) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(show);
+            binding.toolbar.setNavigationOnClickListener(v -> {
+                if (show) {
+                    onBackPressed();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void setToolbarVisibility(boolean isVisible) {
+        if (isVisible) {
+            binding.toolbar.setVisibility(View.VISIBLE);
+        } else {
+            binding.toolbar.setVisibility(View.GONE);
         }
     }
 }

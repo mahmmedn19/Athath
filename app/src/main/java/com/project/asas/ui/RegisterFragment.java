@@ -31,6 +31,10 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
     @Override
     protected void setup() {
         super.setup();
+        setToolbarVisibility(true);
+        setToolbarTitle("Register");
+        showBackButton(true);
+
         //navigation up
         binding.loginText.setOnClickListener(v -> {
             // Handle register button click

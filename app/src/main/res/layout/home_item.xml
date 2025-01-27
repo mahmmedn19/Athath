@@ -17,7 +17,7 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="8dp"
-        android:background="@color/white">
+        android:background="@color/md_theme_background">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -29,8 +29,7 @@
                 android:id="@+id/productImage"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ai_furniture1"
+                android:src="@drawable/furniture_3"
                 android:contentDescription="Product Image" />
 
             <!-- Favorite Icon -->
@@ -87,37 +86,6 @@
                     android:textStyle="bold"
                     android:textColor="@color/md_theme_primaryContainer"
                     android:layout_marginTop="8dp" />
-
-                <!-- Color Indicators -->
-                <LinearLayout
-                    android:id="@+id/colorContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="4dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Colors: "
-                        android:textSize="14sp"
-                        android:textColor="@color/md_theme_secondary"
-                        android:textStyle="bold" />
-
-                    <!-- Example color circles -->
-                    <View
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_marginStart="4dp"
-                        android:background="@color/md_theme_error"
-                        android:layout_marginEnd="4dp" />
-
-                    <View
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:background="@color/md_theme_secondary"
-                        android:layout_marginEnd="4dp" />
-                </LinearLayout>
 
                 <!-- Quantity -->
                 <TextView

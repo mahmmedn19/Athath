@@ -25,7 +25,7 @@ public class OnboardingActivity extends AhoyOnboarderActivity {
         AhoyOnboarderCard page1 = new AhoyOnboarderCard(
                 "Manage Vendors",
                 "Admins can approve, reject, or block vendors. Vendors can add, update, or remove furniture products.",
-                R.drawable.ic_admin
+                R.drawable.logo
         );
         page1.setBackgroundColor(R.color.black_transparent);
 
@@ -33,7 +33,7 @@ public class OnboardingActivity extends AhoyOnboarderActivity {
         AhoyOnboarderCard page2 = new AhoyOnboarderCard(
                 "AI Room Suggestions",
                 "Customers can get AI-based furniture recommendations, tailored to their preferences like colors, plants, and flooring.",
-                R.drawable.ic_ai
+                R.drawable.logo
         );
         page2.setBackgroundColor(R.color.black_transparent);
 
@@ -41,7 +41,7 @@ public class OnboardingActivity extends AhoyOnboarderActivity {
         AhoyOnboarderCard page3 = new AhoyOnboarderCard(
                 "Manage Favorites",
                 "Easily save, view, or remove your favorite products and access detailed product descriptions.",
-                R.drawable.ic_fav
+                R.drawable.logo
         );
         page3.setBackgroundColor(R.color.black_transparent);
 

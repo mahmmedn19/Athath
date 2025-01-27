@@ -38,6 +38,9 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
     @Override
     protected void setup() {
         super.setup();
+        setToolbarVisibility(true);
+        setToolbarTitle("Login");
+        showBackButton(true);
 
         // Handle Login Button Click
         binding.loginButton.setOnClickListener(v -> {

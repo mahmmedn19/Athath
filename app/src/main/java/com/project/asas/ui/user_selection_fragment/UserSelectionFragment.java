@@ -38,7 +38,9 @@ public class UserSelectionFragment extends BaseFragment<FragmentUserSelectionBin
     @Override
     protected void setup() {
         super.setup();
-
+        setToolbarVisibility(true);
+        setToolbarTitle("Select User Type");
+        showBackButton(true);
         binding.adminOption.setOnClickListener(v -> {
             // Navigate to LoginFragment with "Admin" user type
             Bundle bundle = new Bundle();

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="item"
+            type="com.project.asas.model.Product" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        >
+
+        <!-- Product Image -->
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:padding="16dp"
+            android:background="@color/md_theme_primary"
+            android:contentDescription="Product Image"
+            android:src="@drawable/icon_furniture" />
+
+        <!-- Product Name -->
+        <TextView
+            android:id="@+id/productName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Product Name"
+            android:textColor="@color/md_theme_primary"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            android:maxLines="1" />
+
+    </LinearLayout>
+</layout>
