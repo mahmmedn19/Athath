@@ -46,6 +46,13 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
         binding.loginButton.setOnClickListener(v -> {
             // TODO: Add login logic here
         });
+        //hide register text if userType is Admin
+        if (getArguments() != null && getArguments().containsKey("userType")) {
+            userType = getArguments().getString("userType", "Customer");
+            if ("Admin".equals(userType)) {
+                binding.registerText.setVisibility(View.GONE);
+            }
+        }
 
         // Handle Register Text Click
         binding.registerText.setOnClickListener(v -> {

@@ -18,6 +18,8 @@ import com.project.asas.databinding.ActivityMainBinding;
 import com.project.asas.ui.base.BaseFragment;
 import com.project.asas.ui.on_boarding.OnboardingActivity;
 
+import java.util.Objects;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -38,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        setSupportActionBar(binding.toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        binding.toolbar.setBackgroundColor(getResources().getColor(R.color.white));
+
         // Check if onboarding should be shown
         SharedPreferences prefs = getSharedPreferences("OnboardingPrefs", MODE_PRIVATE);
         boolean isFirstLaunch = prefs.getBoolean("isFirstLaunch", true);

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 
 import com.project.asas.BR;
+import com.project.asas.R;
 
 public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment {
 

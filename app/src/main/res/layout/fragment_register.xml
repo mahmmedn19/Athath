@@ -23,23 +23,14 @@
             <!-- App Logo -->
             <ImageView
                 android:id="@+id/appLogo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:src="@drawable/logo"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="App Logo"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Registration Title -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Customer Registration"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="@color/md_theme_primary"
-                android:gravity="center"
-                android:layout_marginBottom="16dp" />
+
 
             <!-- Customer Name -->
             <com.google.android.material.textfield.TextInputLayout

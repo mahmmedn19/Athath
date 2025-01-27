@@ -38,6 +38,9 @@ public class VendorRegisterFragment extends BaseFragment<FragmentVendorRegisterB
     @Override
     protected void setup() {
         super.setup();
+        setToolbarVisibility(true);
+        setToolbarTitle("Vendor Register");
+        showBackButton(true);
         //navigation up
         binding.vendorLoginText.setOnClickListener(v -> {
             // Handle register button click
