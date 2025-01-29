@@ -58,11 +58,13 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
         List<Product> productList = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
             productList.add(new Product(
-                    "Product " + i,
-                    "Description of Product " + i,
-                    "$" + (10 * i),
-                    R.drawable.furniture1,
-                    i % 2 == 0
+                    i,
+                    "Description " + i,
+                    "",
+                    50 * i,
+                    4.5f,
+                    4.5f,
+                    R.drawable.furniture1
             ));
         }
         return productList;
