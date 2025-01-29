@@ -1,41 +1,39 @@
 package com.project.asas.model;
 
-
 public class Product {
-    private String title;
-    private String description;
-    private String price;
-    private int imageResId;
-    private boolean isFavorite;
+    private int id;
+    private String style;
+    private String roomType;
+    private double budget;
+    private double roomWidth;
+    private double roomLength;
+    private int image; // Storing image as a byte array
 
-    public Product(String title, String description, String price, int imageResId, boolean isFavorite) {
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.imageResId = imageResId;
-        this.isFavorite = isFavorite;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
+    public Product(int id, String style, String roomType, double budget, double roomWidth, double roomLength, int image) {
+        this.id = id;
+        this.style = style;
+        this.roomType = roomType;
+        this.budget = budget;
+        this.roomWidth = roomWidth;
+        this.roomLength = roomLength;
+        this.image = image;
     }
 
-    public String getPrice() {
-        return price;
+    // Getters
+    public int getId() { return id; }
+    public String getStyle() { return style; }
+    public String getRoomType() { return roomType; }
+    public double getBudget() { return budget; }
+    public double getRoomWidth() { return roomWidth; }
+    public double getRoomLength() { return roomLength; }
+    public int getImage() { return image; }
+
+    // Methods from UML
+    public void getRecommendation() {
+        System.out.println("Generating furniture recommendation based on budget and style...");
     }
 
-    public int getImageResId() {
-        return imageResId;
+    public void getImageDetails() {
+        System.out.println("Fetching image for product...");
     }
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
-    }
-
 }

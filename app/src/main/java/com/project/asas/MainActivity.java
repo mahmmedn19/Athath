@@ -1,3 +1,4 @@
+// Updated MainActivity with Bottom Navigation and NavHost
 package com.project.asas;
 
 import static com.project.asas.ui.utils.LocalLang.setLocale;
@@ -5,15 +6,20 @@ import static com.project.asas.ui.utils.LocalLang.setLocale;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.project.asas.databinding.ActivityMainBinding;
 import com.project.asas.ui.base.BaseFragment;
 import com.project.asas.ui.on_boarding.OnboardingActivity;
@@ -42,14 +48,57 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
         });
         setSupportActionBar(binding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-        binding.toolbar.setBackgroundColor(getResources().getColor(R.color.white));
+        // Change back button icon dynamically
+        if (navController != null) {
+            navController.addOnDestinationChangedListener((@NonNull NavController controller, @NonNull androidx.navigation.NavDestination destination, Bundle arguments) -> {
+                if (destination.getId() == R.id.homeFragment) {
+                    binding.toolbar.setNavigationIcon(null); // Hide back button on home
+                } else {
+                    binding.toolbar.setNavigationIcon(R.drawable.ic_back);
+                }
+            });
+        }
+        // Setup Navigation Component
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_host);
+        if (navHostFragment != null) {
+            navController = navHostFragment.getNavController();
+            NavigationUI.setupWithNavController(binding.bottomNav, navController);
+        }
+
+        // Hide Bottom Navigation on Specific Screens
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() != R.id.homeFragment &&
+                    destination.getId() != R.id.catalogFragment &&
+                    destination.getId() != R.id.productsFragment &&
+                    destination.getId() != R.id.aiFragment &&
+                    destination.getId() != R.id.loginFragment) {
+                binding.bottomNav.setVisibility(View.GONE);
+            } else {
+                binding.bottomNav.setVisibility(View.VISIBLE);
+            }
+        });
+
+        // Bottom Navigation Handling
+        binding.bottomNav.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.home) {
+                navController.navigate(R.id.homeFragment);
+            } else if (item.getItemId() == R.id.catalog) {
+                navController.navigate(R.id.catalogFragment);
+            } else if (item.getItemId() == R.id.products) {
+                navController.navigate(R.id.productsFragment);
+            } else if (item.getItemId() == R.id.ai) {
+                navController.navigate(R.id.aiFragment);
+            } else if (item.getItemId() == R.id.userSelectionFragment) {
+                navController.navigate(R.id.userSelectionFragment);
+            }
+            return true;
+        });
 
         // Check if onboarding should be shown
         SharedPreferences prefs = getSharedPreferences("OnboardingPrefs", MODE_PRIVATE);
         boolean isFirstLaunch = prefs.getBoolean("isFirstLaunch", true);
 
         if (isFirstLaunch) {
-            // Launch onboarding activity
             startActivity(new Intent(this, OnboardingActivity.class));
             prefs.edit().putBoolean("isFirstLaunch", false).apply();
         }
@@ -68,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
     public void showBackButton(boolean show) {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(show);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back); // Set Custom Back Icon
             binding.toolbar.setNavigationOnClickListener(v -> {
                 if (show) {
                     onBackPressed();

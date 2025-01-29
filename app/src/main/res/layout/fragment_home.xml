@@ -146,19 +146,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:orientation="horizontal">
-            <!-- Recommended Section -->
+            <!-- Catalog Section -->
             <TextView
-                android:id="@+id/recommendedListTitle"
+                android:id="@+id/catalogListTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Recommended for You"
+                android:text="Catalog"
                 android:textSize="18sp"
                 android:textColor="@color/md_theme_primary" />
 
             <!-- View All Button -->
             <TextView
-                android:id="@+id/viewRecommendedAllButton"
+                android:id="@+id/viewCatalogAllButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="View All"
@@ -168,9 +168,9 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:textStyle="bold" />
         </LinearLayout>
-        <!-- Product List -->
+        <!-- Catalog List -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvRecommended"
+            android:id="@+id/rvCatalog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -179,47 +179,136 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:background="@color/md_theme_background"
             android:verticalSpacing="8dp"
-            tools:listitem="@layout/home_item"
+            tools:listitem="@layout/item_catalog_home"
             android:horizontalSpacing="8dp" />
 
-<!--        &lt;!&ndash; Horizontal Layout &ndash;&gt;
+        <!-- About Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="horizontal">
-            &lt;!&ndash; Recommended Section &ndash;&gt;
-            <TextView
-                android:id="@+id/favoriteListTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Your Favorites"
-                android:textSize="18sp"
-                android:textColor="@color/md_theme_primary" />
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            >
 
-            &lt;!&ndash; View All Button &ndash;&gt;
-            <TextView
-                android:id="@+id/viewAllButtonFavorite"
+            <ImageView
+                android:id="@+id/aboutIcon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_about"
+                android:contentDescription="About Icon" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View All"
-                android:textSize="14sp"
-                android:textColor="@color/md_theme_primary"
-                android:layout_gravity="center"
-                android:background="?android:attr/selectableItemBackground"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                android:paddingStart="16dp">
+
+                <TextView
+                    android:id="@+id/aboutTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="About Us"
+                    android:textSize="18sp"
+                    android:textColor="@color/md_theme_primary"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/aboutDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Our platform helps you design your perfect room by recommending the best furniture based on your preferences and budget."
+                    android:textSize="14sp"
+                    android:textColor="@color/md_theme_secondary" />
+            </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvEmptyFavorites"
-            android:layout_width="wrap_content"
+        <!-- AI Working Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No favorites added yet."
-            android:visibility="gone"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/grey_600" />-->
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            >
+
+            <ImageView
+                android:id="@+id/aiIcon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_ai"
+                android:contentDescription="AI Icon" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="16dp">
+
+                <TextView
+                    android:id="@+id/aiTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="How AI Works"
+                    android:textSize="18sp"
+                    android:textColor="@color/md_theme_primary"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/aiDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Our AI analyzes your style, room type to suggest the best furniture options for you. It evaluates factors such as space constraints, preferred materials, and modern trends."                    android:textSize="14sp"
+                    android:textColor="@color/md_theme_secondary" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="8dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_style"
+                            android:contentDescription="Style Icon" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Analyzing your preferred style and room type"
+                            android:textSize="14sp"
+                            android:paddingStart="2dp"
+                            android:textColor="@color/md_theme_secondary" />
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_trends"
+                            android:contentDescription="Trends Icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Considering modern trends and best sellers"
+                            android:textSize="14sp"
+                            android:paddingStart="2dp"
+                            android:textColor="@color/md_theme_secondary" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
     </ScrollView>

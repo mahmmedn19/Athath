@@ -16,6 +16,12 @@
         <action
             android:id="@+id/action_homeFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_catalogFragment"
+            app:destination="@id/catalogFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_productsFragment"
+            app:destination="@id/productsFragment" />
     </fragment>
     <fragment
         android:id="@+id/userSelectionFragment"
@@ -58,4 +64,20 @@
         android:id="@+id/productDetailsFragment"
         android:name="com.project.asas.ui.product_details.ProductDetailsFragment"
         android:label="ProductDetailsFragment" />
+    <fragment
+        android:id="@+id/catalogFragment"
+        android:name="com.project.asas.ui.catelog_screen.CatalogFragment"
+        android:label="CatalogFragment" >
+        <action
+            android:id="@+id/action_catalogFragment_to_productDetailsFragment2"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productsFragment"
+        android:name="com.project.asas.ui.products_screen.ProductsFragment"
+        android:label="ProductsFragment" />
+    <fragment
+        android:id="@+id/aiFragment"
+        android:name="com.project.asas.ui.ai_screen.AiFragment"
+        android:label="AiFragment" />
 </navigation>
