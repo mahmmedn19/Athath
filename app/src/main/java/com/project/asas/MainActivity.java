@@ -6,8 +6,8 @@ import static com.project.asas.ui.utils.LocalLang.setLocale;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -19,7 +19,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.project.asas.databinding.ActivityMainBinding;
 import com.project.asas.ui.base.BaseFragment;
 import com.project.asas.ui.on_boarding.OnboardingActivity;
@@ -46,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        getWindow().setNavigationBarColor(getResources().getColor(R.color.md_theme_surface));
+
         setSupportActionBar(binding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         // Change back button icon dynamically
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
                     destination.getId() != R.id.catalogFragment &&
                     destination.getId() != R.id.productsFragment &&
                     destination.getId() != R.id.aiFragment &&
-                    destination.getId() != R.id.loginFragment) {
+                    destination.getId() != R.id.userSelectionFragment) {
                 binding.bottomNav.setVisibility(View.GONE);
             } else {
                 binding.bottomNav.setVisibility(View.VISIBLE);

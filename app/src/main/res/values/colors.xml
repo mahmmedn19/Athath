@@ -11,6 +11,15 @@
     <color name="grey_200">#EEEEEE</color>
     <color name="bg">#757575</color>
 
+    <color name="brown_1">#CB997E</color>
+    <color name="brown_2">#DCBCA7</color>
+    <color name="brown_3">#FBE5D5</color>
+    <color name="brown_gray_1">#6A6F5C</color>
+    <color name="brown_gray_2">#A6A48D</color>
+    <color name="brown_gray_3">#B5B6A4</color>
+
+
+
 
     <color name="md_theme_primary">#8A5021</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>

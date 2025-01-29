@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_homeFragment_to_productsFragment"
             app:destination="@id/productsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_catalogDetailsFragment"
+            app:destination="@id/catalogDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/userSelectionFragment"
@@ -71,13 +74,28 @@
         <action
             android:id="@+id/action_catalogFragment_to_productDetailsFragment2"
             app:destination="@id/productDetailsFragment" />
+        <action
+            android:id="@+id/action_catalogFragment_to_catalogDetailsFragment"
+            app:destination="@id/catalogDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/productsFragment"
         android:name="com.project.asas.ui.products_screen.ProductsFragment"
-        android:label="ProductsFragment" />
+        android:label="ProductsFragment" >
+        <action
+            android:id="@+id/action_productsFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/aiFragment"
         android:name="com.project.asas.ui.ai_screen.AiFragment"
         android:label="AiFragment" />
+    <fragment
+        android:id="@+id/catalogDetailsFragment"
+        android:name="com.project.asas.ui.catelog_details_screen.CatalogDetailsFragment"
+        android:label="CatalogDetailsFragment" >
+        <action
+            android:id="@+id/action_catalogDetailsFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
 </navigation>

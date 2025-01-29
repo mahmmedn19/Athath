@@ -1,6 +1,7 @@
 package com.project.asas.ui.catelog_screen;
 
 import androidx.lifecycle.ViewModel;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.project.asas.R;
@@ -65,6 +66,6 @@ public class CatalogFragment extends BaseFragment<FragmentCatalogBinding> implem
     @Override
     public void onShowProductsClicked(CatalogItem catalogItem) {
         // Navigate to products for this catalog item
-        // Example: Navigation.findNavController(binding.getRoot()).navigate(R.id.action_catalogFragment_to_productsFragment);
+       Navigation.findNavController(binding.getRoot()).navigate(R.id.action_catalogFragment_to_catalogDetailsFragment);
     }
 }

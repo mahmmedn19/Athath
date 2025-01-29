@@ -1,39 +1,45 @@
 package com.project.asas.model;
+import com.google.firebase.firestore.DocumentId;
 
 public class Product {
-    private int id;
+    @DocumentId
+    private String id;
     private String style;
     private String roomType;
     private double budget;
     private double roomWidth;
     private double roomLength;
-    private int image; // Storing image as a byte array
+    private int imageUrl; // Store image URL in Firebase Storage
 
-    public Product(int id, String style, String roomType, double budget, double roomWidth, double roomLength, int image) {
-        this.id = id;
+    public Product() {} // Required empty constructor for Firebase
+
+    public Product(String style, String roomType, double budget, double roomWidth, double roomLength, int imageUrl) {
         this.style = style;
         this.roomType = roomType;
         this.budget = budget;
         this.roomWidth = roomWidth;
         this.roomLength = roomLength;
-        this.image = image;
+        this.imageUrl = imageUrl;
     }
 
-    // Getters
-    public int getId() { return id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
     public String getStyle() { return style; }
+    public void setStyle(String style) { this.style = style; }
+
     public String getRoomType() { return roomType; }
+    public void setRoomType(String roomType) { this.roomType = roomType; }
+
     public double getBudget() { return budget; }
+    public void setBudget(double budget) { this.budget = budget; }
+
     public double getRoomWidth() { return roomWidth; }
+    public void setRoomWidth(double roomWidth) { this.roomWidth = roomWidth; }
+
     public double getRoomLength() { return roomLength; }
-    public int getImage() { return image; }
+    public void setRoomLength(double roomLength) { this.roomLength = roomLength; }
 
-    // Methods from UML
-    public void getRecommendation() {
-        System.out.println("Generating furniture recommendation based on budget and style...");
-    }
-
-    public void getImageDetails() {
-        System.out.println("Fetching image for product...");
-    }
+    public int getImageUrl() { return imageUrl; }
+    public void setImageUrl(int imageUrl) { this.imageUrl = imageUrl; }
 }

@@ -17,10 +17,10 @@ import java.util.List;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeAdapter.HomeInteractionListener, ProductAdapter.ProductInteractionListener , CatalogHomeAdapter.CatalogHomeInteractionListener {
+public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeAdapter.HomeInteractionListener, ProductHomeAdapter.ProductInteractionListener , CatalogHomeAdapter.CatalogHomeInteractionListener {
 
     private CatalogHomeAdapter adapter;
-    private ProductAdapter productAdapter;
+    private ProductHomeAdapter productAdapter;
     private List<Product> products;
     private List<CatalogItem> catalogItems;
     @Override
@@ -43,6 +43,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         super.setup();
         setToolbarVisibility(false);
         initRecyclerView();
+        binding.tvViewAllProducts.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_productsFragment);
+        });
         binding.viewCatalogAllButton.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_catalogFragment);
         });
@@ -56,13 +59,13 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         binding.rvCatalog.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
 
         products = new ArrayList<>();
-        products = generateFakeProducts(4);
+        products = generateFakeProducts(6);
 
         catalogItems = new ArrayList<>();
         catalogItems = generateFakeCatalogItems(10);
 
         adapter = new CatalogHomeAdapter(catalogItems, this);
-        productAdapter = new ProductAdapter(products, this);
+        productAdapter = new ProductHomeAdapter(products, this);
         binding.productList.setAdapter(productAdapter);
         binding.rvCatalog.setAdapter(adapter);
     }
@@ -71,8 +74,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         List<Product> productList = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
             productList.add(new Product(
-                     i,
-                    "Description " + i,
+                    "Product " + i,
                     "",
                     50 * i,
                     4.5f,
@@ -111,6 +113,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     @Override
     public void onShowDetailsClicked(CatalogItem catalogItem) {
         // Navigate to products for this catalog item
-        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_productDetailsFragment);
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_catalogDetailsFragment);
     }
 }

@@ -33,7 +33,7 @@
                 tools:src="@drawable/furniture_5"
                 android:src="@{item.imageRes}"
                 android:contentDescription="Catalog Image"/>
-            <!-- Cart Button -->
+            <!-- Show Products Button -->
             <ImageView
                 android:id="@+id/btn_show_details"
                 android:layout_width="28dp"

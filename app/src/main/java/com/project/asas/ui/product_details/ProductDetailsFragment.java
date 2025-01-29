@@ -1,7 +1,6 @@
 package com.project.asas.ui.product_details;
 
 import androidx.lifecycle.ViewModel;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.project.asas.R;
@@ -9,7 +8,7 @@ import com.project.asas.databinding.FragmentProductDetailsBinding;
 import com.project.asas.model.Product;
 import com.project.asas.ui.base.BaseFragment;
 import com.project.asas.ui.home_screen.HomeAdapter;
-import com.project.asas.ui.home_screen.ProductAdapter;
+import com.project.asas.ui.home_screen.ProductHomeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsBinding> implements HomeAdapter.HomeInteractionListener{
 
     private HomeAdapter adapter;
-    private ProductAdapter productAdapter;
-    private List<Product> products;
     private List<Product> recommendedProducts;
 
     @Override
@@ -58,8 +55,7 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
         List<Product> productList = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
             productList.add(new Product(
-                    i,
-                    "Description " + i,
+                    "Product " + i,
                     "",
                     50 * i,
                     4.5f,
