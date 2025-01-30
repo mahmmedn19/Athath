@@ -18,7 +18,22 @@ public class Furniture {
     private int imageUrl; // Store image URL in Firebase Storage
 
     public Furniture() {} // Required empty constructor for Firebase
-
+    // ✅ Add a constructor that includes `id`
+    public Furniture(String id, String name, String description, String category, String color, String roomType,
+                     String style, double price, double length, double width, double height, int imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.color = color;
+        this.roomType = roomType;
+        this.style = style;
+        this.price = price;
+        this.length = length;
+        this.width = width;
+        this.height = height;
+        this.imageUrl = imageUrl;
+    }
     public Furniture(String name, String description, String category, String color, String roomType,
                      String style, double price, double length, double width, double height, int imageUrl) {
         this.name = name;

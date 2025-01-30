@@ -25,9 +25,18 @@
         android:id="@+id/admin_room_configurations"
         android:name="com.project.asas.ui.admin_screen.room_configurations.ManageRoomConfigFragment"
         android:label="Room Configurations"
-        tools:layout="@layout/fragment_manage_room_config" />
+        tools:layout="@layout/fragment_manage_room_config" >
+        <action
+            android:id="@+id/action_admin_room_configurations_to_admin_add_room_configurations"
+            app:destination="@id/admin_add_room_configurations" />
+    </fragment>
 
-    <!-- Vendor Details Fragment -->
+    <!-- Add Room Configurations Fragment -->
+    <fragment
+        android:id="@+id/admin_add_room_configurations"
+        android:name="com.project.asas.ui.admin_screen.add_room_config.AddRoomConfigrationsFragment"
+        android:label="Add Room Configurations"
+        tools:layout="@layout/fragment_add_room_configrations" />
 
 
 </navigation>

@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="roomConfig"
-            type="com.project.asas.model.RoomConfig"/>
+            name="furniture"
+            type="com.project.asas.model.Furniture"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -20,59 +20,61 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            >
+            android:padding="12dp">
 
-            <!-- Image Container (To position icon above image) -->
-            <FrameLayout
+            <ImageView
+                android:id="@+id/furnitureImage"
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                tools:srcCompat="@drawable/furniture_5"
+                />
 
-                <!-- Room Image -->
-                <ImageView
-                    android:id="@+id/roomImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/furniture_5"/>
-
-                <!-- Top Right Icon -->
-                <ImageView
-                    android:id="@+id/topRightIcon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="8dp"
-                    android:layout_gravity="top|end"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/circle_background"
-                    android:src="@drawable/ic_more"
-                    android:contentDescription="Edit Icon"/>
-            </FrameLayout>
-
-            <!-- Room Config Title -->
             <TextView
-                android:id="@+id/configTitle"
+                android:id="@+id/tvFurnitureName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{roomConfig.name}"
-                tools:text="Room Type"
+                android:text="@{furniture.name}"
+                tools:text="furniture_name"
                 android:textSize="16sp"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
 
-            <!-- Room Config Description -->
             <TextView
-                android:id="@+id/configDescription"
+                android:id="@+id/tvFurnitureDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@{roomConfig.roomType}"
-                tools:text="Description of the configuration"
+                android:text="@{furniture.description}"
+                tools:text="furniture_description"
                 android:textSize="14sp"
                 android:textColor="@color/grey_600"/>
+
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_marginTop="8dp">
+
+                <!-- Edit Button -->
+                <ImageButton
+                    android:id="@+id/btnEdit"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_edit"
+                    app:backgroundTint="@color/black_transparent"
+                    android:contentDescription="Edit Product"/>
+
+                <!-- Delete Button -->
+                <ImageButton
+                    android:id="@+id/btnDelete"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_delete"
+                    app:backgroundTint="@color/black_transparent"
+                    android:contentDescription="Delete Product"/>
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

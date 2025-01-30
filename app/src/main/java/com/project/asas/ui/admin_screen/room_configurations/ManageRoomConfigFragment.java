@@ -1,23 +1,25 @@
 package com.project.asas.ui.admin_screen.room_configurations;
 
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.project.asas.R;
 import com.project.asas.databinding.FragmentManageRoomConfigBinding;
-import com.project.asas.model.RoomConfig;
+import com.project.asas.model.Furniture;
 import com.project.asas.ui.base.BaseFragment;
 import com.project.asas.ui.utils.DialogUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class ManageRoomConfigFragment extends BaseFragment<FragmentManageRoomConfigBinding> implements RoomConfigAdapter.RoomConfigInteractionListener {
-    private RoomConfigAdapter roomConfigAdapter;
-    private List<RoomConfig> roomConfigList;
+
+    private final ManageRoomConfigViewModel viewModel = new ViewModelProvider(this).get(ManageRoomConfigViewModel.class);
+    private RoomConfigAdapter adapter;
 
     @Override
     protected String getTAG() {
@@ -31,42 +33,36 @@ public class ManageRoomConfigFragment extends BaseFragment<FragmentManageRoomCon
 
     @Override
     protected ViewModel getViewModel() {
-        return null;
+        return viewModel;
     }
 
     @Override
     protected void setup() {
         super.setup();
         setToolbarVisibility(false);
-        roomConfigList = new ArrayList<>();
-        roomConfigAdapter = new RoomConfigAdapter(roomConfigList, this);
+
+        if (viewModel.getFurnitureList().isEmpty()) {
+            viewModel.initializeFurnitureList(); // Ensure the list is populated
+        }
 
         binding.recyclerRoomConfig.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.recyclerRoomConfig.setAdapter(roomConfigAdapter);
+        adapter = new RoomConfigAdapter(viewModel.getFurnitureList(), this);
+        binding.recyclerRoomConfig.setAdapter(adapter);
 
-        fetchRoomConfigs();
-
-        binding.fabAddConfig.setOnClickListener(v -> {
-            DialogUtils.showCustomDialog(requireContext(), "Add Room Configuration", "Here you can add a new room configuration.");
-        });
-    }
-
-    private void fetchRoomConfigs() {
-        roomConfigList.add(new RoomConfig("Living Room", "4 Lights, 2 Fans", R.drawable.furniture_5));
-        roomConfigList.add(new RoomConfig("Bedroom", "2 Lights, 1 Fan", R.drawable.furniture_6));
-        roomConfigList.add(new RoomConfig("Kitchen", "3 Lights, 1 Fridge", R.drawable.furniture_7));
-        roomConfigList.add(new RoomConfig("Bathroom", "1 Light, 1 Geyser", R.drawable.furniture_8));
-        roomConfigAdapter.notifyDataSetChanged();
+        binding.fabAddConfig.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_admin_room_configurations_to_admin_add_room_configurations)
+        );
     }
 
     @Override
-    public void onEditConfig(RoomConfig roomConfig) {
-        DialogUtils.showCustomDialog(requireContext(), "Edit Configuration", "Editing: " + roomConfig.getName());
+    public void onEditFurniture(Furniture furniture) {
+        DialogUtils.showCustomDialog(requireContext(), "Edit Furniture", "Here you can edit the furniture.");
     }
 
     @Override
-    public void onDeleteConfig(RoomConfig roomConfig) {
-        roomConfigList.remove(roomConfig);
-        roomConfigAdapter.notifyDataSetChanged();
+    public void onDeleteFurniture(Furniture furniture) {
+        viewModel.removeFurniture(furniture);
+        adapter.notifyDataSetChanged();
+        DialogUtils.showCustomDialog(requireContext(), "Delete Furniture", "Furniture deleted successfully.");
     }
 }
