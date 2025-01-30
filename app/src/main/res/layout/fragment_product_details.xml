@@ -129,7 +129,16 @@
                 android:textSize="14sp"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/md_theme_secondary" />
-
+            <!-- Store Information -->
+            <TextView
+                android:id="@+id/tvStoreInformation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Store Information"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/md_theme_primary" />
             <!-- Store Details -->
             <TextView
                 android:id="@+id/tvStoreName"

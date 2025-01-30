@@ -22,24 +22,33 @@
             android:textStyle="bold"
             android:textColor="@color/md_theme_primary" />
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroupProductCategories"
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:singleSelection="true">
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupProductCategories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                app:singleSelection="true"
+                app:singleLine="true"
+                android:orientation="horizontal">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipProductCategory"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:iconStartPadding="8dp"
                 app:chipIconSize="24dp"
+                tools:text="Furniture"
                 app:chipBackgroundColor="@color/md_theme_surface"
                 app:checkedIconVisible="false"
                 android:textColor="@color/md_theme_primary" />
         </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
 
         <!-- Product List -->
         <TextView
@@ -59,6 +68,7 @@
             android:layout_marginTop="8dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
+            android:clipToPadding="false"
             tools:listitem="@layout/item_product" />
     </LinearLayout>
 </layout>

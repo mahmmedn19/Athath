@@ -34,6 +34,16 @@ public class Furniture {
         this.imageUrl = imageUrl;
     }
 
+    public Furniture(String  name, String description, double length, String color, double width, int imageUrl) {
+        this.name = name;
+        this.description = description;
+        this.length = length;
+        this.color = color;
+        this.width = width;
+        this.imageUrl = imageUrl;
+    }
+
+
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 

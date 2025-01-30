@@ -13,6 +13,15 @@ public class Product {
 
     public Product() {} // Required empty constructor for Firebase
 
+    public Product(String id ,String style, String roomType, double budget, double roomWidth, double roomLength, int imageUrl) {
+        this.id = id;
+        this.style = style;
+        this.roomType = roomType;
+        this.budget = budget;
+        this.roomWidth = roomWidth;
+        this.roomLength = roomLength;
+        this.imageUrl = imageUrl;
+    }
     public Product(String style, String roomType, double budget, double roomWidth, double roomLength, int imageUrl) {
         this.style = style;
         this.roomType = roomType;
@@ -21,6 +30,7 @@ public class Product {
         this.roomLength = roomLength;
         this.imageUrl = imageUrl;
     }
+
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }

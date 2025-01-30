@@ -30,12 +30,26 @@
                 android:contentDescription="App Logo"
                 android:layout_marginBottom="16dp" />
 
+            <!-- Store Name -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Full Name"
+                app:boxStrokeColor="@color/md_theme_primary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nameInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Store Name -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Store Name"
+                android:layout_marginTop="16dp"
                 app:boxStrokeColor="@color/md_theme_primary">
 
                 <com.google.android.material.textfield.TextInputEditText

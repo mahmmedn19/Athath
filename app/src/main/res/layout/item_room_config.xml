@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="roomConfig"
+            type="com.project.asas.model.RoomConfig"/>
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <!-- Image Container (To position icon above image) -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+                <!-- Room Image -->
+                <ImageView
+                    android:id="@+id/roomImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/furniture_5"/>
+
+                <!-- Top Right Icon -->
+                <ImageView
+                    android:id="@+id/topRightIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/circle_background"
+                    android:src="@drawable/ic_more"
+                    android:contentDescription="Edit Icon"/>
+            </FrameLayout>
+
+            <!-- Room Config Title -->
+            <TextView
+                android:id="@+id/configTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{roomConfig.name}"
+                tools:text="Room Type"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <!-- Room Config Description -->
+            <TextView
+                android:id="@+id/configDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@{roomConfig.roomType}"
+                tools:text="Description of the configuration"
+                android:textSize="14sp"
+                android:textColor="@color/grey_600"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

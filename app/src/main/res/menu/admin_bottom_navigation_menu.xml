@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/admin_manage_vendors"
+        android:icon="@drawable/ic_vendor"
+        android:title="Vendors" />
+
+    <item
+        android:id="@+id/admin_manage_customers"
+        android:icon="@drawable/ic_customers"
+        android:title="Customers" />
+
+    <item
+        android:id="@+id/admin_room_configurations"
+        android:icon="@drawable/ic_room_config"
+        android:title="Room Config" />
+
+</menu>

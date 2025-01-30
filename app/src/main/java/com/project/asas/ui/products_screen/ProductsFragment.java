@@ -49,16 +49,26 @@ public class ProductsFragment extends BaseFragment<FragmentProductsBinding> impl
     }
     private void setupCategoryChips() {
         List<Product> productList = generateFakeProducts(8);
+
+        // Ensure ChipGroup starts empty
+        binding.chipGroupProductCategories.removeAllViews();
+
         for (Product product : productList) {
-            Chip chip = new Chip(requireContext());
-            chip.setText(product.getStyle());
-            chip.setCheckable(true);
-           // chip.setOnClickListener(v -> filterProductsByCategory(category));
-            binding.chipGroupProductCategories.addView(chip);
+            if (product.getStyle() != null && !product.getStyle().trim().isEmpty()) { // Prevent empty chips
+                Chip chip = new Chip(requireContext());
+                chip.setText(product.getStyle());
+                chip.setCheckable(true);
+                // chip.setOnClickListener(v -> filterProductsByCategory(category));
+                binding.chipGroupProductCategories.addView(chip);
+            }
         }
     }
+
+
     private List<Product> generateFakeProducts(int count) {
         List<Product> productList = new ArrayList<>();
+        String[] styles = {"Modern", "Classic", "Luxury", "Minimalist", "Vintage"};
+
         for (int i = 1; i <= count; i++) {
             int imageRes = switch (i % 5) {
                 case 0 -> R.drawable.image_1;
@@ -69,8 +79,8 @@ public class ProductsFragment extends BaseFragment<FragmentProductsBinding> impl
             };
 
             productList.add(new Product(
-                    "Product" + i,
-                    "",
+                    "Product " + i,
+                    styles[i % styles.length],  // Assign different styles
                     50 * i,
                     4.5f,
                     4.5f,
@@ -79,6 +89,7 @@ public class ProductsFragment extends BaseFragment<FragmentProductsBinding> impl
         }
         return productList;
     }
+
 
     @Override
     public void onProductClicked(Product product) {

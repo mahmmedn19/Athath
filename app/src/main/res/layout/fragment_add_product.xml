@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="16dp">
+
+            <!-- Product Image -->
+            <ImageView
+                android:id="@+id/productImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/furniture_3"
+                android:scaleType="centerCrop"
+                android:background="@drawable/rounded_background_primary_2"
+                android:contentDescription="Select Product Image"
+                android:padding="8dp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Product Name -->
+            <EditText
+                android:id="@+id/etProductName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Product Name"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Product Price -->
+            <EditText
+                android:id="@+id/etProductPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Price"
+                android:inputType="numberDecimal"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Product Color -->
+            <EditText
+                android:id="@+id/etProductColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Color"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Product Style -->
+            <EditText
+                android:id="@+id/etProductStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Style"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Room Type -->
+            <EditText
+                android:id="@+id/etProductRoomType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Room Type"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Save Product Button -->
+            <Button
+                android:id="@+id/btnSaveProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save Product"
+                android:backgroundTint="@color/md_theme_primary"
+                android:textColor="@android:color/white"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Cancel Button -->
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:backgroundTint="@color/md_theme_error"
+                android:textColor="@android:color/white"
+                android:padding="12dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</layout>
