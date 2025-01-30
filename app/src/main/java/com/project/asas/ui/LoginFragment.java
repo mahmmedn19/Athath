@@ -7,6 +7,7 @@ import androidx.navigation.Navigation;
 
 import android.view.View;
 
+import com.project.asas.MainActivity;
 import com.project.asas.R;
 import com.project.asas.databinding.FragmentLoginBinding;
 import com.project.asas.ui.admin_screen.AdminMainActivity;
@@ -54,6 +55,11 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                 requireActivity().finish();
             } else {
                // Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+                ((MainActivity) requireActivity()).updateLoginState(true);
+                Intent intent = new Intent(requireContext(), MainActivity.class);
+                startActivity(intent);
+                requireActivity().finish();
+
             }
         });
         //hide register text if userType is Admin

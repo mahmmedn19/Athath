@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,5 +39,9 @@ public class AiFragment extends BaseFragment<FragmentAiBinding> {
     protected void setup() {
         super.setup();
         setToolbarVisibility(false);
+        binding.btnShowCatelog.setOnClickListener(view -> {
+            // Navigate to Catalog Fragment
+            Navigation.findNavController(view).navigate(R.id.action_aiFragment_to_catalogFragment);
+        });
     }
 }

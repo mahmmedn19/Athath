@@ -68,6 +68,31 @@
         android:name="com.project.asas.ui.product_details.ProductDetailsFragment"
         android:label="ProductDetailsFragment" />
     <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.project.asas.ui.user_screen.UserProfileFragment"
+        android:label="UserProfileFragment" >
+        <action
+            android:id="@+id/action_userProfileFragment_to_manageProfileFragment"
+            app:destination="@id/manageProfileFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_favFragment"
+            app:destination="@id/favFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/manageProfileFragment"
+        android:name="com.project.asas.ui.user_screen.manage_user_profile.ManageUserProfileFragment"
+        android:label="ManageProfileFragment" />
+
+    <fragment
+        android:id="@+id/favFragment"
+        android:name="com.project.asas.ui.user_screen.fav_screen.FavFragment"
+        android:label="UserProfileFragment" >
+        <action
+            android:id="@+id/action_favFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/catalogFragment"
         android:name="com.project.asas.ui.catelog_screen.CatalogFragment"
         android:label="CatalogFragment" >
@@ -89,7 +114,11 @@
     <fragment
         android:id="@+id/aiFragment"
         android:name="com.project.asas.ui.ai_screen.AiFragment"
-        android:label="AiFragment" />
+        android:label="AiFragment" >
+        <action
+            android:id="@+id/action_aiFragment_to_catalogFragment"
+            app:destination="@id/catalogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/catalogDetailsFragment"
         android:name="com.project.asas.ui.catelog_details_screen.CatalogDetailsFragment"

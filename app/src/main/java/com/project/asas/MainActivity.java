@@ -6,6 +6,8 @@ import static com.project.asas.ui.utils.LocalLang.setLocale;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -31,6 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MainActivity extends AppCompatActivity implements BaseFragment.ToolbarHandler {
     private ActivityMainBinding binding;
     private NavController navController;
+    private boolean isUserLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +64,18 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
                 }
             });
         }
+        // Load login state from SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        isUserLoggedIn = prefs.getBoolean("isLoggedIn", false);
+
         // Setup Navigation Component
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_host);
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(binding.bottomNav, navController);
         }
+        // Dynamically update bottom navigation menu
+        updateBottomNavigationMenu();
 
         // Hide Bottom Navigation on Specific Screens
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
@@ -74,14 +83,14 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
                     destination.getId() != R.id.catalogFragment &&
                     destination.getId() != R.id.productsFragment &&
                     destination.getId() != R.id.aiFragment &&
-                    destination.getId() != R.id.userSelectionFragment) {
+                    destination.getId() != R.id.userSelectionFragment
+                    && destination.getId() != R.id.userProfileFragment) {
                 binding.bottomNav.setVisibility(View.GONE);
             } else {
                 binding.bottomNav.setVisibility(View.VISIBLE);
             }
         });
 
-        // Bottom Navigation Handling
         binding.bottomNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.home) {
                 navController.navigate(R.id.homeFragment);
@@ -93,20 +102,34 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
                 navController.navigate(R.id.aiFragment);
             } else if (item.getItemId() == R.id.userSelectionFragment) {
                 navController.navigate(R.id.userSelectionFragment);
+            } else if (item.getItemId() == R.id.userProfileFragment) {
+                navController.navigate(R.id.userProfileFragment);
             }
             return true;
         });
+    }
+    // Update Bottom Navigation dynamically
+    private void updateBottomNavigationMenu() {
+        Menu menu = binding.bottomNav.getMenu();
+        menu.clear(); // Clear existing menu
 
-        // Check if onboarding should be shown
-        SharedPreferences prefs = getSharedPreferences("OnboardingPrefs", MODE_PRIVATE);
-        boolean isFirstLaunch = prefs.getBoolean("isFirstLaunch", true);
+        getMenuInflater().inflate(R.menu.bottom_navigation_menu, menu); // Reinflate menu
 
-        if (isFirstLaunch) {
-            startActivity(new Intent(this, OnboardingActivity.class));
-            prefs.edit().putBoolean("isFirstLaunch", false).apply();
+        if (isUserLoggedIn) {
+            // Remove login and add favorites
+            menu.removeItem(R.id.userSelectionFragment);
+            menu.add(Menu.NONE, R.id.userProfileFragment, Menu.NONE, "Profile")
+                    .setIcon(R.drawable.ic_profile)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
     }
-
+    // Call this method when user logs in or logs out
+    public void updateLoginState(boolean loggedIn) {
+        isUserLoggedIn = loggedIn;
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        prefs.edit().putBoolean("isLoggedIn", loggedIn).apply();
+        updateBottomNavigationMenu();
+    }
     @Override
     public void setToolbarTitle(String title) {
         binding.toolbar.setTitle(title);
