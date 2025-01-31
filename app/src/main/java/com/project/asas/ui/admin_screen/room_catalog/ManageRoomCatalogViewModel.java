@@ -1,29 +1,29 @@
-package com.project.asas.ui.admin_screen.room_configurations;
+// ManageRoomCatalogViewModel.java
+package com.project.asas.ui.admin_screen.room_catalog;
 
 import androidx.lifecycle.ViewModel;
 import com.project.asas.R;
 import com.project.asas.model.Furniture;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
-public class ManageRoomConfigViewModel extends ViewModel {
+public class ManageRoomCatalogViewModel extends ViewModel {
 
     private final List<Furniture> furnitureList = new ArrayList<>();
 
     @Inject
-    public ManageRoomConfigViewModel() {
+    public ManageRoomCatalogViewModel() {
         initializeFurnitureList();
     }
 
     public List<Furniture> getFurnitureList() {
-        return furnitureList;
+        return new ArrayList<>(furnitureList); // Return a copy to avoid unintended modification
     }
 
-    public void initializeFurnitureList() {
+    private void initializeFurnitureList() {
         if (!furnitureList.isEmpty()) return; // Prevent duplicate initialization
 
         furnitureList.add(new Furniture("Sofa Set", "Comfortable sofa set", "Living Room", "Blue", "Modern",

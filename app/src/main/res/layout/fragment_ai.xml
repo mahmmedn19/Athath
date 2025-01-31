@@ -1,137 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!-- ViewModel or Binding Variables Can Be Added Here If Needed -->
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.ai_screen.AiFragment">
 
-        <ScrollView
+        <!-- Scrollable Question Container -->
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnShowCatelog">
 
             <LinearLayout
+                android:id="@+id/questionContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="20dp"/>
+        </androidx.core.widget.NestedScrollView>
 
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1. What type of room are you looking for?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bedroom"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Living Room"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Office"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Kids' Room"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Dining Room"/>
-                </RadioGroup>
+        <!-- Button Positioned at the Bottom -->
+        <Button
+            android:id="@+id/btnShowCatelog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show Catalog"
+            android:backgroundTint="@color/md_theme_primary"
+            android:textColor="@android:color/white"
+            android:padding="12dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2. What is the primary purpose of the room?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Work"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Relaxation"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Play"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Dining"/>
-                </RadioGroup>
-
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3. What is your preferred design style?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Modern"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Traditional"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rustic"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Industrial"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Scandinavian"/>
-                </RadioGroup>
-
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="4. What colors do you prefer for furniture?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="White"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Beige"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Gray"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Brown"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Black"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bright Colors"/>
-                </RadioGroup>
-
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5. What materials do you prefer for furniture?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Wood"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Metal"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Glass"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fabric"/>
-                </RadioGroup>
-
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="6. Do you prefer ready-made or multifunctional furniture?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ready-made"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Multifunctional"/>
-                </RadioGroup>
-
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="7. What is the size of the room in square meters?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Less than 10 sqm"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Between 10 and 20 sqm"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="More than 20 sqm"/>
-                </RadioGroup>
-
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="8. Do you have any constraints on furniture dimensions?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No"/>
-                </RadioGroup>
-
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="9. What is your budget for furniture?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Less than 1000 SAR"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Between 1000 and 5000 SAR"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="More than 5000 SAR"/>
-                </RadioGroup>
-
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="10. Do you prefer eco-friendly furniture?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No"/>
-                </RadioGroup>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="11. Do you need additional storage solutions?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No"/>
-                </RadioGroup>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="12. Do you require furniture that is easy to assemble and move?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No"/>
-                </RadioGroup>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="13. Are there children or pets in the house?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No"/>
-                </RadioGroup>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="14. Do you prefer comfortable or practical furniture?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Comfortable"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Practical"/>
-                </RadioGroup>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="15. Do you have any other specific requests?" />
-                <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Stain-resistant"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Easy to clean"/>
-                    <RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Durable for heavy use"/>
-                </RadioGroup>
-                <Button
-                    android:id="@+id/btnShowCatelog"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Show Catelog"
-                    android:backgroundTint="@color/md_theme_primary"
-                    android:textColor="@android:color/white"
-                    android:padding="12dp"
-                    android:layout_marginVertical="16dp"/>
-            </LinearLayout>
-        </ScrollView>
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

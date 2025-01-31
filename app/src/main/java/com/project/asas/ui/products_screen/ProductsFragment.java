@@ -39,7 +39,10 @@ public class ProductsFragment extends BaseFragment<FragmentProductsBinding> impl
     @Override
     protected void setup() {
         super.setup();
-        setToolbarVisibility(false);
+        setToolbarVisibility(true);
+        setToolbarTitle("Products");
+        showBackButton(false);
+
         binding.rvProducts.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         setupCategoryChips();
         products = new ArrayList<>();

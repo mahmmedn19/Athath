@@ -38,7 +38,10 @@ public class ManageCustomersFragment extends BaseFragment<FragmentManageCustomer
     @Override
     protected void setup() {
         super.setup();
-        setToolbarVisibility(false);
+        setToolbarVisibility(true);
+        setToolbarTitle("Manage Customers");
+        showBackButton(false);
+
 
         customerList = generateFakeCustomers();
         customerAdapter = new CustomerAdapter(customerList, this);

@@ -20,12 +20,12 @@
         android:label="Manage Customers"
         tools:layout="@layout/fragment_manage_customers" />
 
-    <!-- Room Configurations Fragment -->
+    <!-- Room catalog Fragment -->
     <fragment
         android:id="@+id/admin_room_configurations"
-        android:name="com.project.asas.ui.admin_screen.room_configurations.ManageRoomConfigFragment"
+        android:name="com.project.asas.ui.admin_screen.room_catalog.ManageRoomCatalogFragment"
         android:label="Room Configurations"
-        tools:layout="@layout/fragment_manage_room_config" >
+        tools:layout="@layout/fragment_manage_room_catalog" >
         <action
             android:id="@+id/action_admin_room_configurations_to_admin_add_room_configurations"
             app:destination="@id/admin_add_room_configurations" />
@@ -34,9 +34,9 @@
     <!-- Add Room Configurations Fragment -->
     <fragment
         android:id="@+id/admin_add_room_configurations"
-        android:name="com.project.asas.ui.admin_screen.add_room_config.AddRoomConfigrationsFragment"
-        android:label="Add Room Configurations"
-        tools:layout="@layout/fragment_add_room_configrations" />
+        android:name="com.project.asas.ui.admin_screen.add_room_catalog.AddRoomCatalogFragment"
+        android:label="Add Room Ca"
+        tools:layout="@layout/fragment_add_room_catalog" />
 
 
 </navigation>

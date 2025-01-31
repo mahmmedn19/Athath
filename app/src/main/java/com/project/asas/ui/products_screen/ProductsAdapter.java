@@ -32,7 +32,6 @@ public class ProductsAdapter extends BaseAdapter<Product, ItemProductBinding> {
         ItemProductBinding binding = holder.binding;
         binding.setItem(currentItem);
         binding.btnShowDetails.setOnClickListener(view -> listener.onProductClicked(currentItem));
-        binding.productName.setVisibility(View.GONE);
         binding.productImage.setOnClickListener(view -> listener.onProductClicked(currentItem));
         Glide.with(holder.binding.getRoot().getContext())
                 .load(currentItem.getImageUrl())

@@ -38,7 +38,9 @@ public class ManageProductsFragment extends BaseFragment<FragmentManageProductsB
     @Override
     protected void setup() {
         super.setup();
-        setToolbarVisibility(false);
+        setToolbarVisibility(true);
+        setToolbarTitle("Manage Products");
+        showBackButton(false);
 
         // Initialize RecyclerView
         productList = generateFakeProducts(8);

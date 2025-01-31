@@ -1,4 +1,4 @@
-package com.project.asas.ui.admin_screen.add_room_config;
+package com.project.asas.ui.admin_screen.add_room_catalog;
 
 
 import androidx.lifecycle.ViewModel;
@@ -13,12 +13,12 @@ import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
-public class AddRoomConfigurationsViewModel extends ViewModel {
+public class AddRoomCatalogViewModel extends ViewModel {
 
     private List<Furniture> furnitureList;
 
     @Inject
-    public AddRoomConfigurationsViewModel() {
+    public AddRoomCatalogViewModel() {
         furnitureList = new ArrayList<>();
     }
 

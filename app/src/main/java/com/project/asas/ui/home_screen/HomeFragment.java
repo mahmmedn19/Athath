@@ -41,7 +41,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
     @Override
     protected void setup() {
         super.setup();
-        setToolbarVisibility(false);
+        setToolbarVisibility(true);
+        setToolbarTitle("Home");
+        showBackButton(false);
         initRecyclerView();
         binding.tvViewAllProducts.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_productsFragment);

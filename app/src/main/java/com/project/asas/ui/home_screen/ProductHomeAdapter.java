@@ -31,6 +31,10 @@ public class ProductHomeAdapter extends BaseAdapter<Product, ItemProductBinding>
         ItemProductBinding binding = holder.binding;
         binding.setItem(currentItem);
         binding.btnShowDetails.setVisibility(View.GONE);
+        binding.productName.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        binding.productName.setForegroundGravity(View.TEXT_ALIGNMENT_CENTER);
+        binding.productPrice.setVisibility(View.GONE);
+        binding.productStore.setVisibility(View.GONE);
         binding.productImage.setOnClickListener(view -> listener.onProductClicked(currentItem));
         binding.executePendingBindings();
     }

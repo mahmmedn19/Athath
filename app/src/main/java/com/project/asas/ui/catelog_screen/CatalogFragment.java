@@ -39,7 +39,10 @@ public class CatalogFragment extends BaseFragment<FragmentCatalogBinding> implem
     @Override
     protected void setup() {
         super.setup();
-        setToolbarVisibility(false);
+        setToolbarVisibility(true);
+        setToolbarTitle("Catalog");
+        showBackButton(false);
+
         initRecyclerView();
     }
 

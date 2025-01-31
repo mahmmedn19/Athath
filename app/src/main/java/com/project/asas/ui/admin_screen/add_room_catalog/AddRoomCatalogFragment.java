@@ -1,12 +1,11 @@
-package com.project.asas.ui.admin_screen.add_room_config;
+package com.project.asas.ui.admin_screen.add_room_catalog;
 
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.project.asas.R;
-import com.project.asas.databinding.FragmentAddRoomConfigrationsBinding;
+import com.project.asas.databinding.FragmentAddRoomCatalogBinding;
 import com.project.asas.model.Furniture;
 import com.project.asas.ui.base.BaseFragment;
 
@@ -15,30 +14,30 @@ import java.util.UUID;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class AddRoomConfigrationsFragment extends BaseFragment<FragmentAddRoomConfigrationsBinding> {
-    private AddRoomConfigurationsViewModel viewModel = new ViewModelProvider(this).get(AddRoomConfigurationsViewModel.class);
+public class AddRoomCatalogFragment extends BaseFragment<FragmentAddRoomCatalogBinding> {
+    //private AddRoomCatalogViewModel viewModel = new ViewModelProvider(this).get(AddRoomCatalogViewModel.class);
 
     @Override
     protected String getTAG() {
-        return "AddRoomConfigurationsFragment";
+        return "AddRoomCatalogFragment";
     }
 
     @Override
     protected int getLayoutIdFragment() {
-        return R.layout.fragment_add_room_configrations;
+        return R.layout.fragment_add_room_catalog;
     }
 
     @Override
     protected ViewModel getViewModel() {
-        return viewModel;
+        return null;
     }
 
     @Override
     protected void setup() {
         super.setup();
         setToolbarVisibility(true);
-        setToolbarTitle("Add Room Configuration");
-        showBackButton(false);
+        setToolbarTitle("Add Catalog");
+        showBackButton(true);
 
         binding.btnSaveRoomConfig.setOnClickListener(v -> saveRoomConfiguration());
     }
@@ -65,7 +64,7 @@ public class AddRoomConfigrationsFragment extends BaseFragment<FragmentAddRoomCo
                 UUID.randomUUID().toString(), name, description, category, color, roomType,
                 style, price, length, width, height, R.drawable.furniture_5);
 
-        viewModel.addFurniture(newFurniture);
+        // viewModel.addFurniture(newFurniture);
         Toast.makeText(requireContext(), "Room Configuration Added!", Toast.LENGTH_SHORT).show();
         requireActivity().onBackPressed();
     }

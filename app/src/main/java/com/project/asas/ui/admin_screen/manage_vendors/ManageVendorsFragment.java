@@ -38,13 +38,13 @@ public class ManageVendorsFragment extends BaseFragment<FragmentManageVendorsBin
     @Override
     protected void setup() {
         super.setup();
-        setToolbarVisibility(false);
+        setToolbarVisibility(true);
+        setToolbarTitle("Manage Vendors");
+        showBackButton(false);
 
         if (binding == null) {
             return; // Prevents further execution if binding is null
         }
-
-        setToolbarVisibility(false);
 
         binding.recyclerVendors.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
         vendorList = generateFakeVendors();
