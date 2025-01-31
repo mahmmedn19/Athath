@@ -1,10 +1,11 @@
 package com.project.asas.ui.admin_screen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -12,11 +13,15 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+
+import com.project.asas.MainActivity;
 import com.project.asas.R;
 import com.project.asas.databinding.ActivityAdminMainBinding;
 import com.project.asas.ui.base.BaseFragment;
+import com.project.asas.ui.utils.DialogUtils;
 
 import java.util.Objects;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -56,7 +61,8 @@ public class AdminMainActivity extends AppCompatActivity implements BaseFragment
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() != R.id.admin_manage_vendors &&
                     destination.getId() != R.id.admin_manage_customers &&
-                    destination.getId() != R.id.admin_room_configurations) {
+                    destination.getId() != R.id.admin_room_configurations &&
+                    destination.getId() != R.id.admin_logout) {
                 binding.bottomNavAdmin.setVisibility(View.GONE);
             } else {
                 binding.bottomNavAdmin.setVisibility(View.VISIBLE);
@@ -71,6 +77,21 @@ public class AdminMainActivity extends AppCompatActivity implements BaseFragment
                 navController.navigate(R.id.admin_manage_customers);
             } else if (item.getItemId() == R.id.admin_room_configurations) {
                 navController.navigate(R.id.admin_room_configurations);
+            } else if (item.getItemId() == R.id.admin_logout) {
+                DialogUtils.showConfirmationDialog(
+                        this,
+                        "Logout",
+                        "Are you sure you want to logout?",
+                        "Yes", "Cancel",
+                        (dialog, which) -> {
+                            Intent intent = new Intent(this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        },
+                        (dialog, which) -> {
+                            navController.navigate(R.id.admin_manage_vendors);
+                            dialog.dismiss();
+                        });
             }
             return true;
         });

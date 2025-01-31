@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="12dp">
+            >
 
             <ImageView
                 android:id="@+id/furnitureImage"
@@ -30,7 +30,7 @@
                 tools:srcCompat="@drawable/furniture_5"
                 />
 
-            <TextView
+<!--            <TextView
                 android:id="@+id/tvFurnitureName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 android:text="@{furniture.description}"
                 tools:text="furniture_description"
                 android:textSize="14sp"
-                android:textColor="@color/grey_600"/>
+                android:textColor="@color/grey_600"/>-->
 
             <!-- Action Buttons -->
             <LinearLayout

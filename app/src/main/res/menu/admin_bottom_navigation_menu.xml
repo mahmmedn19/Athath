@@ -16,4 +16,10 @@
         android:icon="@drawable/ic_room_config"
         android:title="Room Config" />
 
+    <!-- Logout -->
+    <item
+        android:id="@+id/admin_logout"
+        android:icon="@drawable/ic_logout"
+        android:title="Logout" />
+
 </menu>
