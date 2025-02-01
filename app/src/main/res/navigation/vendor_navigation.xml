@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/vendor_profile"
-        android:name="com.project.asas.ui.vendors_screen.profile.ProfileFragment"
+        android:name="com.project.athath.ui.vendors_screen.profile.ProfileFragment"
         android:label="Vendor Profile" >
         <action
             android:id="@+id/action_vendor_profile_to_vendor_change_pass"
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/vendor_products"
-        android:name="com.project.asas.ui.vendors_screen.manage_products.ManageProductsFragment"
+        android:name="com.project.athath.ui.vendors_screen.manage_products.ManageProductsFragment"
         android:label="Manage Products" >
         <action
             android:id="@+id/action_vendor_products_to_add_product"
@@ -27,17 +27,17 @@
 
     <fragment
         android:id="@+id/add_product"
-        android:name="com.project.asas.ui.vendors_screen.add_product_screen.AddProductFragment"
+        android:name="com.project.athath.ui.vendors_screen.add_product_screen.AddProductFragment"
         android:label="Add Product"/>
 
     <fragment
         android:id="@+id/vendor_change_pass"
-        android:name="com.project.asas.ui.vendors_screen.vendor_change_pass.VendorChangePassFragment"
+        android:name="com.project.athath.ui.vendors_screen.vendor_change_pass.VendorChangePassFragment"
         android:label="Vendor Change Pass"/>
 
     <fragment
         android:id="@+id/vendor_profile_details"
-        android:name="com.project.asas.ui.vendors_screen.vendo_profile_details.VendorProfileDetailsFragment"
+        android:name="com.project.athath.ui.vendors_screen.vendo_profile_details.VendorProfileDetailsFragment"
         android:label="Vendor Profile Details"/>
 
 </navigation>

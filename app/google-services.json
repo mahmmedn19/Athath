@@ -1,15 +1,15 @@
 {
   "project_info": {
     "project_number": "1048248016833",
-    "project_id": "asas",
-    "storage_bucket": "asas.appspot.com"
+    "project_id": "athath",
+    "storage_bucket": "athath.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:1048248016833:android:6e27890d8fb955f0a15940",
         "android_client_info": {
-          "package_name": "com.project.asas"
+          "package_name": "com.project.athath"
         }
       },
       "oauth_client": [],

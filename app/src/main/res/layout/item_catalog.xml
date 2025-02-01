@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.project.asas.model.CatalogItem"
+            type="com.project.athath.model.CatalogItem"
             />
 
     </data>

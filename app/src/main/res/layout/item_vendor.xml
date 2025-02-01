@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vendor"
-            type="com.project.asas.model.Vendor"/>
+            type="com.project.athath.model.Vendor"/>
 
     </data>
 

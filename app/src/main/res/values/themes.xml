@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.Asas"
+    <style name="Theme.Athath"
         parent="Theme.Material3.Light.NoActionBar">
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/md_theme_primary</item>

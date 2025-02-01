@@ -6,7 +6,7 @@
     <data>
         <variable
             name="customer"
-            type="com.project.asas.model.Customer"/>
+            type="com.project.athath.model.Customer"/>
     </data>
 
     <androidx.cardview.widget.CardView

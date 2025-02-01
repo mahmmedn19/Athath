@@ -5,7 +5,7 @@
     <data>
         <variable
             name="component"
-            type="com.project.asas.model.Component" />
+            type="com.project.athath.model.Component" />
 
     </data>
 

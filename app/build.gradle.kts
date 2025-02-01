@@ -7,11 +7,11 @@ plugins { alias(libs.plugins.androidApplication)
     alias(libs.plugins.googleServices)
 }
 android {
-    namespace = "com.project.asas"
+    namespace = "com.project.athath"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.project.asas"
+        applicationId = "com.project.athath"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
