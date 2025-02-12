@@ -5,7 +5,7 @@
     <data>
         <variable
             name="component"
-            type="com.project.athath.model.Component" />
+            type="com.project.athath.data.model.Component" />
 
     </data>
 

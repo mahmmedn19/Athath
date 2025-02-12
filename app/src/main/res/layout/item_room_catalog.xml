@@ -6,7 +6,7 @@
     <data>
         <variable
             name="furniture"
-            type="com.project.athath.model.Furniture"/>
+            type="com.project.athath.data.model.Furniture"/>
     </data>
 
     <androidx.cardview.widget.CardView

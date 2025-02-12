@@ -3,7 +3,7 @@ package com.project.athath.ui.admin_screen.manage_customers;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.project.athath.databinding.ItemCustomerBinding;
-import com.project.athath.model.Customer;
+import com.project.athath.data.model.Customer;
 import com.project.athath.ui.base.BaseAdapter;
 import com.project.athath.ui.base.BaseInteractionListener;
 import com.project.athath.ui.utils.DialogUtils;

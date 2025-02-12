@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.project.athath.R;
-import com.project.athath.model.Product;
+import com.project.athath.data.model.Product;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.project.athath.R;
 import com.project.athath.databinding.FragmentManageVendorsBinding;
-import com.project.athath.model.Vendor;
+import com.project.athath.data.model.Vendor;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.utils.DialogUtils;
 

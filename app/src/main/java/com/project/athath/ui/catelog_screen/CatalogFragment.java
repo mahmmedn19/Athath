@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.project.athath.R;
 import com.project.athath.databinding.FragmentCatalogBinding;
-import com.project.athath.model.CatalogItem;
+import com.project.athath.data.model.CatalogItem;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.catalog_screen.CatalogAdapter;
 

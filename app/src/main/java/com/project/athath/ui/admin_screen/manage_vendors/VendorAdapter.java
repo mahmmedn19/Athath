@@ -4,7 +4,7 @@ package com.project.athath.ui.admin_screen.manage_vendors;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.project.athath.databinding.ItemVendorBinding;
-import com.project.athath.model.Vendor;
+import com.project.athath.data.model.Vendor;
 import com.project.athath.ui.base.BaseAdapter;
 import com.project.athath.ui.base.BaseInteractionListener;
 import com.project.athath.ui.utils.DialogUtils;

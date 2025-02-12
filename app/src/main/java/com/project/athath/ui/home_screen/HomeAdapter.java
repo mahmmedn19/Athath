@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 
 import com.project.athath.databinding.HomeItemBinding;
-import com.project.athath.model.Product;
+import com.project.athath.data.model.Product;
 import com.project.athath.ui.base.BaseAdapter;
 import com.project.athath.ui.base.BaseInteractionListener;
 import java.util.List;

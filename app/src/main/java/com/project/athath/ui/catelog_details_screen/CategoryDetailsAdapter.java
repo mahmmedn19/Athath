@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.project.athath.databinding.ItemCatelogComponentBinding;
-import com.project.athath.model.Component;
+import com.project.athath.data.model.Component;
 import com.project.athath.ui.base.BaseAdapter;
 
 import java.util.List;

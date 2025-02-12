@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.project.athath.R;
 import com.project.athath.databinding.FragmentManageRoomCatalogBinding;
-import com.project.athath.model.Furniture;
+import com.project.athath.data.model.Furniture;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.utils.DialogUtils;
 

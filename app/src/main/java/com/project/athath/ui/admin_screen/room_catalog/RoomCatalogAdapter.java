@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.project.athath.R;
 import com.project.athath.databinding.ItemRoomCatalogBinding;
-import com.project.athath.model.Furniture;
+import com.project.athath.data.model.Furniture;
 import com.project.athath.ui.base.BaseAdapter;
 import com.project.athath.ui.base.BaseInteractionListener;
 

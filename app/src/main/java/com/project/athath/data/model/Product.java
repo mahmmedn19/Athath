@@ -1,4 +1,4 @@
-package com.project.athath.model;
+package com.project.athath.data.model;
 import com.google.firebase.firestore.DocumentId;
 
 public class Product {

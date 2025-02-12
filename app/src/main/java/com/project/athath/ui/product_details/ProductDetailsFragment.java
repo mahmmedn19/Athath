@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.project.athath.R;
 import com.project.athath.databinding.FragmentProductDetailsBinding;
-import com.project.athath.model.Product;
+import com.project.athath.data.model.Product;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.home_screen.HomeAdapter;
 

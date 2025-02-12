@@ -3,7 +3,7 @@ package com.project.athath.ui.vendors_screen.profile;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.project.athath.model.Vendor;
+import com.project.athath.data.model.Vendor;
 
 public class ProfileViewModel extends ViewModel {
 

@@ -1,4 +1,4 @@
-package com.project.athath.model;
+package com.project.athath.data.model;
 
 public class RoomConfig {
     private String id;

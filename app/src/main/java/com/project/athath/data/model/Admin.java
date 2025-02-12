@@ -1,4 +1,4 @@
-package com.project.athath.model;
+package com.project.athath.data.model;
 
 import com.google.firebase.firestore.DocumentId;
 
@@ -8,6 +8,7 @@ public class Admin {
     private String username;
     private String email;
     private String password;
+    private String role = "Admin";
 
     public Admin() {} // Required empty constructor for Firebase
 
@@ -15,6 +16,7 @@ public class Admin {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.role = "Admin";
     }
 
     public String getId() { return id; }
@@ -26,6 +28,7 @@ public class Admin {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-}
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+   }

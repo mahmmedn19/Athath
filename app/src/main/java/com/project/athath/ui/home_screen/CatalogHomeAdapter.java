@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.project.athath.databinding.ItemCatalogHomeBinding;
-import com.project.athath.model.CatalogItem;
+import com.project.athath.data.model.CatalogItem;
 import com.project.athath.ui.base.BaseAdapter;
 import com.project.athath.ui.base.BaseInteractionListener;
 

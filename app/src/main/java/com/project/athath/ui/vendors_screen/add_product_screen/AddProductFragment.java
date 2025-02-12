@@ -13,7 +13,7 @@ import androidx.navigation.Navigation;
 
 import com.project.athath.R;
 import com.project.athath.databinding.FragmentAddProductBinding;
-import com.project.athath.model.Product;
+import com.project.athath.data.model.Product;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.vendors_screen.manage_products.ManageProductsViewModel;
 

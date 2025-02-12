@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.project.athath.R;
 import com.project.athath.databinding.FragmentVendorProfileDetailsBinding;
-import com.project.athath.model.Vendor;
+import com.project.athath.data.model.Vendor;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.utils.DialogUtils;
 import com.project.athath.ui.vendors_screen.profile.ProfileViewModel;

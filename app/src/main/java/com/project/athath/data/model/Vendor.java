@@ -1,4 +1,4 @@
-package com.project.athath.model;
+package com.project.athath.data.model;
 
 import com.google.firebase.firestore.DocumentId;
 
@@ -12,10 +12,11 @@ public class Vendor {
     private String email;
     private String status;
     private String password;
+    private String role = "Vendor";
 
     public Vendor() {} // Required empty constructor for Firebase
 
-    public Vendor(String name, String storeName, String phone, String address, String email, String status , String password) {
+    public Vendor(String name, String storeName, String phone, String address, String email, String status, String password) {
         this.name = name;
         this.storeName = storeName;
         this.phone = phone;
@@ -23,6 +24,7 @@ public class Vendor {
         this.email = email;
         this.status = status;
         this.password = password;
+        this.role = "Vendor";
     }
     public Vendor(String name, String status ) {
         this.name = name;
@@ -53,5 +55,8 @@ public class Vendor {
     public void setStatus(String status) { this.status = status; }
 
     public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }

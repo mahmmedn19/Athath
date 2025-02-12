@@ -3,7 +3,7 @@ package com.project.athath.ui.admin_screen.add_room_catalog;
 
 import androidx.lifecycle.ViewModel;
 
-import com.project.athath.model.Furniture;
+import com.project.athath.data.model.Furniture;
 
 import java.util.ArrayList;
 import java.util.List;
