@@ -2,9 +2,10 @@ package com.project.athath.ui.utils;
 
 
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.databinding.BindingAdapter;
-
 
 import java.util.List;
 
@@ -34,6 +35,26 @@ public class BindingAdapters {
         if (listSize == 0) view.setVisibility(View.GONE);
         else view.setVisibility(View.VISIBLE);
     }
+
+    // Binding Adapters for UI
+    @BindingAdapter("android:visibility")
+    public static void setVisibility(View view, boolean isVisible) {
+        view.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    }
+    @BindingAdapter("isLoading")
+    public static void showLoading(ProgressBar progressBar, Boolean isLoading) {
+        if (isLoading != null) {
+            progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    @BindingAdapter("isButtonEnabled")
+    public static void enableButton(Button button, Boolean isLoading) {
+        if (isLoading != null) {
+            button.setEnabled(!isLoading);
+        }
+    }
+
 /*    @BindingAdapter("userResult")
     public static void bindUserResult(TextView textView, UserResult<Integer> userResult) {
         if (userResult instanceof UserResult.Success) {

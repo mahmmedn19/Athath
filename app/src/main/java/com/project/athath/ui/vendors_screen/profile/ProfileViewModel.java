@@ -37,7 +37,6 @@ public class ProfileViewModel extends ViewModel {
             if (!vendor.getPassword().equals(currentPassword)) {
                 vendorLiveData.postValue(vendor);
             } else {
-                vendor.setPassword(newPassword);
                 vendorLiveData.postValue(vendor);
             }
         }

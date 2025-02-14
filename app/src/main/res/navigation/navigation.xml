@@ -42,7 +42,7 @@
     <!-- Login Fragment -->
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.project.athath.ui.LoginFragment"
+        android:name="com.project.athath.ui.auth.LoginFragment"
         android:label="Login Fragment" >
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
@@ -56,12 +56,12 @@
     <!-- Register Fragment -->
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.project.athath.ui.RegisterFragment"
+        android:name="com.project.athath.ui.auth.RegisterFragment"
         android:label="Register Fragment" />
     <!-- Vendor Register Fragment -->
     <fragment
         android:id="@+id/vendorRegisterFragment"
-        android:name="com.project.athath.VendorRegisterFragment"
+        android:name="com.project.athath.ui.auth.VendorRegisterFragment"
         android:label="Vendor Register Fragment" />
     <fragment
         android:id="@+id/productDetailsFragment"

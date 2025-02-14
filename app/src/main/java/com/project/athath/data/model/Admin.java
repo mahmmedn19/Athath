@@ -8,7 +8,6 @@ public class Admin {
     private String username;
     private String email;
     private String password;
-    private String role = "Admin";
 
     public Admin() {} // Required empty constructor for Firebase
 
@@ -16,7 +15,6 @@ public class Admin {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = "Admin";
     }
 
     public String getId() { return id; }
@@ -29,6 +27,4 @@ public class Admin {
     public void setEmail(String email) { this.email = email; }
 
 
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
    }

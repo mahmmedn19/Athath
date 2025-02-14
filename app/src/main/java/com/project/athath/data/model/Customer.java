@@ -22,6 +22,13 @@ public class Customer {
         this.status = status;
         this.role = "Customer";
     }
+    public Customer(String username, String email,  String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.status = status;
+        this.role = "Customer";
+    }
 
     public String getId() {
         return id;

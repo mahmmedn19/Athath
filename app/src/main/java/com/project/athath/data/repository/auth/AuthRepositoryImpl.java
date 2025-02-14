@@ -1,4 +1,4 @@
-package com.project.athath.data.auth;
+package com.project.athath.data.repository.auth;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -10,8 +10,6 @@ import com.project.athath.data.model.Customer;
 import com.project.athath.data.model.Vendor;
 import com.project.athath.data.utils.Result;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -28,7 +26,7 @@ public class AuthRepositoryImpl implements AuthRepository {
         this.db = db;
     }
 
-    // ✅ Login User and Determine User Type
+    // ✅ Login User with Status Check
     @Override
     public LiveData<Result<String>> loginUser(String email, String password) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
@@ -38,7 +36,7 @@ public class AuthRepositoryImpl implements AuthRepository {
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = authResult.getUser();
                     if (user != null) {
-                        getUserType(user.getUid()).observeForever(resultLiveData::setValue);
+                        checkUserStatus(user.getUid(), resultLiveData);
                     }
                 })
                 .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
@@ -46,23 +44,29 @@ public class AuthRepositoryImpl implements AuthRepository {
         return resultLiveData;
     }
 
-    // ✅ Fetch User Type Based on UID
-    @Override
-    public LiveData<Result<String>> getUserType(String userId) {
-        MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
-        resultLiveData.setValue(Result.loading());
-
+    // ✅ Check User Type and Status
+    private void checkUserStatus(String userId, MutableLiveData<Result<String>> resultLiveData) {
         db.collection("Admins").document(userId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
                 resultLiveData.setValue(Result.success("Admin"));
             } else {
                 db.collection("Vendors").document(userId).get().addOnCompleteListener(task2 -> {
                     if (task2.isSuccessful() && task2.getResult().exists()) {
-                        resultLiveData.setValue(Result.success("Vendor"));
+                        String status = task2.getResult().getString("status");
+                        if ("Blocked".equalsIgnoreCase(status)) {
+                            resultLiveData.setValue(Result.error("Your account is blocked. Contact support."));
+                        } else {
+                            resultLiveData.setValue(Result.success("Vendor"));
+                        }
                     } else {
                         db.collection("Customers").document(userId).get().addOnCompleteListener(task3 -> {
                             if (task3.isSuccessful() && task3.getResult().exists()) {
-                                resultLiveData.setValue(Result.success("Customer"));
+                                String status = task3.getResult().getString("status");
+                                if ("Blocked".equalsIgnoreCase(status)) {
+                                    resultLiveData.setValue(Result.error("Your account is blocked. Contact support."));
+                                } else {
+                                    resultLiveData.setValue(Result.success("Customer"));
+                                }
                             } else {
                                 resultLiveData.setValue(Result.error("User type not found"));
                             }
@@ -71,57 +75,9 @@ public class AuthRepositoryImpl implements AuthRepository {
                 });
             }
         });
-
-        return resultLiveData;
     }
 
-    @Override
-    public LiveData<Result<List<Vendor>>> getAllVendors() {
-        MutableLiveData<Result<List<Vendor>>> resultLiveData = new MutableLiveData<>();
-        resultLiveData.setValue(Result.loading());
-
-        db.collection("Vendors").get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<Vendor> vendorList = new ArrayList<>();
-                    querySnapshot.forEach(doc -> vendorList.add(doc.toObject(Vendor.class)));
-                    resultLiveData.setValue(Result.success(vendorList));
-                })
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
-
-        return resultLiveData;
-    }
-
-    // get all customers
-    @Override
-    public LiveData<Result<List<Customer>>> getAllCustomers() {
-        MutableLiveData<Result<List<Customer>>> resultLiveData = new MutableLiveData<>();
-        resultLiveData.setValue(Result.loading());
-
-        db.collection("Customers").get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<Customer> customerList = new ArrayList<>();
-                    querySnapshot.forEach(doc -> customerList.add(doc.toObject(Customer.class)));
-                    resultLiveData.setValue(Result.success(customerList));
-                })
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
-
-        return resultLiveData;
-    }
-
-    @Override
-    public LiveData<Result<String>> updateUserStatus(String userId, String status, String role) {
-        MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
-        resultLiveData.setValue(Result.loading());
-
-        db.collection(role).document(userId)
-                .update("status", status)
-                .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("User status updated")))
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
-
-        return resultLiveData;
-    }
-
-    // ✅ Register Vendor
+    // ✅ Register Vendor with Initial Status (Pending)
     @Override
     public LiveData<Result<String>> registerVendor(Vendor vendor) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
@@ -131,6 +87,7 @@ public class AuthRepositoryImpl implements AuthRepository {
                 .addOnSuccessListener(authResult -> {
                     String userId = Objects.requireNonNull(authResult.getUser()).getUid();
                     vendor.setId(userId);
+                    vendor.setStatus("Pending"); // Vendor starts as Pending
                     db.collection("Vendors").document(userId).set(vendor)
                             .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Vendor Registered Successfully")))
                             .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
@@ -140,7 +97,7 @@ public class AuthRepositoryImpl implements AuthRepository {
         return resultLiveData;
     }
 
-    // ✅ Register Customer
+    // ✅ Register Customer with Initial Status (Pending)
     @Override
     public LiveData<Result<String>> registerCustomer(Customer customer) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
@@ -150,6 +107,7 @@ public class AuthRepositoryImpl implements AuthRepository {
                 .addOnSuccessListener(authResult -> {
                     String userId = Objects.requireNonNull(authResult.getUser()).getUid();
                     customer.setId(userId);
+                    customer.setStatus("Pending"); // Customer starts as Pending
                     db.collection("Customers").document(userId).set(customer)
                             .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Customer Registered Successfully")))
                             .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
@@ -157,5 +115,10 @@ public class AuthRepositoryImpl implements AuthRepository {
                 .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
 
         return resultLiveData;
+    }
+
+    @Override
+    public LiveData<Result<String>> getUserType(String userId) {
+        return null;
     }
 }
