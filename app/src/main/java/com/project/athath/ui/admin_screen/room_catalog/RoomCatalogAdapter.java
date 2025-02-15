@@ -1,23 +1,25 @@
 package com.project.athath.ui.admin_screen.room_catalog;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.project.athath.R;
+import com.project.athath.data.model.CatalogItem;
+import com.project.athath.data.utils.ImageUtils;
 import com.project.athath.databinding.ItemRoomCatalogBinding;
-import com.project.athath.data.model.Furniture;
 import com.project.athath.ui.base.BaseAdapter;
 import com.project.athath.ui.base.BaseInteractionListener;
 
 import java.util.List;
 
-public class RoomCatalogAdapter extends BaseAdapter<Furniture, ItemRoomCatalogBinding> {
+public class RoomCatalogAdapter extends BaseAdapter<CatalogItem, ItemRoomCatalogBinding> {
 
-    private final RoomConfigInteractionListener listener;
+    private final RoomCatalogInteractionListener listener;
 
-    public RoomCatalogAdapter(List<Furniture> furnitureList, RoomConfigInteractionListener listener) {
-        super(furnitureList);
+    public RoomCatalogAdapter(List<CatalogItem> itemList, RoomCatalogInteractionListener listener) {
+        super(itemList);
         this.listener = listener;
     }
 
@@ -27,25 +29,27 @@ public class RoomCatalogAdapter extends BaseAdapter<Furniture, ItemRoomCatalogBi
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder<ItemRoomCatalogBinding> holder, int position, Furniture currentItem) {
+    public void onBindViewHolder(BaseViewHolder<ItemRoomCatalogBinding> holder, int position, CatalogItem currentItem) {
         ItemRoomCatalogBinding binding = holder.binding;
-        binding.setFurniture(currentItem);
-        Glide.with(holder.itemView.getContext())
-                .load(currentItem.getImageUrl())
-                .placeholder(R.drawable.furniture_5)
-                .into(binding.furnitureImage);
+        binding.setItems(currentItem);
+
+        // Convert Base64 to Bitmap before displaying
+        Bitmap decodedBitmap = ImageUtils.decodeBase64ToImage(currentItem.getImageRes());
+        binding.catalogImage.setImageBitmap(decodedBitmap);
 
         // Edit Configuration
-        binding.btnEdit.setOnClickListener(view -> listener.onEditFurniture(currentItem));
+        binding.btnEdit.setOnClickListener(view -> listener.onEditCatalog(currentItem));
 
         // Delete Configuration
-        binding.btnDelete.setOnClickListener(view -> listener.onDeleteFurniture(currentItem));
+        binding.btnDelete.setOnClickListener(view -> listener.onDeleteCatalog(currentItem));
 
         binding.executePendingBindings();
     }
 
-    public interface RoomConfigInteractionListener extends BaseInteractionListener {
-        void onEditFurniture(Furniture furniture);
-        void onDeleteFurniture(Furniture furniture);
+
+    public interface RoomCatalogInteractionListener extends BaseInteractionListener {
+        void onEditCatalog(CatalogItem item);
+
+        void onDeleteCatalog(CatalogItem item);
     }
 }

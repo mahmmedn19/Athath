@@ -11,4 +11,5 @@ public interface AuthRepository {
     LiveData<Result<String>> registerVendor(Vendor vendor);
     LiveData<Result<String>> registerCustomer(Customer customer);
     LiveData<Result<String>> getUserType(String userId);
+    LiveData<Result<String>> sendPasswordResetEmail(String email);
 }

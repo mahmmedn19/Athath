@@ -63,6 +63,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
 
         binding.loginButton.setOnClickListener(v -> loginUser());
         binding.registerText.setOnClickListener(v -> navigateToRegister());
+        binding.forgotPasswordText.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_forgotPasswordFragment));
 
         observeLoginResult();
     }

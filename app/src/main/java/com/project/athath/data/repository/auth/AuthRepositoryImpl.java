@@ -116,7 +116,17 @@ public class AuthRepositoryImpl implements AuthRepository {
 
         return resultLiveData;
     }
+    @Override
+    public LiveData<Result<String>> sendPasswordResetEmail(String email) {
+        MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
 
+        auth.sendPasswordResetEmail(email)
+                .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Reset link sent to your email.")))
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+
+        return resultLiveData;
+    }
     @Override
     public LiveData<Result<String>> getUserType(String userId) {
         return null;

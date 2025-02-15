@@ -1,9 +1,11 @@
 package com.project.athath.ui.home_screen;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.project.athath.data.utils.ImageUtils;
 import com.project.athath.databinding.ItemCatalogHomeBinding;
 import com.project.athath.data.model.CatalogItem;
 import com.project.athath.ui.base.BaseAdapter;
@@ -29,9 +31,12 @@ public class CatalogHomeAdapter extends BaseAdapter<CatalogItem, ItemCatalogHome
     public void onBindViewHolder(BaseViewHolder<ItemCatalogHomeBinding> holder, int position, CatalogItem currentItem) {
         ItemCatalogHomeBinding binding = holder.binding;
         binding.setItem(currentItem);
-        Glide.with(holder.binding.getRoot().getContext())
-                .load(currentItem.getImageRes())
-                .into(holder.binding.ivCatalogImage);
+
+        // Convert Base64 to Bitmap before displaying
+        Bitmap decodedBitmap = ImageUtils.decodeBase64ToImage(currentItem.getImageRes());
+        binding.ivCatalogImage.setImageBitmap(decodedBitmap);
+
+
         binding.btnShowDetails.setOnClickListener(view -> listener.onShowDetailsClicked(currentItem));
         binding.executePendingBindings();
     }

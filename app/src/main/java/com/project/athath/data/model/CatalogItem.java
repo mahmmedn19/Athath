@@ -1,34 +1,32 @@
 package com.project.athath.data.model;
 
-import androidx.annotation.DrawableRes;
+import com.google.firebase.firestore.DocumentId;
 
 public class CatalogItem {
-    private final String title;
-    private final String description;
-    @DrawableRes
-    private final int imageRes;
+    private String id;  // Firestore auto-generated ID
 
-    public CatalogItem(String title, String description, int imageRes) {
-        this.title = title;
-        this.description = description;
+    private String imageRes;  // Base64 image string
+
+    // Empty constructor required for Firestore deserialization
+    public CatalogItem() {}
+
+    public CatalogItem(String imageRes) {
         this.imageRes = imageRes;
     }
 
-    public CatalogItem(int imageRes) {
-        this.title = "Default Title"; // Default value for title
-        this.description = "Default Description"; // Default value for description
-        this.imageRes = imageRes;
+    public String getId() {
+        return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getImageRes() {
+    public String getImageRes() {
         return imageRes;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setImageRes(String imageRes) {
+        this.imageRes = imageRes;
     }
 }

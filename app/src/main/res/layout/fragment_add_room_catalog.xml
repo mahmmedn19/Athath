@@ -3,167 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable name="viewModel" type="com.project.athath.ui.admin_screen.add_room_catalog.AddRoomCatalogViewModel"/>
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:padding="16dp"
-        android:fillViewport="true">
+        android:background="@color/md_theme_background">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- Image Preview -->
+        <ImageView
+            android:id="@+id/imagePreview"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/furniture_5"
+            android:contentDescription="Preview Image"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Select Image Button -->
+        <Button
+            android:id="@+id/btnSelectImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <!-- Product Image -->
-            <ImageView
-                android:id="@+id/productImage"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:contentDescription="Select Product Image"
-                android:scaleType="centerCrop"
-                android:layout_marginTop="64dp"
-                android:layout_marginHorizontal="32dp"
-                android:src="@drawable/furniture_5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-         <!--   &lt;!&ndash; Room Name &ndash;&gt;
-            <EditText
-                android:id="@+id/etRoomName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Room Name"
-                android:textSize="16sp"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/productImage"/>
+            android:layout_height="wrap_content"
+            android:text="Select Image"
+            android:backgroundTint="@color/md_theme_primary"
+            android:textColor="@color/white"/>
 
-            &lt;!&ndash; Room Description &ndash;&gt;
-            <EditText
-                android:id="@+id/etRoomDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Room Description"
-                android:textSize="16sp"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintTop_toBottomOf="@id/etRoomName"/>
+        <!-- Upload Button -->
+        <Button
+            android:id="@+id/btnUploadCatalog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Catalog Item"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/md_theme_primary"
+            android:textColor="@color/white"/>
 
-            &lt;!&ndash; Category &ndash;&gt;
-            <EditText
-                android:id="@+id/etCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Category"
-                android:textSize="16sp"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintTop_toBottomOf="@id/etRoomDescription"/>
-
-            &lt;!&ndash; Room Color &ndash;&gt;
-            <EditText
-                android:id="@+id/etRoomColor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Room Color"
-                android:textSize="16sp"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintTop_toBottomOf="@id/etCategory"/>
-
-            &lt;!&ndash; Room Type &ndash;&gt;
-            <EditText
-                android:id="@+id/etRoomType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Room Type"
-                android:textSize="16sp"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintTop_toBottomOf="@id/etRoomColor"/>
-
-            &lt;!&ndash; Style &ndash;&gt;
-            <EditText
-                android:id="@+id/etStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Style"
-                android:textSize="16sp"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintTop_toBottomOf="@id/etRoomType"/>
-
-            &lt;!&ndash; Room Price &ndash;&gt;
-            <EditText
-                android:id="@+id/etRoomPrice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Price ($)"
-                android:textSize="16sp"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                android:inputType="numberDecimal"
-                app:layout_constraintTop_toBottomOf="@id/etStyle"/>
-
-            &lt;!&ndash; Length &ndash;&gt;
-            <EditText
-                android:id="@+id/etRoomLength"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Length (m)"
-                android:textSize="16sp"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                android:inputType="numberDecimal"
-                app:layout_constraintTop_toBottomOf="@id/etRoomPrice"/>
-
-            &lt;!&ndash; Width &ndash;&gt;
-            <EditText
-                android:id="@+id/etRoomWidth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Width (m)"
-                android:textSize="16sp"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                android:inputType="numberDecimal"
-                app:layout_constraintTop_toBottomOf="@id/etRoomLength"/>
-
-            &lt;!&ndash; Height &ndash;&gt;
-            <EditText
-                android:id="@+id/etRoomHeight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Height (m)"
-                android:textSize="16sp"
-                android:background="@android:drawable/edit_text"
-                android:padding="12dp"
-                android:layout_marginBottom="8dp"
-                android:inputType="numberDecimal"
-                app:layout_constraintTop_toBottomOf="@id/etRoomWidth"/>
--->
-            <!-- Save Button -->
-            <Button
-                android:id="@+id/btnUploadCatalog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/md_theme_primary"
-                android:text="Upload Catalog"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/productImage" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+        <!-- Loading Indicator -->
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
 </layout>

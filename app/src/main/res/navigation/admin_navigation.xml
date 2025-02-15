@@ -29,6 +29,10 @@
         <action
             android:id="@+id/action_admin_room_configurations_to_admin_add_room_configurations"
             app:destination="@id/admin_add_room_configurations" />
+        <argument
+            android:name="catalogItemId"
+            app:argType="string"
+            />
     </fragment>
 
     <!-- Add Room Configurations Fragment -->

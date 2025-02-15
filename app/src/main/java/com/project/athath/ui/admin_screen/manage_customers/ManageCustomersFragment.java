@@ -1,11 +1,16 @@
 package com.project.athath.ui.admin_screen.manage_customers;
 
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.project.athath.R;
-import com.project.athath.databinding.FragmentManageCustomersBinding;
 import com.project.athath.data.model.Customer;
+import com.project.athath.data.utils.Result;
+import com.project.athath.databinding.FragmentManageCustomersBinding;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.utils.DialogUtils;
 
@@ -18,7 +23,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class ManageCustomersFragment extends BaseFragment<FragmentManageCustomersBinding> implements CustomerAdapter.CustomerInteractionListener {
 
     private CustomerAdapter customerAdapter;
-    private List<Customer> customerList;
+    private CustomerViewModel viewModel;
+    private final List<Customer> customerList = new ArrayList<>();
 
     @Override
     protected String getTAG() {
@@ -32,7 +38,8 @@ public class ManageCustomersFragment extends BaseFragment<FragmentManageCustomer
 
     @Override
     protected ViewModel getViewModel() {
-        return null;
+        viewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
+        return viewModel;
     }
 
     @Override
@@ -42,27 +49,48 @@ public class ManageCustomersFragment extends BaseFragment<FragmentManageCustomer
         setToolbarTitle("Manage Customers");
         showBackButton(false);
 
-
-        customerList = generateFakeCustomers();
-        customerAdapter = new CustomerAdapter(customerList, this);
-
         binding.recyclerCustomers.setLayoutManager(new LinearLayoutManager(requireContext()));
+        customerAdapter = new CustomerAdapter(customerList, this);
         binding.recyclerCustomers.setAdapter(customerAdapter);
+
+        observeCustomers();
+        viewModel.fetchCustomers();
     }
 
+    private void observeCustomers() {
+        viewModel.getCustomers().observe(getViewLifecycleOwner(), result -> {
+            if (result.getStatus() == Result.Status.LOADING) {
+                binding.loadingProgressBar.setVisibility(View.VISIBLE);
+                binding.recyclerCustomers.setVisibility(View.GONE);
+                binding.imageNoDataFound.setVisibility(View.GONE);
+            } else {
+                binding.loadingProgressBar.setVisibility(View.GONE);
 
-    private List<Customer> generateFakeCustomers() {
-        List<Customer> customers = new ArrayList<>();
-        customers.add(new Customer("John Doe", "john@example.com", "password123"));
-        customers.add(new Customer("Alice Smith", "alice@example.com", "password456"));
-        customers.add(new Customer("Michael Johnson", "michael@example.com", "password789"));
-        customers.add(new Customer("Emma Williams", "emma@example.com", "password321"));
-        customers.add(new Customer("David Brown", "david@example.com", "password654"));
-        return customers;
+                if (result.getStatus() == Result.Status.SUCCESS) {
+                    customerList.clear();
+                    if (result.getData() != null && !result.getData().isEmpty()) {
+                        customerList.addAll(result.getData());
+                        binding.recyclerCustomers.setVisibility(View.VISIBLE);
+                        binding.imageNoDataFound.setVisibility(View.GONE);
+                    } else {
+                        binding.recyclerCustomers.setVisibility(View.GONE);
+                        binding.imageNoDataFound.setVisibility(View.VISIBLE);
+                    }
+                    customerAdapter.notifyDataSetChanged();
+                } else if (result.getStatus() == Result.Status.ERROR) {
+                    Toast.makeText(requireContext(), "Error: " + result.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    binding.recyclerCustomers.setVisibility(View.GONE);
+                    binding.imageNoDataFound.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @Override
     public void onBlockCustomer(Customer customer) {
+        viewModel.blockCustomer(customer.getId());
+        customer.setStatus("Blocked");
+        customerAdapter.notifyDataSetChanged();
         DialogUtils.showCustomDialog(requireContext(), "Blocked", "Customer " + customer.getUsername() + " has been blocked.");
     }
 }

@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.project.athath.data.model.CatalogItem;
 import com.project.athath.data.model.Customer;
 import com.project.athath.data.model.Vendor;
 import com.project.athath.data.utils.Result;
@@ -18,6 +20,8 @@ public class AthathRepositoryImpl implements AthathRepository {
 
     private final FirebaseAuth auth;
     private final FirebaseFirestore db;
+    private static final String COLLECTION_NAME = "CatalogItems";
+
 
     @Inject
     public AthathRepositoryImpl(FirebaseAuth auth, FirebaseFirestore db) {
@@ -33,7 +37,13 @@ public class AthathRepositoryImpl implements AthathRepository {
         db.collection("Vendors").get()
                 .addOnSuccessListener(querySnapshot -> {
                     List<Vendor> vendorList = new ArrayList<>();
-                    querySnapshot.forEach(doc -> vendorList.add(doc.toObject(Vendor.class)));
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        Vendor vendor = doc.toObject(Vendor.class);
+                        if (vendor != null) {
+                            vendor.setId(doc.getId());  // ✅ Assign Firestore document ID manually
+                            vendorList.add(vendor);
+                        }
+                    }
                     resultLiveData.setValue(Result.success(vendorList));
                 })
                 .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
@@ -41,7 +51,6 @@ public class AthathRepositoryImpl implements AthathRepository {
         return resultLiveData;
     }
 
-    // get all customers
     @Override
     public LiveData<Result<List<Customer>>> getAllCustomers() {
         MutableLiveData<Result<List<Customer>>> resultLiveData = new MutableLiveData<>();
@@ -50,7 +59,13 @@ public class AthathRepositoryImpl implements AthathRepository {
         db.collection("Customers").get()
                 .addOnSuccessListener(querySnapshot -> {
                     List<Customer> customerList = new ArrayList<>();
-                    querySnapshot.forEach(doc -> customerList.add(doc.toObject(Customer.class)));
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        Customer customer = doc.toObject(Customer.class);
+                        if (customer != null) {
+                            customer.setId(doc.getId());  // ✅ Assign Firestore document ID manually
+                            customerList.add(customer);
+                        }
+                    }
                     resultLiveData.setValue(Result.success(customerList));
                 })
                 .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
@@ -70,4 +85,106 @@ public class AthathRepositoryImpl implements AthathRepository {
 
         return resultLiveData;
     }
+    // ✅ Upload a Catalog Item with Auto-ID
+    @Override
+    public LiveData<Result<String>> uploadCatalogItem(String base64Image) {
+        MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
+
+        CatalogItem newItem = new CatalogItem(base64Image);
+
+        db.collection(COLLECTION_NAME)
+                .add(newItem)  // Firestore will generate an auto ID
+                .addOnSuccessListener(documentReference -> {
+                    String generatedId = documentReference.getId();
+
+                    // Update document with the generated ID
+                    db.collection(COLLECTION_NAME).document(generatedId)
+                            .update("id", generatedId)  // Store the ID in Firestore
+                            .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success(generatedId)))
+                            .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+                })
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+
+        return resultLiveData;
+    }
+
+
+
+
+
+
+    // ✅ Retrieve All Catalog Items
+    @Override
+    public LiveData<Result<List<CatalogItem>>> getAllCatalogItems() {
+        MutableLiveData<Result<List<CatalogItem>>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
+
+        db.collection(COLLECTION_NAME).get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<CatalogItem> catalogList = new ArrayList<>();
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        CatalogItem item = doc.toObject(CatalogItem.class);
+                        if (item != null) {
+                            item.setId(doc.getId());  // Assign Firestore document ID manually
+                            catalogList.add(item);
+                        }
+                    }
+                    resultLiveData.setValue(Result.success(catalogList));
+                })
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+
+        return resultLiveData;
+    }
+
+
+
+
+    // ✅ Update Catalog Item Image
+    @Override
+    public LiveData<Result<String>> updateCatalogItem(String itemId, String newBase64Image) {
+        MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
+
+        db.collection(COLLECTION_NAME).document(itemId)
+                .update("imageRes", newBase64Image)
+                .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Item updated successfully")))
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+
+        return resultLiveData;
+    }
+
+    // ✅ Delete a Catalog Item
+    @Override
+    public LiveData<Result<String>> deleteCatalogItem(String itemId) {
+        MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
+
+        db.collection(COLLECTION_NAME).document(itemId)
+                .delete()
+                .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Item deleted successfully")))
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+
+        return resultLiveData;
+    }
+    @Override
+    public LiveData<Result<CatalogItem>> getCatalogItemById(String itemId) {
+        MutableLiveData<Result<CatalogItem>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
+
+        db.collection("CatalogItems").document(itemId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    CatalogItem item = documentSnapshot.toObject(CatalogItem.class);
+                    if (item != null) {
+                        item.setId(documentSnapshot.getId()); // Ensure ID is assigned
+                        resultLiveData.setValue(Result.success(item));
+                    } else {
+                        resultLiveData.setValue(Result.error("Item not found"));
+                    }
+                })
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+
+        return resultLiveData;
+    }
+
 }

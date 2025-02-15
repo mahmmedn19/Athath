@@ -1,14 +1,20 @@
 package com.project.athath.ui.home_screen;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.project.athath.R;
-import com.project.athath.databinding.FragmentHomeBinding;
 import com.project.athath.data.model.CatalogItem;
 import com.project.athath.data.model.Product;
+import com.project.athath.data.utils.Result;
+import com.project.athath.databinding.FragmentHomeBinding;
 import com.project.athath.ui.base.BaseFragment;
 
 import java.util.ArrayList;
@@ -17,12 +23,14 @@ import java.util.List;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeAdapter.HomeInteractionListener, ProductHomeAdapter.ProductInteractionListener , CatalogHomeAdapter.CatalogHomeInteractionListener {
+public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeAdapter.HomeInteractionListener, ProductHomeAdapter.ProductInteractionListener, CatalogHomeAdapter.CatalogHomeInteractionListener {
 
     private CatalogHomeAdapter adapter;
     private ProductHomeAdapter productAdapter;
     private List<Product> products;
-    private List<CatalogItem> catalogItems;
+    private final List<CatalogItem> catalogItems = new ArrayList<>();
+    private HomeViewModel viewModel;
+
     @Override
     protected String getTAG() {
         return "HomeFragment";
@@ -35,7 +43,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
 
     @Override
     protected ViewModel getViewModel() {
-        return null;
+        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        return viewModel;
     }
 
     @Override
@@ -55,7 +64,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         binding.profileImage.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_userSelectionFragment);
         });
+        observeCatalogItems();
+        // Fetch catalog items when fragment starts
+        viewModel.fetchCatalogItems();
     }
+
     private void initRecyclerView() {
         binding.productList.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         binding.rvCatalog.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -63,13 +76,40 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         products = new ArrayList<>();
         products = generateFakeProducts(6);
 
-        catalogItems = new ArrayList<>();
-        catalogItems = generateFakeCatalogItems(10);
-
         adapter = new CatalogHomeAdapter(catalogItems, this);
         productAdapter = new ProductHomeAdapter(products, this);
         binding.productList.setAdapter(productAdapter);
         binding.rvCatalog.setAdapter(adapter);
+    }
+
+
+    private void observeCatalogItems() {
+        viewModel.getCatalogItems().observe(getViewLifecycleOwner(), result -> {
+            if (result.getStatus() == Result.Status.LOADING) {
+                binding.loadingProgressBar.setVisibility(View.VISIBLE);
+                binding.rvCatalog.setVisibility(View.GONE);
+                binding.imageNoDataFound.setVisibility(View.GONE);
+            } else {
+                binding.loadingProgressBar.setVisibility(View.GONE);
+
+                if (result.getStatus() == Result.Status.SUCCESS) {
+                    catalogItems.clear();
+                    if (result.getData() != null && !result.getData().isEmpty()) {
+                        catalogItems.addAll(result.getData());
+                        binding.rvCatalog.setVisibility(View.VISIBLE);
+                        binding.imageNoDataFound.setVisibility(View.GONE);
+                    } else {
+                        binding.rvCatalog.setVisibility(View.GONE);
+                        binding.imageNoDataFound.setVisibility(View.VISIBLE);
+                    }
+                    adapter.notifyDataSetChanged();
+                } else if (result.getStatus() == Result.Status.ERROR) {
+                    Toast.makeText(requireContext(), "Error: " + result.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    binding.rvCatalog.setVisibility(View.GONE);
+                    binding.imageNoDataFound.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     private List<Product> generateFakeProducts(int count) {
@@ -87,15 +127,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         return productList;
     }
 
-    private List<CatalogItem> generateFakeCatalogItems(int count) {
-        List<CatalogItem> items = new ArrayList<>();
-        items.add(new CatalogItem(R.drawable.furniture_5));
-        items.add(new CatalogItem(R.drawable.furniture_6));
-        items.add(new CatalogItem(R.drawable.furniture_7));
-        items.add(new CatalogItem(R.drawable.furniture_8));
-        items.add(new CatalogItem(R.drawable.furniture_9));
-        return items;
-    }
+
     @Override
     public void onFavoriteClicked(Product product) {
         // Handle favorite icon click
@@ -112,9 +144,12 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_productsFragment);
     }
 
+
     @Override
     public void onShowDetailsClicked(CatalogItem catalogItem) {
-        // Navigate to products for this catalog item
-        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_catalogDetailsFragment);
+        Bundle bundle = new Bundle();
+        bundle.putString("catalogItemId", catalogItem.getId());
+        Navigation.findNavController(binding.getRoot())
+                .navigate(R.id.action_homeFragment_to_catalogDetailsFragment, bundle);
     }
 }

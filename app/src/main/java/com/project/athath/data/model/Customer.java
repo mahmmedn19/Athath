@@ -1,9 +1,6 @@
 package com.project.athath.data.model;
 
-import com.google.firebase.firestore.DocumentId;
-
 public class Customer {
-    @DocumentId
     private String id;
     private String username;
     private String email;
@@ -22,7 +19,8 @@ public class Customer {
         this.status = status;
         this.role = "Customer";
     }
-    public Customer(String username, String email,  String password) {
+
+    public Customer(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;

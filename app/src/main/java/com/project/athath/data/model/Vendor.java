@@ -1,9 +1,6 @@
 package com.project.athath.data.model;
 
-import com.google.firebase.firestore.DocumentId;
-
 public class Vendor {
-    @DocumentId
     private String id;
     private String name;
     private String storeName;
@@ -14,7 +11,8 @@ public class Vendor {
     private String password;
     private String role = "Vendor";
 
-    public Vendor() {} // Required empty constructor for Firebase
+    public Vendor() {
+    } // Required empty constructor for Firebase
 
     public Vendor(String name, String storeName, String phone, String address, String email, String status, String password) {
         this.name = name;
@@ -26,37 +24,78 @@ public class Vendor {
         this.password = password;
         this.role = "Vendor";
     }
-    public Vendor(String name, String status ) {
+
+    public Vendor(String name, String status) {
         this.name = name;
         this.status = status;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getStoreName() { return storeName; }
-    public void setStoreName(String storeName) { this.storeName = storeName; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    public String getStoreName() {
+        return storeName;
+    }
 
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getPhone() {
+        return phone;
+    }
 
-    public String getPassword() { return password; }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
 
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

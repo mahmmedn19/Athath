@@ -1,8 +1,9 @@
-package com.project.athath.ui.admin_screen.room_catalog;
+package com.project.athath.ui.home_screen;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import com.project.athath.data.model.CatalogItem;
 import com.project.athath.data.repository.app_repo.AthathRepository;
 import com.project.athath.data.utils.Result;
@@ -14,25 +15,24 @@ import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
-public class ManageRoomCatalogViewModel extends ViewModel {
+public class HomeViewModel extends ViewModel {
     private final AthathRepository repository;
-    private final MutableLiveData<Result<List<CatalogItem>>> catalogItems = new MutableLiveData<>();
+    private final MutableLiveData<Result<List<CatalogItem>>> catalogItemsLiveData = new MutableLiveData<>();
 
     @Inject
-    public ManageRoomCatalogViewModel(AthathRepository repository) {
+    public HomeViewModel(AthathRepository repository) {
         this.repository = repository;
-        fetchCatalogItems();
     }
 
+    // ✅ Expose LiveData for Catalog Items
     public LiveData<Result<List<CatalogItem>>> getCatalogItems() {
-        return catalogItems;
+        return catalogItemsLiveData;
     }
 
+    // ✅ Fetch Catalog Items from Repository
     public void fetchCatalogItems() {
-        repository.getAllCatalogItems().observeForever(catalogItems::setValue);
-    }
+        catalogItemsLiveData.setValue(Result.loading());
 
-    public LiveData<Result<String>> deleteCatalogItem(String itemId) {
-        return repository.deleteCatalogItem(itemId);
+        repository.getAllCatalogItems().observeForever(catalogItemsLiveData::postValue);
     }
 }

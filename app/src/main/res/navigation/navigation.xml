@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_homeFragment_to_catalogDetailsFragment"
             app:destination="@id/catalogDetailsFragment" />
+        <argument
+            android:name="catalogItemId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/userSelectionFragment"
@@ -52,6 +55,9 @@
             android:id="@+id/action_loginFragment_to_vendorRegisterFragment"
             app:destination="@id/vendorRegisterFragment"
             />
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <!-- Register Fragment -->
     <fragment
@@ -102,6 +108,9 @@
         <action
             android:id="@+id/action_catalogFragment_to_catalogDetailsFragment"
             app:destination="@id/catalogDetailsFragment" />
+        <argument
+            android:name="catalogItemId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/productsFragment"
@@ -127,4 +136,8 @@
             android:id="@+id/action_catalogDetailsFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.project.athath.ui.auth.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment" />
 </navigation>

@@ -1,9 +1,11 @@
-package com.project.athath.ui.catalog_screen;
+package com.project.athath.ui.catelog_screen;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.project.athath.data.utils.ImageUtils;
 import com.project.athath.databinding.ItemCatalogBinding;
 import com.project.athath.data.model.CatalogItem;
 import com.project.athath.ui.base.BaseAdapter;
@@ -29,9 +31,9 @@ public class CatalogAdapter extends BaseAdapter<CatalogItem, ItemCatalogBinding>
     public void onBindViewHolder(BaseViewHolder<ItemCatalogBinding> holder, int position, CatalogItem currentItem) {
         ItemCatalogBinding binding = holder.binding;
         binding.setItem(currentItem);
-        Glide.with(holder.binding.getRoot().getContext())
-                .load(currentItem.getImageRes())
-                .into(holder.binding.ivCatalogImage);
+        // Convert Base64 to Bitmap before displaying
+        Bitmap decodedBitmap = ImageUtils.decodeBase64ToImage(currentItem.getImageRes());
+        binding.ivCatalogImage.setImageBitmap(decodedBitmap);
 
         binding.btnShowProducts.setOnClickListener(view -> listener.onShowProductsClicked(currentItem));
         binding.executePendingBindings();

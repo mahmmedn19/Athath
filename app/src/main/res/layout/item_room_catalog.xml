@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="furniture"
-            type="com.project.athath.data.model.Furniture"/>
+            name="items"
+            type="com.project.athath.data.model.CatalogItem"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -23,31 +23,12 @@
             >
 
             <ImageView
-                android:id="@+id/furnitureImage"
+                android:id="@+id/catalogImage"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:scaleType="centerCrop"
                 tools:srcCompat="@drawable/furniture_5"
                 />
-
-<!--            <TextView
-                android:id="@+id/tvFurnitureName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{furniture.name}"
-                tools:text="furniture_name"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"/>
-
-            <TextView
-                android:id="@+id/tvFurnitureDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{furniture.description}"
-                tools:text="furniture_description"
-                android:textSize="14sp"
-                android:textColor="@color/grey_600"/>-->
 
             <!-- Action Buttons -->
             <LinearLayout

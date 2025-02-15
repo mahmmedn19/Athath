@@ -102,4 +102,24 @@ public class AuthViewModels {
             });
         }
     }
+    @HiltViewModel
+    public static class ForgotPasswordViewModel extends ViewModel {
+
+        private final AuthRepository authRepository;
+        private final MutableLiveData<Result<String>> resetPasswordResult = new MutableLiveData<>();
+
+        @Inject
+        public ForgotPasswordViewModel(AuthRepository authRepository) {
+            this.authRepository = authRepository;
+        }
+
+        public LiveData<Result<String>> getResetPasswordResult() {
+            return resetPasswordResult;
+        }
+
+        public void resetPassword(String email) {
+            resetPasswordResult.setValue(Result.loading());
+            authRepository.sendPasswordResetEmail(email).observeForever(resetPasswordResult::setValue);
+        }
+    }
 }

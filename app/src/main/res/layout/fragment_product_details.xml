@@ -180,6 +180,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:verticalSpacing="8dp"
                 android:orientation="horizontal"
+                android:layout_marginBottom="64dp"
                 tools:listitem="@layout/home_item"
                 android:horizontalSpacing="8dp" />
 

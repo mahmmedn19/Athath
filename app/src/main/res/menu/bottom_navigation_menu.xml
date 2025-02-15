@@ -6,31 +6,31 @@
         android:id="@+id/home"
         android:title="Home"
         android:icon="@drawable/ic_home"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/catalog"
         android:title="Catalog"
         android:icon="@drawable/ic_catalog"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/products"
         android:title="Products"
         android:icon="@drawable/ic_products"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/ai"
         android:title="AI"
         android:icon="@drawable/ic_ai"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/userSelectionFragment"
         android:title="Login"
         android:icon="@drawable/ic_profile"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 
 </menu>
