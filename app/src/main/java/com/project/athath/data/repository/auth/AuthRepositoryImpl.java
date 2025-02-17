@@ -39,10 +39,14 @@ public class AuthRepositoryImpl implements AuthRepository {
                         checkUserStatus(user.getUid(), resultLiveData);
                     }
                 })
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+                .addOnFailureListener(e -> {
+                    String errorMessage = getFirebaseAuthErrorMessage(Objects.requireNonNull(e.getMessage()));
+                    resultLiveData.setValue(Result.error(errorMessage));
+                });
 
         return resultLiveData;
     }
+
 
     // ✅ Check User Type and Status
     private void checkUserStatus(String userId, MutableLiveData<Result<String>> resultLiveData) {
@@ -88,14 +92,19 @@ public class AuthRepositoryImpl implements AuthRepository {
                     String userId = Objects.requireNonNull(authResult.getUser()).getUid();
                     vendor.setId(userId);
                     vendor.setStatus("Pending"); // Vendor starts as Pending
+
                     db.collection("Vendors").document(userId).set(vendor)
                             .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Vendor Registered Successfully")))
-                            .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+                            .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Database error: " + getFirebaseAuthErrorMessage(e.getMessage()))));
                 })
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+                .addOnFailureListener(e -> {
+                    String errorMessage = getFirebaseAuthErrorMessage(e.getMessage());
+                    resultLiveData.setValue(Result.error(errorMessage));
+                });
 
         return resultLiveData;
     }
+
 
     // ✅ Register Customer with Initial Status (Pending)
     @Override
@@ -110,9 +119,9 @@ public class AuthRepositoryImpl implements AuthRepository {
                     customer.setStatus("Pending"); // Customer starts as Pending
                     db.collection("Customers").document(userId).set(customer)
                             .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Customer Registered Successfully")))
-                            .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+                            .addOnFailureListener(e -> resultLiveData.setValue(Result.error(getFirebaseAuthErrorMessage(e.getMessage()))));
                 })
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(getFirebaseAuthErrorMessage(e.getMessage()))));
 
         return resultLiveData;
     }
@@ -123,12 +132,29 @@ public class AuthRepositoryImpl implements AuthRepository {
 
         auth.sendPasswordResetEmail(email)
                 .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Reset link sent to your email.")))
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
-
+                .addOnFailureListener(e -> {
+                    String errorMessage = getFirebaseAuthErrorMessage(Objects.requireNonNull(e.getMessage()));
+                    resultLiveData.setValue(Result.error(errorMessage));
+                });
         return resultLiveData;
     }
+
     @Override
     public LiveData<Result<String>> getUserType(String userId) {
         return null;
     }
+    private String getFirebaseAuthErrorMessage(String errorCode) {
+        if (errorCode.contains("There is no user record")) {
+            return "No account found with this email.";
+        } else if (errorCode.contains("password is invalid")) {
+            return "Incorrect password. Try again.";
+        } else if (errorCode.contains("badly formatted")) {
+            return "Invalid email format. Check your email.";
+        } else if (errorCode.contains("blocked")) {
+            return "Your account is blocked. Contact support.";
+        } else {
+            return "Please check your data.";
+        }
+    }
+
 }
