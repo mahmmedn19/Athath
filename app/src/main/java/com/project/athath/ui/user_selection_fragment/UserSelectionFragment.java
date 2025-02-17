@@ -39,21 +39,21 @@ public class UserSelectionFragment extends BaseFragment<FragmentUserSelectionBin
         binding.adminOption.setOnClickListener(v -> {
             // Navigate to LoginFragment with "Admin" user type
             Bundle bundle = new Bundle();
-            bundle.putString("userType", "Admin");
+            bundle.putString("userType", "Admins");
             Navigation.findNavController(v).navigate(R.id.action_userSelectionFragment_to_loginFragment, bundle);
         });
 
         binding.vendorOption.setOnClickListener(v -> {
             // Navigate to LoginFragment with "Vendor" user type
             Bundle bundle = new Bundle();
-            bundle.putString("userType", "Vendor");
+            bundle.putString("userType", "Vendors");
             Navigation.findNavController(v).navigate(R.id.action_userSelectionFragment_to_loginFragment, bundle);
         });
 
         binding.customerOption.setOnClickListener(v -> {
             // Navigate to LoginFragment with "Customer" user type
             Bundle bundle = new Bundle();
-            bundle.putString("userType", "Customer");
+            bundle.putString("userType", "Customers");
             Navigation.findNavController(v).navigate(R.id.action_userSelectionFragment_to_loginFragment, bundle);
         });
     }

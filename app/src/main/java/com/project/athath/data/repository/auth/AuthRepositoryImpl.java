@@ -28,7 +28,7 @@ public class AuthRepositoryImpl implements AuthRepository {
 
     // ✅ Login User with Status Check
     @Override
-    public LiveData<Result<String>> loginUser(String email, String password) {
+    public LiveData<Result<String>> loginUser(String email, String password, String expectedUserType) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
         resultLiveData.setValue(Result.loading());
 
@@ -36,7 +36,7 @@ public class AuthRepositoryImpl implements AuthRepository {
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = authResult.getUser();
                     if (user != null) {
-                        checkUserStatus(user.getUid(), resultLiveData);
+                        checkUserStatus(user.getUid(), expectedUserType, resultLiveData);
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -48,38 +48,27 @@ public class AuthRepositoryImpl implements AuthRepository {
     }
 
 
+
     // ✅ Check User Type and Status
-    private void checkUserStatus(String userId, MutableLiveData<Result<String>> resultLiveData) {
-        db.collection("Admins").document(userId).get().addOnCompleteListener(task -> {
+    private void checkUserStatus(String userId, String expectedUserType, MutableLiveData<Result<String>> resultLiveData) {
+        db.collection(expectedUserType).document(userId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
-                resultLiveData.setValue(Result.success("Admin"));
-            } else {
-                db.collection("Vendors").document(userId).get().addOnCompleteListener(task2 -> {
-                    if (task2.isSuccessful() && task2.getResult().exists()) {
-                        String status = task2.getResult().getString("status");
-                        if ("Blocked".equalsIgnoreCase(status)) {
-                            resultLiveData.setValue(Result.error("Your account is blocked. Contact support."));
-                        } else {
-                            resultLiveData.setValue(Result.success("Vendor"));
-                        }
+                if ("Admins".equalsIgnoreCase(expectedUserType)) {
+                    resultLiveData.setValue(Result.success("Admins"));
+                } else {
+                    String status = task.getResult().getString("status");
+                    if ("Blocked".equalsIgnoreCase(status)) {
+                        resultLiveData.setValue(Result.error("Your account is blocked. Contact support."));
                     } else {
-                        db.collection("Customers").document(userId).get().addOnCompleteListener(task3 -> {
-                            if (task3.isSuccessful() && task3.getResult().exists()) {
-                                String status = task3.getResult().getString("status");
-                                if ("Blocked".equalsIgnoreCase(status)) {
-                                    resultLiveData.setValue(Result.error("Your account is blocked. Contact support."));
-                                } else {
-                                    resultLiveData.setValue(Result.success("Customer"));
-                                }
-                            } else {
-                                resultLiveData.setValue(Result.error("User type not found"));
-                            }
-                        });
+                        resultLiveData.setValue(Result.success(expectedUserType));
                     }
-                });
+                }
+            } else {
+                resultLiveData.setValue(Result.error("No user found for this role."));
             }
         });
     }
+
 
     // ✅ Register Vendor with Initial Status (Pending)
     @Override

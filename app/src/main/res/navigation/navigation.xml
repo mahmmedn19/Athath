@@ -39,7 +39,7 @@
             <argument
                 android:name="userType"
                 app:argType="string"
-                android:defaultValue="Customer" />
+                android:defaultValue="Customers" />
         </action>
     </fragment>
     <!-- Login Fragment -->

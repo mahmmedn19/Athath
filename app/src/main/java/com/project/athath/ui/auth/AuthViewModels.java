@@ -38,7 +38,7 @@ public class AuthViewModels {
             return isLoading;
         }
 
-        public void loginUser(String email, String password) {
+        public void loginUser(String email, String password , String expectedUserType) {
             if (!InputValidator.isValidEmailFormat(email) || password.length() < 6) {
                 loginResult.setValue(Result.error("Invalid email or password"));
                 return;
@@ -46,7 +46,7 @@ public class AuthViewModels {
 
             isLoading.setValue(true); // Show loading before request
 
-            authRepository.loginUser(email, password).observeForever(result -> {
+            authRepository.loginUser(email, password , expectedUserType).observeForever(result -> {
                 loginResult.setValue(result);
                 isLoading.postValue(false); // Use postValue to avoid UI threading issues
             });

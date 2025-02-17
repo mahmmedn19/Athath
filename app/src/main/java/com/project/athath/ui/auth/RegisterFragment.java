@@ -44,7 +44,7 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
     protected void setup() {
         super.setup();
         setToolbarVisibility(true);
-        setToolbarTitle("Register");
+        setToolbarTitle("Customer Register");
         showBackButton(true);
         clearErrorOnTextChange(binding.customerNameLayout);
         clearErrorOnTextChange(binding.customerEmailLayout);
