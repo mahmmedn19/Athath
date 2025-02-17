@@ -6,7 +6,7 @@ public class Customer {
     private String email;
     private String password;
     private String status;
-    private String role = "Customer";
+    private String role = "Customers";
 
 
     public Customer() {
@@ -17,7 +17,7 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.status = status;
-        this.role = "Customer";
+        this.role = "Customers";
     }
 
     public Customer(String username, String email, String password) {
@@ -25,7 +25,7 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.status = status;
-        this.role = "Customer";
+        this.role = "Customers";
     }
 
     public String getId() {

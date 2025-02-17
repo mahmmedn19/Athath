@@ -9,7 +9,7 @@ public class Vendor {
     private String email;
     private String status;
     private String password;
-    private String role = "Vendor";
+    private String role = "Vendors";
 
     public Vendor() {
     } // Required empty constructor for Firebase
@@ -22,7 +22,7 @@ public class Vendor {
         this.email = email;
         this.status = status;
         this.password = password;
-        this.role = "Vendor";
+        this.role = "Vendors";
     }
 
     public Vendor(String name, String status) {
