@@ -110,6 +110,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:layout_marginTop="8dp"
+                app:endIconMode="password_toggle"
                 app:boxStrokeColor="@color/md_theme_primary">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -126,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Confirm Password"
                 android:layout_marginTop="8dp"
+                app:endIconMode="password_toggle"
                 app:boxStrokeColor="@color/md_theme_primary">
 
                 <com.google.android.material.textfield.TextInputEditText
