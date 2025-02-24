@@ -1,11 +1,12 @@
 package com.project.athath.ui.vendors_screen.manage_products;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.project.athath.databinding.ItemManageProductBinding;
 import com.project.athath.data.model.Product;
+import com.project.athath.data.utils.ImageUtils;
+import com.project.athath.databinding.ItemManageProductBinding;
 import com.project.athath.ui.base.BaseAdapter;
 import com.project.athath.ui.base.BaseInteractionListener;
 import com.project.athath.ui.utils.DialogUtils;
@@ -30,12 +31,9 @@ public class ManageProductAdapter extends BaseAdapter<Product, ItemManageProduct
     public void onBindViewHolder(BaseViewHolder<ItemManageProductBinding> holder, int position, Product currentItem) {
         ItemManageProductBinding binding = holder.binding;
         binding.setProduct(currentItem);
-        Glide
-                .with(binding.getRoot())
-                .load(currentItem.getImageUrl())
-                .centerCrop()
-                .into(binding.productImage);
 
+        Bitmap bitmap = ImageUtils.decodeBase64ToImage(currentItem.getImageUrl());
+        binding.productImage.setImageBitmap(bitmap);
         // Edit Product
         binding.btnEdit.setOnClickListener(view ->
                 listener.onEditProduct(currentItem)

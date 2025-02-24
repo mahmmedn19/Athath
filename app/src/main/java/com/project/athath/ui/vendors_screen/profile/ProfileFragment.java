@@ -1,6 +1,9 @@
 package com.project.athath.ui.vendors_screen.profile;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -8,16 +11,18 @@ import androidx.navigation.Navigation;
 
 import com.project.athath.MainActivity;
 import com.project.athath.R;
+import com.project.athath.data.model.Vendor;
+import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.FragmentProfileBinding;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.utils.DialogUtils;
+
+import java.io.Serializable;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
-
-    private ProfileViewModel profileViewModel;
 
     @Override
     protected String getTAG() {
@@ -41,8 +46,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding> {
         setToolbarTitle("Profile");
         showBackButton(false);
 
-        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
-        profileViewModel.loadVendorData();
 
         binding.manageProfileLayout.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_vendor_profile_to_vendor_profile_details);

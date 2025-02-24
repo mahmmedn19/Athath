@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.project.athath.R;
+import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.FragmentVendorChangePassBinding;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.utils.DialogUtils;
@@ -15,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class VendorChangePassFragment extends BaseFragment<FragmentVendorChangePassBinding> {
+
     private ProfileViewModel profileViewModel;
 
     @Override
@@ -29,7 +31,8 @@ public class VendorChangePassFragment extends BaseFragment<FragmentVendorChangeP
 
     @Override
     protected ViewModel getViewModel() {
-        return null;
+        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+        return profileViewModel;
     }
 
     @Override
@@ -38,9 +41,7 @@ public class VendorChangePassFragment extends BaseFragment<FragmentVendorChangeP
         setToolbarVisibility(true);
         setToolbarTitle("Change Password");
         showBackButton(true);
-        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
-        // Change Password
         binding.btnChangePassword.setOnClickListener(v -> changePassword());
     }
 
@@ -59,7 +60,19 @@ public class VendorChangePassFragment extends BaseFragment<FragmentVendorChangeP
             return;
         }
 
-        profileViewModel.updatePassword(currentPassword, newPassword);
-        DialogUtils.showCustomDialog(requireContext(), "Success", "Password changed successfully!");
+        if (newPassword.length() < 6) {
+            DialogUtils.showCustomDialog(requireContext(), "Error", "Password must be at least 6 characters.");
+            return;
+        }
+
+        binding.progressBar.setVisibility(android.view.View.VISIBLE);
+        profileViewModel.changePassword(currentPassword, newPassword).observe(getViewLifecycleOwner(), result -> {
+            binding.progressBar.setVisibility(android.view.View.GONE);
+            if (result.getStatus() == Result.Status.SUCCESS) {
+                DialogUtils.showCustomDialog(requireContext(), "Success", result.getData());
+            } else {
+                DialogUtils.showCustomDialog(requireContext(), "Error", result.getErrorMessage());
+            }
+        });
     }
 }

@@ -12,4 +12,7 @@ public interface AuthRepository {
     LiveData<Result<String>> registerCustomer(Customer customer,String password);
     LiveData<Result<String>> getUserType(String userId);
     LiveData<Result<String>> sendPasswordResetEmail(String email);
+    LiveData<Result<Vendor>> getVendorProfile();
+    LiveData<Result<String>> updateVendorProfile(Vendor vendor);
+    LiveData<Result<String>> changePassword(String currentPassword, String newPassword);
 }

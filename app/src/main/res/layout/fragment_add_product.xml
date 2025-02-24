@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <!-- Data binding variables can be added if needed -->
     </data>
 
     <ScrollView
@@ -22,13 +22,24 @@
             <!-- Product Image -->
             <ImageView
                 android:id="@+id/productImage"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/furniture_3"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/logo"
                 android:scaleType="centerCrop"
                 android:background="@drawable/rounded_background_primary_2"
-                android:contentDescription="Select Product Image"
+                android:contentDescription="Product Image"
                 android:padding="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Select Image Button -->
+            <Button
+                android:id="@+id/btnSelectImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Image"
+                android:backgroundTint="@color/md_theme_primary"
+                android:textColor="@android:color/white"
+                android:padding="12dp"
                 android:layout_marginBottom="16dp"/>
 
             <!-- Product Name -->
@@ -42,7 +53,32 @@
                 android:padding="12dp"
                 android:layout_marginBottom="8dp"/>
 
-            <!-- Product Price -->
+            <!-- Category -->
+            <EditText
+                android:id="@+id/etProductCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Category (e.g., Sofa, Table)"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Description -->
+            <EditText
+                android:id="@+id/etProductDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description"
+                android:textSize="16sp"
+                android:gravity="top"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"
+                android:inputType="textMultiLine"
+                android:minLines="3"/>
+
+            <!-- Price -->
             <EditText
                 android:id="@+id/etProductPrice"
                 android:layout_width="match_parent"
@@ -54,7 +90,7 @@
                 android:padding="12dp"
                 android:layout_marginBottom="8dp"/>
 
-            <!-- Product Color -->
+            <!-- Color -->
             <EditText
                 android:id="@+id/etProductColor"
                 android:layout_width="match_parent"
@@ -65,12 +101,12 @@
                 android:padding="12dp"
                 android:layout_marginBottom="8dp"/>
 
-            <!-- Product Style -->
+            <!-- Style -->
             <EditText
                 android:id="@+id/etProductStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Style"
+                android:hint="Style (Modern, Classic, etc.)"
                 android:textSize="16sp"
                 android:background="@android:drawable/edit_text"
                 android:padding="12dp"
@@ -81,11 +117,37 @@
                 android:id="@+id/etProductRoomType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Room Type"
+                android:hint="Room Type (Living Room, Bedroom, etc.)"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Product Width -->
+            <EditText
+                android:id="@+id/etProductWidth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Product Width (cm)"
+                android:inputType="numberDecimal"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Product Length -->
+            <EditText
+                android:id="@+id/etProductLength"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Product Length (cm)"
+                android:inputType="numberDecimal"
                 android:textSize="16sp"
                 android:background="@android:drawable/edit_text"
                 android:padding="12dp"
                 android:layout_marginBottom="16dp"/>
+
+
 
             <!-- Save Product Button -->
             <Button
@@ -96,17 +158,8 @@
                 android:backgroundTint="@color/md_theme_primary"
                 android:textColor="@android:color/white"
                 android:padding="12dp"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="16dp"/>
 
-            <!-- Cancel Button -->
-            <Button
-                android:id="@+id/btnCancel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Cancel"
-                android:backgroundTint="@color/md_theme_error"
-                android:textColor="@android:color/white"
-                android:padding="12dp"/>
 
         </LinearLayout>
     </ScrollView>

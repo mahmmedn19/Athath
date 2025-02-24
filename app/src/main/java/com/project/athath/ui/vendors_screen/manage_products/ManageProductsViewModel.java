@@ -4,73 +4,60 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.project.athath.R;
 import com.project.athath.data.model.Product;
+import com.project.athath.data.repository.app_repo.AthathRepository;
+import com.project.athath.data.utils.Result;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class ManageProductsViewModel extends ViewModel {
 
-    private final MutableLiveData<List<Product>> _products = new MutableLiveData<>();
-    public LiveData<List<Product>> products = _products;
+    private final AthathRepository repository;
+
+    public MutableLiveData<List<Product>> products = new MutableLiveData<>(new ArrayList<>());
+
+    private final MutableLiveData<Result<List<Product>>> fetchProductsResult = new MutableLiveData<>();
+    private final MutableLiveData<Result<String>> deleteProductResult = new MutableLiveData<>();
 
     @Inject
-    public ManageProductsViewModel() {
-        loadFakeProducts(); // Load initial data
+    public ManageProductsViewModel(AthathRepository repository) {
+        this.repository = repository;
+        fetchAllProducts();
     }
 
-    private void loadFakeProducts() {
-        List<Product> productList = new ArrayList<>();
-        for (int i = 1; i <= 8; i++) {
-            productList.add(new Product(
-                    "Modern Style " + i,
-                    "Living Room",
-                    250.0 * i,
-                    5.0,
-                    4.0,
-                    getImageResource(i)
-            ));
-        }
-        _products.setValue(productList);
+    public LiveData<Result<List<Product>>> getFetchProductsResult() {
+        return fetchProductsResult;
     }
 
-    public void addProduct(Product product) {
-        List<Product> currentList = _products.getValue();
-        if (currentList != null) {
-            currentList.add(product);
-            _products.setValue(currentList);
-        }
+    public LiveData<Result<String>> getDeleteProductResult() {
+        return deleteProductResult;
     }
 
-    public void updateProduct(Product updatedProduct) {
-        List<Product> currentList = _products.getValue();
-        if (currentList != null) {
-            for (int i = 0; i < currentList.size(); i++) {
-                if (currentList.get(i).getId().equals(updatedProduct.getId())) {
-                    currentList.set(i, updatedProduct);
-                    break;
-                }
+    public void fetchAllProducts() {
+        repository.getAllProducts().observeForever(result -> {
+            fetchProductsResult.setValue(result);
+            if (result.getStatus() == Result.Status.SUCCESS) {
+                products.setValue(result.getData());
             }
-            _products.setValue(currentList);
-        }
+        });
+    }
+
+    public void refreshProducts() {
+        fetchAllProducts(); // Fetch again when refreshing
     }
 
     public void deleteProduct(Product product) {
-        List<Product> currentList = _products.getValue();
-        if (currentList != null) {
-            currentList.remove(product);
-            _products.setValue(currentList);
-        }
-    }
-
-    private int getImageResource(int index) {
-        return switch (index % 5) {
-            case 0 -> R.drawable.furniture_5;
-            case 1 -> R.drawable.furniture_6;
-            case 2 -> R.drawable.furniture_8;
-            case 3 -> R.drawable.furniture_7;
-            default -> R.drawable.furniture_5;
-        };
+        repository.deleteProduct(product.getId()).observeForever(result -> {
+            deleteProductResult.setValue(result);
+            if (result.getStatus() == Result.Status.SUCCESS) {
+                refreshProducts(); // Refresh after deletion
+            }
+        });
     }
 }

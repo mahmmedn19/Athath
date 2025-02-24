@@ -185,21 +185,27 @@ public class AthathRepositoryImpl implements AthathRepository {
         return resultLiveData;
     }
 
-    @Override
     public LiveData<Result<String>> addProduct(Product product) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
+
+        String currentUserId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;
+
+        if (currentUserId == null) {
+            resultLiveData.setValue(Result.error("User not authenticated!"));
+            return resultLiveData;
+        }
+
+        product.setStoreId(currentUserId);
 
         db.collection(COLLECTION_NAME_PRODUCTS).add(product)
                 .addOnSuccessListener(documentReference -> {
-                    String generatedId = documentReference.getId();
-                    product.setId(generatedId);  // Update product with generated ID
-
-                    // Update Firestore with the product ID
-                    db.collection(COLLECTION_NAME_CATALOG).document(generatedId).set(product)
+                    product.setId(documentReference.getId());
+                    db.collection(COLLECTION_NAME_PRODUCTS).document(product.getId()).set(product)
                             .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Product added successfully!")))
-                            .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to add product")));
+                            .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to update product with ID.")));
                 })
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(e.getMessage())));
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to add product.")));
 
         return resultLiveData;
     }
@@ -207,10 +213,30 @@ public class AthathRepositoryImpl implements AthathRepository {
     @Override
     public LiveData<Result<String>> updateProduct(Product product) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
 
         db.collection(COLLECTION_NAME_PRODUCTS).document(product.getId()).set(product)
                 .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Product updated successfully!")))
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to update product")));
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to update product.")));
+
+        return resultLiveData;
+    }
+
+    @Override
+    public LiveData<Result<Product>> getProductById(String productId) {
+        MutableLiveData<Result<Product>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
+
+        db.collection(COLLECTION_NAME_PRODUCTS).document(productId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    Product product = documentSnapshot.toObject(Product.class);
+                    if (product != null) {
+                        resultLiveData.setValue(Result.success(product));
+                    } else {
+                        resultLiveData.setValue(Result.error("Product not found."));
+                    }
+                })
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to fetch product.")));
 
         return resultLiveData;
     }
@@ -218,6 +244,7 @@ public class AthathRepositoryImpl implements AthathRepository {
     @Override
     public LiveData<Result<String>> deleteProduct(String productId) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
 
         db.collection(COLLECTION_NAME_PRODUCTS).document(productId).delete()
                 .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Product deleted successfully!")))
@@ -226,23 +253,6 @@ public class AthathRepositoryImpl implements AthathRepository {
         return resultLiveData;
     }
 
-    @Override
-    public LiveData<Result<Product>> getProductById(String productId) {
-        MutableLiveData<Result<Product>> resultLiveData = new MutableLiveData<>();
-
-        db.collection(COLLECTION_NAME_PRODUCTS).document(productId).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    Product product = documentSnapshot.toObject(Product.class);
-                    if (product != null) {
-                        resultLiveData.setValue(Result.success(product));
-                    } else {
-                        resultLiveData.setValue(Result.error("Product not found"));
-                    }
-                })
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to fetch product")));
-
-        return resultLiveData;
-    }
 
     @Override
     public LiveData<Result<List<Product>>> getAllProducts() {

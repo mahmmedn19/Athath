@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_vendor_products_to_add_product"
             app:destination="@id/add_product" />
+        <argument
+            android:name="productId"
+            app:argType="string" />
     </fragment>
 
     <fragment
