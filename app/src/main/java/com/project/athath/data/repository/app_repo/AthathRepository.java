@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import com.project.athath.data.model.CatalogItem;
 import com.project.athath.data.model.Customer;
+import com.project.athath.data.model.Product;
 import com.project.athath.data.model.Vendor;
 import com.project.athath.data.utils.Result;
 
@@ -25,4 +26,10 @@ public interface AthathRepository {
     LiveData<Result<String>> updateCatalogItem(String itemId, String newBase64Image);
 
     LiveData<Result<CatalogItem>> getCatalogItemById(String itemId);
+
+    LiveData<Result<String>> addProduct(Product product);
+    LiveData<Result<String>> updateProduct(Product product);
+    LiveData<Result<String>> deleteProduct(String productId);
+    LiveData<Result<Product>> getProductById(String productId);
+    LiveData<Result<List<Product>>> getAllProducts();
 }

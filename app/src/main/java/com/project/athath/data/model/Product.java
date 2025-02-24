@@ -1,55 +1,186 @@
 package com.project.athath.data.model;
+
 import com.google.firebase.firestore.DocumentId;
 
 public class Product {
-    @DocumentId
-    private String id;
-    private String style;
-    private String roomType;
-    private double budget;
-    private double roomWidth;
-    private double roomLength;
-    private int imageUrl; // Store image URL in Firebase Storage
 
-    public Product() {} // Required empty constructor for Firebase
+    private String id;                 // Firestore-generated product ID
+    private String name;               // Product name
+    private String category;           // Product category (e.g., Sofa, Table, Chair)
+    private String description;        // Product description
+    private double price;              // Product price
+    private String color;              // Product color
+    private String style;              // Design style (Modern, Classic, etc.)
+    private String roomType;           // Suitable room type (Living Room, Bedroom, etc.)
+    private double productWidth;       // Product width
+    private double productLength;      // Product length
+    private String imageUrl;           // Product image URL (Firebase Storage)
+    private String catalogImageId;     // Reference to catalog image added by admin
+    private String storeId;            // Reference to the vendor's store
 
-    public Product(String id ,String style, String roomType, double budget, double roomWidth, double roomLength, int imageUrl) {
+    public Product(String id, String style, String roomType, double price, double productWidth, double productLength, String imageUrl) {
         this.id = id;
         this.style = style;
         this.roomType = roomType;
-        this.budget = budget;
-        this.roomWidth = roomWidth;
-        this.roomLength = roomLength;
+        this.price = price;
+        this.productWidth = productWidth;
+        this.productLength = productLength;
         this.imageUrl = imageUrl;
     }
-    public Product(String style, String roomType, double budget, double roomWidth, double roomLength, int imageUrl) {
+
+    public Product(String style, String roomType, double price, double productWidth, double productLength, String imageUrl) {
         this.style = style;
         this.roomType = roomType;
-        this.budget = budget;
-        this.roomWidth = roomWidth;
-        this.roomLength = roomLength;
+        this.price = price;
+        this.productWidth = productWidth;
+        this.productLength = productLength;
         this.imageUrl = imageUrl;
     }
 
+    // 🔄 Empty constructor required for Firestore
+    public Product() {
+    }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    // ✅ Full constructor
+    public Product(String id, String name, String category, String description, double price, String color,
+                   String style, String roomType, double productWidth, double productLength,
+                   String imageUrl, String catalogImageId, String storeId) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.description = description;
+        this.price = price;
+        this.color = color;
+        this.style = style;
+        this.roomType = roomType;
+        this.productWidth = productWidth;
+        this.productLength = productLength;
+        this.imageUrl = imageUrl;
+        this.catalogImageId = catalogImageId;
+        this.storeId = storeId;
+    }
 
-    public String getStyle() { return style; }
-    public void setStyle(String style) { this.style = style; }
+    // ✅ Constructor for product addition (without Firestore ID)
+    public Product(String name, String category, String description, double price, String color,
+                   String style, String roomType, double productWidth, double productLength,
+                   String imageUrl, String catalogImageId, String storeId) {
+        this.name = name;
+        this.category = category;
+        this.description = description;
+        this.price = price;
+        this.color = color;
+        this.style = style;
+        this.roomType = roomType;
+        this.productWidth = productWidth;
+        this.productLength = productLength;
+        this.imageUrl = imageUrl;
+        this.catalogImageId = catalogImageId;
+        this.storeId = storeId;
+    }
 
-    public String getRoomType() { return roomType; }
-    public void setRoomType(String roomType) { this.roomType = roomType; }
 
-    public double getBudget() { return budget; }
-    public void setBudget(double budget) { this.budget = budget; }
+    // 🔑 Getters & Setters
+    public String getId() {
+        return id;
+    }
 
-    public double getRoomWidth() { return roomWidth; }
-    public void setRoomWidth(double roomWidth) { this.roomWidth = roomWidth; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public double getRoomLength() { return roomLength; }
-    public void setRoomLength(double roomLength) { this.roomLength = roomLength; }
+    public String getName() {
+        return name;
+    }
 
-    public int getImageUrl() { return imageUrl; }
-    public void setImageUrl(int imageUrl) { this.imageUrl = imageUrl; }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
+    }
+
+    public double getProductWidth() {
+        return productWidth;
+    }
+
+    public void setProductWidth(double productWidth) {
+        this.productWidth = productWidth;
+    }
+
+    public double getProductLength() {
+        return productLength;
+    }
+
+    public void setProductLength(double productLength) {
+        this.productLength = productLength;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getCatalogImageId() {
+        return catalogImageId;
+    }
+
+    public void setCatalogImageId(String catalogImageId) {
+        this.catalogImageId = catalogImageId;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
 }
