@@ -7,14 +7,12 @@ public class Admin {
     private String id;
     private String username;
     private String email;
-    private String password;
 
     public Admin() {} // Required empty constructor for Firebase
 
     public Admin(String username, String email, String password) {
         this.username = username;
         this.email = email;
-        this.password = password;
     }
 
     public String getId() { return id; }

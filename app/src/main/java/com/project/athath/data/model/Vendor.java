@@ -8,20 +8,18 @@ public class Vendor {
     private String address;
     private String email;
     private String status;
-    private String password;
     private String role = "Vendors";
 
     public Vendor() {
     } // Required empty constructor for Firebase
 
-    public Vendor(String name, String storeName, String phone, String address, String email, String status, String password) {
+    public Vendor(String name, String storeName, String phone, String address, String email, String status) {
         this.name = name;
         this.storeName = storeName;
         this.phone = phone;
         this.address = address;
         this.email = email;
         this.status = status;
-        this.password = password;
         this.role = "Vendors";
     }
 
@@ -86,9 +84,6 @@ public class Vendor {
         this.status = status;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
 
     public String getRole() {

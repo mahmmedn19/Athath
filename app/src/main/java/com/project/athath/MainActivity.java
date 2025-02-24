@@ -62,9 +62,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
                 }
             });
         }
-        // Load login state from SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        isUserLoggedIn = prefs.getBoolean("isLoggedIn", false);
 
         // Setup Navigation Component
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_host);

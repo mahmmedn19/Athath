@@ -4,7 +4,6 @@ public class Customer {
     private String id;
     private String username;
     private String email;
-    private String password;
     private String status;
     private String role = "Customers";
 
@@ -12,19 +11,16 @@ public class Customer {
     public Customer() {
     } // Required empty constructor for Firebase
 
-    public Customer(String username, String email, String status, String password) {
+    public Customer(String username, String email, String status) {
         this.username = username;
         this.email = email;
-        this.password = password;
         this.status = status;
         this.role = "Customers";
     }
 
-    public Customer(String username, String email, String password) {
+    public Customer(String username, String email) {
         this.username = username;
         this.email = email;
-        this.password = password;
-        this.status = status;
         this.role = "Customers";
     }
 
@@ -60,9 +56,6 @@ public class Customer {
         this.status = status;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
 
     public String getRole() {

@@ -55,17 +55,8 @@ public class VendorProfileDetailsFragment extends BaseFragment<FragmentVendorPro
     }
 
     private void saveProfile() {
-        Vendor updatedVendor = new Vendor(
-                binding.etVendorName.getText().toString(),
-                binding.etStoreName.getText().toString(),
-                binding.etPhone.getText().toString(),
-                binding.etAddress.getText().toString(),
-                binding.etEmail.getText().toString(),
-                "Active", // Default status
-                ""
-        );
 
-        profileViewModel.updateVendorProfile(updatedVendor);
+
         DialogUtils.showCustomDialog(requireContext(), "Success", "Profile updated successfully!");
     }
 

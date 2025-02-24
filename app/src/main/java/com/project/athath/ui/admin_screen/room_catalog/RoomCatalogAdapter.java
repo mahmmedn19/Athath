@@ -11,6 +11,7 @@ import com.project.athath.data.utils.ImageUtils;
 import com.project.athath.databinding.ItemRoomCatalogBinding;
 import com.project.athath.ui.base.BaseAdapter;
 import com.project.athath.ui.base.BaseInteractionListener;
+import com.project.athath.ui.utils.DialogUtils;
 
 import java.util.List;
 
@@ -41,7 +42,12 @@ public class RoomCatalogAdapter extends BaseAdapter<CatalogItem, ItemRoomCatalog
         binding.btnEdit.setOnClickListener(view -> listener.onEditCatalog(currentItem));
 
         // Delete Configuration
-        binding.btnDelete.setOnClickListener(view -> listener.onDeleteCatalog(currentItem));
+        binding.btnDelete.setOnClickListener(view -> {
+            DialogUtils.showConfirmationDialog(view.getContext(),
+                    "Delete Catalog", "Are you sure you want to delete this catalog?",
+                    "Yes", "Cancel",
+                    (dialog, which) -> listener.onDeleteCatalog(currentItem));
+        });
 
         binding.executePendingBindings();
     }

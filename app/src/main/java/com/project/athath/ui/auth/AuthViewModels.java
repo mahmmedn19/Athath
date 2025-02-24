@@ -11,6 +11,8 @@ import com.project.athath.data.repository.auth.AuthRepository;
 import com.project.athath.data.utils.Result;
 import com.project.athath.ui.utils.InputValidator;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
@@ -76,27 +78,26 @@ public class AuthViewModels {
         }
 
         public void registerCustomer(Customer customer, TextInputLayout emailInputLayout, TextInputLayout passwordInputLayout) {
-            if (!InputValidator.validateEmail(emailInputLayout, customer.getEmail()) ||
-                    !InputValidator.validatePassword(passwordInputLayout, customer.getPassword())) {
+            if (!InputValidator.validateEmail(emailInputLayout, customer.getEmail())) {
                 registerResult.setValue(Result.error("Invalid email or password"));
                 return;
             }
 
             isLoading.setValue(true);
-            authRepository.registerCustomer(customer).observeForever(result -> {
+            authRepository.registerCustomer(customer , Objects.requireNonNull(passwordInputLayout.getEditText()).getText().toString()).observeForever(result -> {
                 registerResult.setValue(result);
                 isLoading.setValue(false);
             });
         }
 
-        public void registerVendor(Vendor vendor) {
-            if (!InputValidator.validateEmail(null, vendor.getEmail()) || !InputValidator.validatePassword(null, vendor.getPassword()) || !InputValidator.validatePhone(null, vendor.getPhone())) {
+        public void registerVendor(Vendor vendor, TextInputLayout emailInputLayout, TextInputLayout passwordInputLayout , TextInputLayout phoneInputLayout) {
+            if (!InputValidator.validateEmail(emailInputLayout, vendor.getEmail()) || !InputValidator.validatePhone(phoneInputLayout, vendor.getPhone())) {
                 registerResult.setValue(Result.error("Invalid vendor details"));
                 return;
             }
 
             isLoading.setValue(true);
-            authRepository.registerVendor(vendor).observeForever(result -> {
+            authRepository.registerVendor(vendor , Objects.requireNonNull(passwordInputLayout.getEditText()).getText().toString()).observeForever(result -> {
                 registerResult.setValue(result);
                 isLoading.setValue(false);
             });

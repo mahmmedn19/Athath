@@ -75,7 +75,7 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
             return;
         }
 
-        Customer customer = new Customer(name, email, "Active", password);
+        Customer customer = new Customer(name, email, "Active");
         registerViewModel.registerCustomer(customer, binding.customerEmailLayout, binding.customerPasswordLayout);
     }
 

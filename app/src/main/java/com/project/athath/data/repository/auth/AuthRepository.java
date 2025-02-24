@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface AuthRepository {
     LiveData<Result<String>> loginUser(String email, String password, String expectedUserType);
-    LiveData<Result<String>> registerVendor(Vendor vendor);
-    LiveData<Result<String>> registerCustomer(Customer customer);
+    LiveData<Result<String>> registerVendor(Vendor vendor,String password);
+    LiveData<Result<String>> registerCustomer(Customer customer,String password);
     LiveData<Result<String>> getUserType(String userId);
     LiveData<Result<String>> sendPasswordResetEmail(String email);
 }

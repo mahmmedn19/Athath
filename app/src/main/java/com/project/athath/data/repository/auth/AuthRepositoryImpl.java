@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.athath.data.model.Customer;
@@ -40,7 +43,7 @@ public class AuthRepositoryImpl implements AuthRepository {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    String errorMessage = getFirebaseAuthErrorMessage(Objects.requireNonNull(e.getMessage()));
+                    String errorMessage = getFirebaseAuthErrorMessage(e);
                     resultLiveData.setValue(Result.error(errorMessage));
                 });
 
@@ -69,25 +72,23 @@ public class AuthRepositoryImpl implements AuthRepository {
         });
     }
 
-
-    // ✅ Register Vendor with Initial Status (Pending)
     @Override
-    public LiveData<Result<String>> registerVendor(Vendor vendor) {
+    public LiveData<Result<String>> registerVendor(Vendor vendor,String password) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
         resultLiveData.setValue(Result.loading());
 
-        auth.createUserWithEmailAndPassword(vendor.getEmail(), vendor.getPassword())
+        auth.createUserWithEmailAndPassword(vendor.getEmail(), password)
                 .addOnSuccessListener(authResult -> {
                     String userId = Objects.requireNonNull(authResult.getUser()).getUid();
                     vendor.setId(userId);
-                    vendor.setStatus("Pending"); // Vendor starts as Pending
+                    vendor.setStatus("Pending");
 
                     db.collection("Vendors").document(userId).set(vendor)
                             .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Vendor Registered Successfully")))
-                            .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Database error: " + getFirebaseAuthErrorMessage(e.getMessage()))));
+                            .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Database error: " + e.getMessage())));
                 })
                 .addOnFailureListener(e -> {
-                    String errorMessage = getFirebaseAuthErrorMessage(e.getMessage());
+                    String errorMessage = getFirebaseAuthErrorMessage(e);
                     resultLiveData.setValue(Result.error(errorMessage));
                 });
 
@@ -95,25 +96,31 @@ public class AuthRepositoryImpl implements AuthRepository {
     }
 
 
+
     // ✅ Register Customer with Initial Status (Pending)
     @Override
-    public LiveData<Result<String>> registerCustomer(Customer customer) {
+    public LiveData<Result<String>> registerCustomer(Customer customer,String password) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
         resultLiveData.setValue(Result.loading());
 
-        auth.createUserWithEmailAndPassword(customer.getEmail(), customer.getPassword())
+        auth.createUserWithEmailAndPassword(customer.getEmail(), password)
                 .addOnSuccessListener(authResult -> {
                     String userId = Objects.requireNonNull(authResult.getUser()).getUid();
                     customer.setId(userId);
-                    customer.setStatus("Pending"); // Customer starts as Pending
+                    customer.setStatus("Pending");
+
                     db.collection("Customers").document(userId).set(customer)
                             .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Customer Registered Successfully")))
-                            .addOnFailureListener(e -> resultLiveData.setValue(Result.error(getFirebaseAuthErrorMessage(e.getMessage()))));
+                            .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Database error: " + e.getMessage())));
                 })
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error(getFirebaseAuthErrorMessage(e.getMessage()))));
+                .addOnFailureListener(e -> {
+                    String errorMessage = getFirebaseAuthErrorMessage(e);
+                    resultLiveData.setValue(Result.error(errorMessage));
+                });
 
         return resultLiveData;
     }
+
     @Override
     public LiveData<Result<String>> sendPasswordResetEmail(String email) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
@@ -122,7 +129,7 @@ public class AuthRepositoryImpl implements AuthRepository {
         auth.sendPasswordResetEmail(email)
                 .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Reset link sent to your email.")))
                 .addOnFailureListener(e -> {
-                    String errorMessage = getFirebaseAuthErrorMessage(Objects.requireNonNull(e.getMessage()));
+                    String errorMessage = getFirebaseAuthErrorMessage(e);
                     resultLiveData.setValue(Result.error(errorMessage));
                 });
         return resultLiveData;
@@ -132,18 +139,17 @@ public class AuthRepositoryImpl implements AuthRepository {
     public LiveData<Result<String>> getUserType(String userId) {
         return null;
     }
-    private String getFirebaseAuthErrorMessage(String errorCode) {
-        if (errorCode.contains("There is no user record")) {
-            return "No account found with this email.";
-        } else if (errorCode.contains("password is invalid")) {
-            return "Incorrect password. Try again.";
-        } else if (errorCode.contains("badly formatted")) {
-            return "Invalid email format. Check your email.";
-        } else if (errorCode.contains("blocked")) {
-            return "Your account is blocked. Contact support.";
+    private String getFirebaseAuthErrorMessage(Exception e) {
+        if (e instanceof FirebaseAuthUserCollisionException) {
+            return "This email is already registered. Please use a different email.";
+        } else if (e instanceof FirebaseAuthWeakPasswordException) {
+            return "Password should be at least 6 characters.";
+        } else if (e instanceof FirebaseAuthInvalidCredentialsException) {
+            return "Invalid email format.";
         } else {
-            return "Please check your data.";
+            return "Registration failed: " + e.getMessage();
         }
     }
+
 
 }

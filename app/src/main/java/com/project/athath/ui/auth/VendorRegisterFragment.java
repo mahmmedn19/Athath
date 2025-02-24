@@ -73,8 +73,8 @@ public class VendorRegisterFragment extends BaseFragment<FragmentVendorRegisterB
             return;
         }
 
-        Vendor vendor = new Vendor(name, storeName, phone, address, email, "Active", password);
-        registerViewModel.registerVendor(vendor);
+        Vendor vendor = new Vendor(name, storeName, phone, address, email, "Active");
+        registerViewModel.registerVendor(vendor, binding.vendorEmailInputLayout, binding.vendorPasswordInputLayout, binding.phoneInputLayout);
     }
 
     private void observeRegisterResult() {
