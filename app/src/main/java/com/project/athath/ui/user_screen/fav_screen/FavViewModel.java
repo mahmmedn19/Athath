@@ -20,9 +20,9 @@ public class FavViewModel extends ViewModel {
     @Inject
     public FavViewModel() {
         favoriteProducts = new ArrayList<>();
-        loadFakeFavorites();
     }
 
+/*
     private void loadFakeFavorites() {
         favoriteProducts.add(new Product("Modern", "Living Room", 300.0, 4.5, 5.0, R.drawable.image_1));
         favoriteProducts.add(new Product("Minimalist", "Office", 250.0, 3.5, 4.5, R.drawable.image_4));
@@ -33,6 +33,7 @@ public class FavViewModel extends ViewModel {
         favoriteProducts.add(new Product("Modern", "Living Room", 300.0, 4.5, 5.0, R.drawable.image_1));
         favoriteProducts.add(new Product("Minimalist", "Office", 250.0, 3.5, 4.5, R.drawable.image_4));
     }
+*/
 
     public List<Product> getFavoriteProducts() {
         return favoriteProducts;

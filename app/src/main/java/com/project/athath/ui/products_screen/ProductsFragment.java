@@ -87,7 +87,7 @@ public class ProductsFragment extends BaseFragment<FragmentProductsBinding> impl
                     50 * i,
                     4.5f,
                     4.5f,
-                    imageRes
+                    "imageRes"
             ));
         }
         return productList;

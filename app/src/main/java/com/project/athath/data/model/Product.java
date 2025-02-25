@@ -44,7 +44,7 @@ public class Product {
     // ✅ Full constructor
     public Product(String id, String name, String category, String description, double price, String color,
                    String style, String roomType, double productWidth, double productLength,
-                   String imageUrl, String catalogImageId, String storeId) {
+                   String imageUrl, String catalogImageId) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -57,7 +57,6 @@ public class Product {
         this.productLength = productLength;
         this.imageUrl = imageUrl;
         this.catalogImageId = catalogImageId;
-        this.storeId = storeId;
     }
 
     // ✅ Constructor for product addition (without Firestore ID)

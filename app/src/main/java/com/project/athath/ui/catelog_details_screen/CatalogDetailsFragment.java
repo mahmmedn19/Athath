@@ -89,7 +89,7 @@ public class CatalogDetailsFragment extends BaseFragment<FragmentCatalogDetailsB
                     50 * i,
                     4.5f,
                     4.5f,
-                    imageRes
+                    "imageRes"
             ));
         }
         return productList;

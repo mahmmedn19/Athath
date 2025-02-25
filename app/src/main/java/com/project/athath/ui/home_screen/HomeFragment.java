@@ -121,7 +121,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
                     50 * i,
                     4.5f,
                     4.5f,
-                    R.drawable.furniture1
+                    "R.drawable.furniture1"
             ));
         }
         return productList;

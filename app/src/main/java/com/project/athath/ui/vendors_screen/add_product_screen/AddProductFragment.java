@@ -56,9 +56,11 @@ public class AddProductFragment extends BaseFragment<FragmentAddProductBinding> 
         if (args != null && args.containsKey("productId")) {
             productId = args.getString("productId");
             setToolbarTitle("Update Product");
+            binding.btnSaveProduct.setText("Update Product");
             loadProductData(productId);
         } else {
             setToolbarTitle("Add Product");
+            binding.btnSaveProduct.setText("Add Product");
         }
 
         binding.productImage.setOnClickListener(view -> openImagePicker());
@@ -126,25 +128,27 @@ public class AddProductFragment extends BaseFragment<FragmentAddProductBinding> 
 
         Product product = new Product(
                 productId, name, category, description, price, color, style,
-                roomType, width, length, encodedImage, null, null
+                roomType, width, length, encodedImage, null
         );
 
-        if (productId != null) {
+        if (productId != null) { // Update Product
             viewModel.updateProduct(product).observe(getViewLifecycleOwner(), result -> {
+                String message = result.getErrorMessage() != null ? result.getErrorMessage() : "Something went wrong!";
                 if (result.getStatus() == com.project.athath.data.utils.Result.Status.SUCCESS) {
                     Toast.makeText(requireContext(), "Product updated successfully!", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(requireView()).navigateUp();
                 } else {
-                    Toast.makeText(requireContext(), result.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
                 }
             });
-        } else {
+        } else { // Add Product
             viewModel.addProduct(product).observe(getViewLifecycleOwner(), result -> {
+                String message = result.getErrorMessage() != null ? result.getErrorMessage() : "Something went wrong!";
                 if (result.getStatus() == com.project.athath.data.utils.Result.Status.SUCCESS) {
                     Toast.makeText(requireContext(), "Product added successfully!", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(requireView()).navigateUp();
                 } else {
-                    Toast.makeText(requireContext(), result.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
                 }
             });
         }
