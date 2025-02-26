@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 import com.project.athath.R;
 import com.project.athath.data.model.Product;
 import com.project.athath.data.utils.ImageUtils;
+import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.FragmentAddProductBinding;
 import com.project.athath.ui.base.BaseFragment;
 
@@ -51,6 +52,7 @@ public class AddProductFragment extends BaseFragment<FragmentAddProductBinding> 
     protected void setup() {
         super.setup();
         setToolbarVisibility(true);
+        showBackButton(true);
 
         Bundle args = getArguments();
         if (args != null && args.containsKey("productId")) {
@@ -137,7 +139,7 @@ public class AddProductFragment extends BaseFragment<FragmentAddProductBinding> 
                 if (result.getStatus() == com.project.athath.data.utils.Result.Status.SUCCESS) {
                     Toast.makeText(requireContext(), "Product updated successfully!", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(requireView()).navigateUp();
-                } else {
+                } else if (result.getStatus() == Result.Status.ERROR){
                     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
                 }
             });
@@ -147,7 +149,7 @@ public class AddProductFragment extends BaseFragment<FragmentAddProductBinding> 
                 if (result.getStatus() == com.project.athath.data.utils.Result.Status.SUCCESS) {
                     Toast.makeText(requireContext(), "Product added successfully!", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(requireView()).navigateUp();
-                } else {
+                } else if (result.getStatus() == Result.Status.ERROR){
                     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
                 }
             });

@@ -15,6 +15,8 @@ import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.FragmentManageProductsBinding;
 import com.project.athath.ui.base.BaseFragment;
 
+import java.util.List;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -50,52 +52,56 @@ public class ManageProductsFragment extends BaseFragment<FragmentManageProductsB
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
-        productAdapter = new ManageProductAdapter(viewModel.products.getValue(), this);
-        binding.recyclerProducts.setLayoutManager(new LinearLayoutManager(requireContext()));
-        binding.recyclerProducts.setAdapter(productAdapter);
-
+        setupRecyclerView();
         observeViewModel();
+
+        showLoading(true);  // Show loading initially
+        viewModel.fetchAllProducts();  // Auto-fetch products on fragment load
 
         binding.fabAddProduct.setOnClickListener(view ->
                 Navigation.findNavController(view).navigate(R.id.action_vendor_products_to_add_product)
         );
-        showLoading(true);
-        viewModel.fetchAllProducts();
+    }
+    private void setupRecyclerView() {
+        productAdapter = new ManageProductAdapter(viewModel.products.getValue(), this);
+        binding.recyclerProducts.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.recyclerProducts.setAdapter(productAdapter);
     }
 
     private void observeViewModel() {
+        // Observe products list changes
         viewModel.products.observe(getViewLifecycleOwner(), products -> {
-            productAdapter.notifyDataSetChanged();
-            checkEmptyState(products);
-            showLoading(false);
+            productAdapter.updateProducts(products);  // Update the adapter with the new list
+            checkEmptyState(products);                // Check if the list is empty
+            showLoading(false);                       // Hide loading indicator
         });
 
+        // Observe the result of fetching products
         viewModel.getFetchProductsResult().observe(getViewLifecycleOwner(), result -> {
+            showLoading(false);  // Stop showing loading when data fetch is complete
             if (result.getStatus() == Result.Status.ERROR) {
-                showLoading(false);
-                String errorMessage = result.getErrorMessage() != null ? result.getErrorMessage() : "Unknown error";
-                Toast.makeText(requireContext(), "Failed to load products: " + errorMessage, Toast.LENGTH_SHORT).show();
+                String errorMessage = result.getErrorMessage() != null ? result.getErrorMessage() : "Failed to load products.";
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
 
+        // Observe the result of deleting a product
         viewModel.getDeleteProductResult().observe(getViewLifecycleOwner(), result -> {
+            showLoading(false);  // Stop loading after delete operation
             if (result.getStatus() == Result.Status.SUCCESS) {
                 Toast.makeText(requireContext(), "Product deleted successfully!", Toast.LENGTH_SHORT).show();
+                viewModel.fetchAllProducts(); // Refresh products after deletion
             } else if (result.getStatus() == Result.Status.ERROR) {
-                String errorMessage = result.getErrorMessage() != null ? result.getErrorMessage() : "Unknown error";
-                Toast.makeText(requireContext(), "Failed to delete product: " + errorMessage, Toast.LENGTH_SHORT).show();
+                String errorMessage = result.getErrorMessage() != null ? result.getErrorMessage() : "Failed to delete product.";
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void checkEmptyState(java.util.List<Product> products) {
-        if (products == null || products.isEmpty()) {
-            binding.imageNoDataFound.setVisibility(View.VISIBLE);
-            binding.recyclerProducts.setVisibility(View.GONE);
-        } else {
-            binding.imageNoDataFound.setVisibility(View.GONE);
-            binding.recyclerProducts.setVisibility(View.VISIBLE);
-        }
+    private void checkEmptyState(List<Product> products) {
+        boolean isEmpty = products == null || products.isEmpty();
+        binding.imageNoDataFound.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+        binding.recyclerProducts.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
     }
 
     private void showLoading(boolean isLoading) {

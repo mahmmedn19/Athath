@@ -50,6 +50,11 @@ public class ManageProductAdapter extends BaseAdapter<Product, ItemManageProduct
         binding.executePendingBindings();
     }
 
+    public void updateProducts(List<Product> products) {
+        this.items = products;
+        notifyDataSetChanged();
+    }
+
     public interface ManageProductInteractionListener extends BaseInteractionListener {
         void onEditProduct(Product product);
 
