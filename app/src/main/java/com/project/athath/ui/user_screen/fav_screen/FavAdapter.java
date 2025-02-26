@@ -1,9 +1,11 @@
 package com.project.athath.ui.user_screen.fav_screen;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.project.athath.data.utils.ImageUtils;
 import com.project.athath.databinding.ItemFavProductBinding;
 import com.project.athath.data.model.Product;
 import com.project.athath.ui.base.BaseAdapter;
@@ -29,10 +31,8 @@ public class FavAdapter extends BaseAdapter<Product, ItemFavProductBinding> {
     public void onBindViewHolder(BaseViewHolder<ItemFavProductBinding> holder, int position, Product currentItem) {
         ItemFavProductBinding binding = holder.binding;
         binding.setProduct(currentItem);
-        Glide.with(binding.getRoot().getContext())
-                .load(currentItem.getImageUrl())
-                .into(binding.productImage);
-
+        Bitmap bitmap = ImageUtils.decodeBase64ToImage(currentItem.getImageUrl());
+        binding.productImage.setImageBitmap(bitmap);
         // Remove Favorite
         binding.btnRemoveFav.setOnClickListener(view -> listener.onRemoveFavorite(currentItem));
         binding.cardProduct.setOnClickListener(view -> listener.onProductClick(currentItem));
@@ -41,6 +41,10 @@ public class FavAdapter extends BaseAdapter<Product, ItemFavProductBinding> {
         binding.executePendingBindings();
     }
 
+    public void updateProducts(List<Product> products) {
+        this.items = products;
+        notifyDataSetChanged();
+    }
     public interface FavInteractionListener extends BaseInteractionListener {
         void onRemoveFavorite(Product product);
         void onProductClick(Product product);

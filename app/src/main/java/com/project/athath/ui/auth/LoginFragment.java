@@ -110,23 +110,23 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
     }
 
     private void handleLoginResult(Result<String> result) {
-        switch (result.getStatus()) {
-            case SUCCESS:
-                binding.loadingProgressBar.setVisibility(View.GONE);
-                navigateToMainScreen(result.getData());
-                break;
-            case ERROR:
-                binding.loadingProgressBar.setVisibility(View.GONE);
-                showToast(result.getErrorMessage());
-                break;
-            case LOADING:
-                binding.loadingProgressBar.setVisibility(View.VISIBLE);
-                binding.loginButton.setEnabled(false);
-                return;
+        if (result.getStatus() == Result.Status.SUCCESS) {
+            binding.loadingProgressBar.setVisibility(View.GONE);
+            navigateToMainScreen(result.getData());
+        } else if (result.getStatus() == Result.Status.ERROR) {
+            binding.loadingProgressBar.setVisibility(View.GONE);
+            showToast(result.getErrorMessage());
+        } else if (result.getStatus() == Result.Status.LOADING) {
+            binding.loadingProgressBar.setVisibility(View.VISIBLE);
+            binding.loginButton.setEnabled(false);
+            return; // Exit early for loading state
         }
+
+        // Enable button and hide progress bar after handling SUCCESS or ERROR
         binding.loadingProgressBar.setVisibility(View.GONE);
         binding.loginButton.setEnabled(true);
     }
+
 
     private void navigateToRegister() {
         int actionId = "Customers".equals(userType) ?

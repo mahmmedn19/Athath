@@ -28,6 +28,9 @@
         <argument
             android:name="catalogItemId"
             app:argType="string" />
+        <argument
+            android:name="productId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/userSelectionFragment"
@@ -119,6 +122,9 @@
         <action
             android:id="@+id/action_productsFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
+        <argument
+            android:name="productId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/aiFragment"
@@ -135,6 +141,9 @@
         <action
             android:id="@+id/action_catalogDetailsFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
+        <argument
+            android:name="productId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"

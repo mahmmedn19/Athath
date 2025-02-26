@@ -180,6 +180,45 @@ public class AuthRepositoryImpl implements AuthRepository {
     }
 
     @Override
+    public LiveData<Result<Customer>> getCustomerProfile() {
+        MutableLiveData<Result<Customer>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            resultLiveData.setValue(Result.error("User not logged in."));
+            return resultLiveData;
+        }
+        String userId = currentUser.getUid();
+
+        db.collection("Customers").document(userId).get()
+                .addOnSuccessListener(documentSnapshot  -> {
+                    Customer customer = documentSnapshot.toObject(Customer.class);
+                    if (customer != null) {
+                        resultLiveData.setValue(Result.success(customer));
+                    } else {
+                        resultLiveData.setValue(Result.error("Customer not found."));
+                    }
+                })
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to fetch profile")));
+
+        return resultLiveData;
+    }
+
+    @Override
+    public LiveData<Result<String>> updateCustomerProfile(Customer customer) {
+        MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
+
+        String userId = auth.getCurrentUser().getUid();
+        db.collection("Customers").document(userId).set(customer)
+                .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Profile updated successfully")))
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to update profile")));
+
+        return resultLiveData;
+    }
+
+    @Override
     public LiveData<Result<String>> changePassword(String currentPassword, String newPassword) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
         resultLiveData.setValue(Result.loading());
@@ -214,7 +253,13 @@ public class AuthRepositoryImpl implements AuthRepository {
     public LiveData<Result<String>> getUserType(String userId) {
         return null;
     }
-
+    @Override
+    public LiveData<Result<String>> logoutUser() {
+        MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
+        auth.signOut();
+        resultLiveData.setValue(Result.success("Logged out successfully"));
+        return resultLiveData;
+    }
     private String getFirebaseAuthErrorMessage(Exception e) {
         if (e instanceof FirebaseAuthUserCollisionException) {
             return "This email is already registered. Please use a different email.";

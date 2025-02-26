@@ -1,11 +1,14 @@
+// FavViewModel.java
 package com.project.athath.ui.user_screen.fav_screen;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.project.athath.R;
 import com.project.athath.data.model.Product;
+import com.project.athath.data.repository.app_repo.AthathRepository;
+import com.project.athath.data.utils.Result;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -15,31 +18,32 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class FavViewModel extends ViewModel {
 
-    private List<Product> favoriteProducts;
+    private final AthathRepository repository;
+    private final MutableLiveData<Result<List<Product>>> favoriteProductsLiveData = new MutableLiveData<>();
 
     @Inject
-    public FavViewModel() {
-        favoriteProducts = new ArrayList<>();
+    public FavViewModel(AthathRepository repository) {
+        this.repository = repository;
+        fetchFavoriteProducts();  // Fetch favorites on ViewModel init
     }
 
-/*
-    private void loadFakeFavorites() {
-        favoriteProducts.add(new Product("Modern", "Living Room", 300.0, 4.5, 5.0, R.drawable.image_1));
-        favoriteProducts.add(new Product("Minimalist", "Office", 250.0, 3.5, 4.5, R.drawable.image_4));
-        favoriteProducts.add(new Product("Classic", "Bedroom", 450.0, 5.0, 6.0, R.drawable.image_2));
-        favoriteProducts.add(new Product("Minimalist", "Office", 250.0, 3.5, 4.5, R.drawable.image_4));
-        favoriteProducts.add(new Product("Minimalist", "Office", 250.0, 3.5, 4.5, R.drawable.image_4));
-        favoriteProducts.add(new Product("Classic", "Bedroom", 450.0, 5.0, 6.0, R.drawable.image_2));
-        favoriteProducts.add(new Product("Modern", "Living Room", 300.0, 4.5, 5.0, R.drawable.image_1));
-        favoriteProducts.add(new Product("Minimalist", "Office", 250.0, 3.5, 4.5, R.drawable.image_4));
+    public LiveData<Result<List<Product>>> getFavoriteProductsLiveData() {
+        return favoriteProductsLiveData;
     }
-*/
 
-    public List<Product> getFavoriteProducts() {
-        return favoriteProducts;
+    public void fetchFavoriteProducts() {
+        repository.getFavoriteProducts().observeForever(favoriteProductsLiveData::setValue);
+    }
+
+    public void addProductToFavorites(Product product) {
+        repository.addProductToFavorites(product).observeForever(result -> {
+            if (result.getStatus() == Result.Status.SUCCESS) fetchFavoriteProducts();
+        });
     }
 
     public void removeProductFromFavorites(Product product) {
-        favoriteProducts.remove(product);
+        repository.removeProductFromFavorites(product).observeForever(result -> {
+            if (result.getStatus() == Result.Status.SUCCESS) fetchFavoriteProducts();
+        });
     }
 }

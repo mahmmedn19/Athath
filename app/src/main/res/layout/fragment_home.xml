@@ -124,6 +124,24 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
+            <!-- ProgressBar for Loading -->
+            <ProgressBar
+                android:id="@+id/loadingProgressBarProduct"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageNoDataFoundProduct"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/image_no_data_found"
+                android:visibility="gone" />
 
             <!-- Product List -->
             <androidx.recyclerview.widget.RecyclerView
@@ -180,13 +198,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/imageNoDataFound"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:visibility="gone"
-                android:src="@drawable/image_no_data_found"/>
+                android:src="@drawable/image_no_data_found"
+                android:visibility="gone" />
 
             <!-- Catalog List -->
             <androidx.recyclerview.widget.RecyclerView

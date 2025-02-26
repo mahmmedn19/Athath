@@ -23,12 +23,15 @@ import java.util.List;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements HomeAdapter.HomeInteractionListener, ProductHomeAdapter.ProductInteractionListener, CatalogHomeAdapter.CatalogHomeInteractionListener {
+public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements
+        HomeAdapter.HomeInteractionListener,
+        ProductHomeAdapter.ProductInteractionListener,
+        CatalogHomeAdapter.CatalogHomeInteractionListener {
 
-    private CatalogHomeAdapter adapter;
+    private CatalogHomeAdapter catalogAdapter;
     private ProductHomeAdapter productAdapter;
-    private List<Product> products;
     private final List<CatalogItem> catalogItems = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
     private HomeViewModel viewModel;
 
     @Override
@@ -53,97 +56,125 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements H
         setToolbarVisibility(true);
         setToolbarTitle("Home");
         showBackButton(false);
-        initRecyclerView();
-        binding.tvViewAllProducts.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_productsFragment);
-        });
-        binding.viewCatalogAllButton.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_catalogFragment);
-        });
 
-        binding.profileImage.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_userSelectionFragment);
-        });
+        initRecyclerViews();
+        setupListeners();
         observeCatalogItems();
-        // Fetch catalog items when fragment starts
+        observeProducts();
+        observeViewModel();
         viewModel.fetchCatalogItems();
+        viewModel.fetchProducts();
     }
 
-    private void initRecyclerView() {
-        binding.productList.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-        binding.rvCatalog.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-
-        products = new ArrayList<>();
-        products = generateFakeProducts(6);
-
-        adapter = new CatalogHomeAdapter(catalogItems, this);
+    private void initRecyclerViews() {
+        catalogAdapter = new CatalogHomeAdapter(catalogItems, this);
         productAdapter = new ProductHomeAdapter(products, this);
+
+        binding.rvCatalog.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.rvCatalog.setAdapter(catalogAdapter);
+
+        binding.productList.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         binding.productList.setAdapter(productAdapter);
-        binding.rvCatalog.setAdapter(adapter);
     }
 
+    private void setupListeners() {
+        binding.tvViewAllProducts.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_productsFragment)
+        );
+
+        binding.viewCatalogAllButton.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_catalogFragment)
+        );
+
+        binding.profileImage.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_userSelectionFragment)
+        );
+    }
 
     private void observeCatalogItems() {
         viewModel.getCatalogItems().observe(getViewLifecycleOwner(), result -> {
-            if (result.getStatus() == Result.Status.LOADING) {
-                binding.loadingProgressBar.setVisibility(View.VISIBLE);
-                binding.rvCatalog.setVisibility(View.GONE);
-                binding.imageNoDataFound.setVisibility(View.GONE);
-            } else {
-                binding.loadingProgressBar.setVisibility(View.GONE);
-
-                if (result.getStatus() == Result.Status.SUCCESS) {
-                    catalogItems.clear();
-                    if (result.getData() != null && !result.getData().isEmpty()) {
-                        catalogItems.addAll(result.getData());
-                        binding.rvCatalog.setVisibility(View.VISIBLE);
-                        binding.imageNoDataFound.setVisibility(View.GONE);
-                    } else {
-                        binding.rvCatalog.setVisibility(View.GONE);
-                        binding.imageNoDataFound.setVisibility(View.VISIBLE);
-                    }
-                    adapter.notifyDataSetChanged();
-                } else if (result.getStatus() == Result.Status.ERROR) {
-                    Toast.makeText(requireContext(), "Error: " + result.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                    binding.rvCatalog.setVisibility(View.GONE);
-                    binding.imageNoDataFound.setVisibility(View.VISIBLE);
-                }
-            }
+            handleState(
+                    result,
+                    binding.loadingProgressBar,         // Catalog loading bar
+                    binding.rvCatalog,                  // Catalog RecyclerView
+                    binding.imageNoDataFound,           // Catalog no data image
+                    catalogItems,                       // Catalog data list
+                    catalogAdapter                      // Catalog adapter
+            );
         });
     }
 
-    private List<Product> generateFakeProducts(int count) {
-        List<Product> productList = new ArrayList<>();
-        for (int i = 1; i <= count; i++) {
-            productList.add(new Product(
-                    "Product " + i,
-                    "",
-                    50 * i,
-                    4.5f,
-                    4.5f,
-                    "R.drawable.furniture1"
-            ));
-        }
-        return productList;
+    private void observeProducts() {
+        viewModel.getProducts().observe(getViewLifecycleOwner(), result -> {
+            handleState(
+                    result,
+                    binding.loadingProgressBarProduct,  // Product loading bar
+                    binding.productList,                // Product RecyclerView
+                    binding.imageNoDataFoundProduct,    // Product no data image
+                    products,                           // Product data list
+                    productAdapter                      // Product adapter
+            );
+        });
     }
 
+    /**
+     * Handles the loading, success, and error states for both products and catalogs.
+     */
+
+    private <T> void handleState(Result<List<T>> result, View progressBar, View recyclerView, View emptyView, List<T> dataList, androidx.recyclerview.widget.RecyclerView.Adapter<?> adapter) {
+        if (result.getStatus() == Result.Status.LOADING) {
+            progressBar.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.GONE);
+
+        } else if (result.getStatus() == Result.Status.SUCCESS) {
+            progressBar.setVisibility(View.GONE);
+            dataList.clear();
+
+            if (result.getData() != null && !result.getData().isEmpty()) {
+                dataList.addAll(result.getData());
+                recyclerView.setVisibility(View.VISIBLE);
+                emptyView.setVisibility(View.GONE);
+            } else {
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
+            }
+
+            adapter.notifyDataSetChanged();
+
+        } else if (result.getStatus() == Result.Status.ERROR) {
+            progressBar.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void observeViewModel() {
+        viewModel.getCustomerLiveData().observe(getViewLifecycleOwner(), result -> {
+            if ( result!= null) {
+                if (result.getStatus() == Result.Status.SUCCESS) {
+                    binding.profileName.setText(result.getData().getUsername() + "!");
+                }
+            }
+        });
+        }
 
     @Override
     public void onFavoriteClicked(Product product) {
-        // Handle favorite icon click
-        adapter.notifyDataSetChanged(); // Update the RecyclerView
+        Toast.makeText(requireContext(), product.getName() + " favorited!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCartClicked(Product product) {
-        //Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_productDetailsFragment);
+        Toast.makeText(requireContext(), product.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onProductClicked(Product product) {
-        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_productsFragment);
+        Bundle bundle = new Bundle();
+        bundle.putString("productId", product.getId());
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_productDetailsFragment, bundle);
     }
-
 
     @Override
     public void onShowDetailsClicked(CatalogItem catalogItem) {

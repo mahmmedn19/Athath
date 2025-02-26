@@ -2,6 +2,7 @@ package com.project.athath.ui.base;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
@@ -35,7 +36,7 @@ public abstract class BaseAdapter<T, VB extends ViewBinding> extends RecyclerVie
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return items != null ? items.size() : 0;
     }
 
     public static class BaseViewHolder<VB extends ViewBinding> extends RecyclerView.ViewHolder {
@@ -73,10 +74,12 @@ public abstract class BaseAdapter<T, VB extends ViewBinding> extends RecyclerVie
     public boolean areContents(T oldItem, T newItem) {
         return true;
     }
+
     public void clearItems() {
         items.clear();
         notifyDataSetChanged();
     }
+
     public void addItems(List<T> newItems) {
         clearItems();
         items.addAll(newItems);

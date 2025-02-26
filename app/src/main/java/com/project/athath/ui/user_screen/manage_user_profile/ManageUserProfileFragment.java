@@ -1,11 +1,15 @@
 package com.project.athath.ui.user_screen.manage_user_profile;
 
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
 
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.project.athath.R;
+import com.project.athath.data.model.Customer;
+import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.FragmentManageUserProfileBinding;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.utils.DialogUtils;
@@ -28,7 +32,7 @@ public class ManageUserProfileFragment extends BaseFragment<FragmentManageUserPr
     }
 
     @Override
-    protected ViewModel getViewModel() {
+    protected ManageUserProfileViewModel getViewModel() {
         viewModel = new ViewModelProvider(this).get(ManageUserProfileViewModel.class);
         return viewModel;
     }
@@ -39,31 +43,77 @@ public class ManageUserProfileFragment extends BaseFragment<FragmentManageUserPr
         setToolbarVisibility(true);
         setToolbarTitle("Manage User Profile");
         showBackButton(true);
+        binding.etEmail.setEnabled(false);
 
-        // Bind ViewModel Data
-        binding.etUserName.setText(viewModel.getUserName());
-        binding.etEmail.setText(viewModel.getEmail());
+        observeViewModel();
 
-        // Save Profile Button
-        binding.btnSaveProfile.setOnClickListener(v -> {
-            String newUserName = binding.etUserName.getText().toString().trim();
-            String newEmail = binding.etEmail.getText().toString().trim();
+        binding.btnSaveProfile.setOnClickListener(v -> saveProfile());
+        binding.btnChangePassword.setOnClickListener(v -> changePassword());
+    }
 
-            viewModel.updateUserProfile(newUserName, newEmail);
-            DialogUtils.showCustomDialog(requireContext(), "Success", "Profile updated successfully!");
-        });
-
-        // Change Password Button
-        binding.btnChangePassword.setOnClickListener(v -> {
-            String currentPassword = binding.etCurrentPassword.getText().toString().trim();
-            String newPassword = binding.etNewPassword.getText().toString().trim();
-            String confirmPassword = binding.etConfirmPassword.getText().toString().trim();
-
-            if (viewModel.changePassword(currentPassword, newPassword, confirmPassword)) {
-                DialogUtils.showCustomDialog(requireContext(), "Success", "Password changed successfully!");
-            } else {
-                Toast.makeText(requireContext(), "Password Change Failed. Check Inputs", Toast.LENGTH_SHORT).show();
+    private void observeViewModel() {
+        viewModel.getCustomerLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (result.getStatus() == Result.Status.LOADING) showLoading(true);
+            else {
+                showLoading(false);
+                if (result.getStatus() == Result.Status.SUCCESS && result.getData() != null) {
+                    populateUserProfile(result.getData());
+                }
             }
         });
+
+        viewModel.getUpdateProfileResult().observe(getViewLifecycleOwner(), result -> {
+            showLoading(false);
+        });
+
+        viewModel.getPasswordChangeResult().observe(getViewLifecycleOwner(), result -> {
+            showLoading(false);
+        });
+    }
+
+    private void populateUserProfile(Customer customer) {
+        binding.etUserName.setText(customer.getUsername());
+        binding.etEmail.setText(customer.getEmail());
+    }
+
+    private void saveProfile() {
+        Customer customer = new Customer(
+                binding.etUserName.getText().toString().trim(),
+                binding.etEmail.getText().toString().trim()
+        );
+        viewModel.updateCustomerProfile(customer);
+        Navigation.findNavController(requireView()).popBackStack();
+    }
+
+    private void changePassword() {
+        String currentPassword = binding.etCurrentPassword.getText().toString().trim();
+        String newPassword = binding.etNewPassword.getText().toString().trim();
+        String confirmPassword = binding.etConfirmPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(currentPassword) || TextUtils.isEmpty(newPassword) || TextUtils.isEmpty(confirmPassword)) {
+            DialogUtils.showCustomDialog(requireContext(), "Error", "All password fields are required.");
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            DialogUtils.showCustomDialog(requireContext(), "Error", "New password and confirm password do not match.");
+            return;
+        }
+
+        if (newPassword.length() < 6) {
+            DialogUtils.showCustomDialog(requireContext(), "Error", "Password must be at least 6 characters.");
+            return;
+        }
+
+        viewModel.changePassword(currentPassword, newPassword);
+        Navigation.findNavController(requireView()).popBackStack();
+    }
+
+    private void showLoading(boolean isLoading) {
+        binding.progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -83,26 +83,24 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
     private void observeRegisterResult() {
         registerViewModel.getRegisterResult().observe(getViewLifecycleOwner(), result -> {
             if (result != null) {
-                switch (result.getStatus()) {
-                    case SUCCESS:
-                        Toast.makeText(getContext(), "Registration Successful!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(requireContext(), MainActivity.class);
-                        startActivity(intent);
-                        requireActivity().finish();
-                        break;
-
-                    case ERROR:
-                        Toast.makeText(getContext(), result.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                        break;
-
-                    case LOADING:
-                        binding.loadingProgressBar.setVisibility(View.VISIBLE);
-                        binding.registerButton.setEnabled(false);
-                        return;
+                if (result.getStatus() == Result.Status.SUCCESS) {
+                    Toast.makeText(getContext(), "Registration Successful!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(requireContext(), MainActivity.class);
+                    startActivity(intent);
+                    requireActivity().finish();
+                } else if (result.getStatus() == Result.Status.ERROR) {
+                    Toast.makeText(getContext(), result.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                } else if (result.getStatus() == Result.Status.LOADING) {
+                    binding.loadingProgressBar.setVisibility(View.VISIBLE);
+                    binding.registerButton.setEnabled(false);
+                    return; // Early exit for loading state
                 }
             }
+
+            // Reset UI after SUCCESS or ERROR
             binding.loadingProgressBar.setVisibility(View.GONE);
             binding.registerButton.setEnabled(true);
         });
     }
+
 }

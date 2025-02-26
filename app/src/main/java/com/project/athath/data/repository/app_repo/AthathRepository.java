@@ -28,8 +28,20 @@ public interface AthathRepository {
     LiveData<Result<CatalogItem>> getCatalogItemById(String itemId);
 
     LiveData<Result<String>> addProduct(Product product);
+
     LiveData<Result<String>> updateProduct(Product product);
+
     LiveData<Result<String>> deleteProduct(String productId);
+
     LiveData<Result<Product>> getProductById(String productId);
+
     LiveData<Result<List<Product>>> getAllProducts();
+
+    LiveData<Result<Vendor>> getVendorById(String vendorId);
+
+    LiveData<Result<List<Product>>> getFavoriteProducts();
+
+    LiveData<Result<String>> addProductToFavorites(Product product);
+
+    LiveData<Result<String>> removeProductFromFavorites(Product product);
 }

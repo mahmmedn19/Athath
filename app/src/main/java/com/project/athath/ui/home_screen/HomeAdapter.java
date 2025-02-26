@@ -1,10 +1,12 @@
 package com.project.athath.ui.home_screen;
 
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 
+import com.project.athath.data.utils.ImageUtils;
 import com.project.athath.databinding.HomeItemBinding;
 import com.project.athath.data.model.Product;
 import com.project.athath.ui.base.BaseAdapter;
@@ -29,9 +31,16 @@ public class HomeAdapter extends BaseAdapter<Product, HomeItemBinding> {
     public void onBindViewHolder(BaseViewHolder<HomeItemBinding> holder, int position, Product currentItem) {
         HomeItemBinding binding = holder.binding;
         binding.setItem(currentItem);
+        Bitmap bitmap = ImageUtils.decodeBase64ToImage(currentItem.getImageUrl());
+        binding.productImage.setImageBitmap(bitmap);
         binding.favIcon.setOnClickListener(view -> listener.onFavoriteClicked(currentItem));
         binding.productImage.setOnClickListener(view -> listener.onCartClicked(currentItem));
         binding.executePendingBindings();
+    }
+
+    public void updateProducts(List<Product> products) {
+        this.items = products;
+        notifyDataSetChanged();
     }
 
 

@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.project.athath.ui.MainViewModel"
+            type="com.project.athath.MainViewModel"
             />
 
     </data>

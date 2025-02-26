@@ -3,7 +3,6 @@ package com.project.athath;
 
 import static com.project.athath.ui.utils.LocalLang.setLocale;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
@@ -31,7 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MainActivity extends AppCompatActivity implements BaseFragment.ToolbarHandler {
     private ActivityMainBinding binding;
     private NavController navController;
-    private boolean isUserLoggedIn;
+    private MainViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +40,15 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
         setContentView(binding.getRoot());
         EdgeToEdge.enable(this);
         setLocale("en", this);
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(0, systemBars.top, 0, 0);
             return insets;
         });
+        // Dynamically update bottom navigation menu
+        observeLoginState();
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         getWindow().setNavigationBarColor(getResources().getColor(R.color.md_theme_surface));
@@ -69,8 +72,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
             navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(binding.bottomNav, navController);
         }
-        // Dynamically update bottom navigation menu
-        updateBottomNavigationMenu();
+
 
         // Hide Bottom Navigation on Specific Screens
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
@@ -103,28 +105,35 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
             return true;
         });
     }
+    private void observeLoginState() {
+        mainViewModel.getIsCustomerLoggedIn().observe(this, isLoggedIn -> {
+            updateBottomNavigationMenu(isLoggedIn);
+        });
+    }
     // Update Bottom Navigation dynamically
-    private void updateBottomNavigationMenu() {
+    private void updateBottomNavigationMenu(boolean isLoggedIn) {
         Menu menu = binding.bottomNav.getMenu();
-        menu.clear(); // Clear existing menu
 
-        getMenuInflater().inflate(R.menu.bottom_navigation_menu, menu); // Reinflate menu
+        // Remove existing login/profile items (if any)
+        menu.removeItem(R.id.userSelectionFragment);
+        menu.removeItem(R.id.userProfileFragment);
 
-        if (isUserLoggedIn) {
-            // Remove login and add favorites
-            menu.removeItem(R.id.userSelectionFragment);
+        if (isLoggedIn) {
             menu.add(Menu.NONE, R.id.userProfileFragment, Menu.NONE, "Profile")
+                    .setIcon(R.drawable.ic_profile)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        } else {
+            menu.add(Menu.NONE, R.id.userSelectionFragment, Menu.NONE, "Login")
                     .setIcon(R.drawable.ic_profile)
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
     }
-    // Call this method when user logs in or logs out
-    public void updateLoginState(boolean loggedIn) {
-        isUserLoggedIn = loggedIn;
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        prefs.edit().putBoolean("isLoggedIn", loggedIn).apply();
-        updateBottomNavigationMenu();
+
+    public void logout() {
+        mainViewModel.logout();
+        updateBottomNavigationMenu(false);  // Hide profile and show login after logout
     }
+
     @Override
     public void setToolbarTitle(String title) {
         binding.toolbar.setTitle(title);

@@ -1,7 +1,12 @@
 package com.project.athath.ui.user_screen.manage_user_profile;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.project.athath.data.model.Customer;
+import com.project.athath.data.repository.auth.AuthRepository;
+import com.project.athath.data.utils.Result;
 
 import javax.inject.Inject;
 
@@ -10,41 +15,42 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class ManageUserProfileViewModel extends ViewModel {
 
-    private MutableLiveData<String> userName = new MutableLiveData<>("John Doe");
-    private MutableLiveData<String> email = new MutableLiveData<>("johndoe@example.com");
+    private final AuthRepository authRepository;
+
+    private final MutableLiveData<Result<Customer>> customerLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Result<String>> updateProfileResult = new MutableLiveData<>();
+    private final MutableLiveData<Result<String>> passwordChangeResult = new MutableLiveData<>();
 
     @Inject
-    public ManageUserProfileViewModel() {
-        // Fake Data for Initial State
-        userName.setValue("John Doe");
-        email.setValue("johndoe@example.com");
+    public ManageUserProfileViewModel(AuthRepository authRepository) {
+        this.authRepository = authRepository;
+        fetchCustomerProfile();
     }
 
-    public String getUserName() {
-        return userName.getValue();
+    public LiveData<Result<Customer>> getCustomerLiveData() {
+        return customerLiveData;
     }
 
-    public String getEmail() {
-        return email.getValue();
+    public LiveData<Result<String>> getUpdateProfileResult() {
+        return updateProfileResult;
     }
 
-    public void updateUserProfile(String newUserName, String newEmail) {
-        // In a real scenario, update Firebase or API backend
-        userName.setValue(newUserName);
-        email.setValue(newEmail);
+    public LiveData<Result<String>> getPasswordChangeResult() {
+        return passwordChangeResult;
     }
 
-    public boolean changePassword(String currentPassword, String newPassword, String confirmPassword) {
-        // Fake validation logic
-        if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
-            return false;
-        }
+    public void fetchCustomerProfile() {
+        customerLiveData.setValue(Result.loading());
+        authRepository.getCustomerProfile().observeForever(customerLiveData::postValue);
+    }
 
-        if (!newPassword.equals(confirmPassword)) {
-            return false;
-        }
+    public void updateCustomerProfile(Customer customer) {
+        updateProfileResult.setValue(Result.loading());
+        authRepository.updateCustomerProfile(customer).observeForever(updateProfileResult::postValue);
+    }
 
-        // Simulate password update
-        return true;
+    public void changePassword(String currentPassword, String newPassword) {
+        passwordChangeResult.setValue(Result.loading());
+        authRepository.changePassword(currentPassword, newPassword).observeForever(passwordChangeResult::postValue);
     }
 }

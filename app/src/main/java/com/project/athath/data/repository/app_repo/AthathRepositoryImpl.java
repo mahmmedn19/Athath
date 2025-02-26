@@ -23,7 +23,8 @@ public class AthathRepositoryImpl implements AthathRepository {
     private final FirebaseFirestore db;
     private static final String COLLECTION_NAME_CATALOG = "CatalogItems";
     private final String COLLECTION_NAME_PRODUCTS = "products";
-
+    private static final String COLLECTION_NAME_USERS = "Customers";
+    private static final String SUB_COLLECTION_FAVORITES = "favorites";
 
     @Inject
     public AthathRepositoryImpl(FirebaseAuth auth, FirebaseFirestore db) {
@@ -211,10 +212,16 @@ public class AthathRepositoryImpl implements AthathRepository {
     }
 
 
-    @Override
     public LiveData<Result<String>> updateProduct(Product product) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
         resultLiveData.setValue(Result.loading());
+
+        if (product.getStoreId() == null || product.getStoreId().isEmpty()) {
+            String currentUserId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;
+            if (currentUserId != null) {
+                product.setStoreId(currentUserId);  // Reassign storeId
+            }
+        }
 
         db.collection(COLLECTION_NAME_PRODUCTS).document(product.getId()).set(product)
                 .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Product updated successfully!")))
@@ -222,6 +229,7 @@ public class AthathRepositoryImpl implements AthathRepository {
 
         return resultLiveData;
     }
+
 
     @Override
     public LiveData<Result<Product>> getProductById(String productId) {
@@ -269,5 +277,96 @@ public class AthathRepositoryImpl implements AthathRepository {
 
         return resultLiveData;
     }
+
+    @Override
+    public LiveData<Result<Vendor>> getVendorById(String vendorId) {
+        MutableLiveData<Result<Vendor>> vendorLiveData = new MutableLiveData<>();
+        vendorLiveData.setValue(Result.loading());
+
+        db.collection("Vendors").document(vendorId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Vendor vendor = documentSnapshot.toObject(Vendor.class);
+                        vendorLiveData.setValue(Result.success(vendor));
+                    } else {
+                        vendorLiveData.setValue(Result.error("Vendor not found."));
+                    }
+                })
+                .addOnFailureListener(e -> vendorLiveData.setValue(Result.error(e.getMessage())));
+
+        return vendorLiveData;
+    }
+
+    // ✅ Fetch Favorites
+    @Override
+    public LiveData<Result<List<Product>>> getFavoriteProducts() {
+        MutableLiveData<Result<List<Product>>> resultLiveData = new MutableLiveData<>();
+        String userId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;
+
+        if (userId == null) {
+            resultLiveData.setValue(Result.error("User not authenticated!"));
+            return resultLiveData;
+        }
+
+        resultLiveData.setValue(Result.loading());
+        db.collection(COLLECTION_NAME_USERS).document(userId)
+                .collection(SUB_COLLECTION_FAVORITES)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<Product> favoriteProducts = new ArrayList<>();
+                    for (var document : querySnapshot.getDocuments()) {
+                        Product product = document.toObject(Product.class);
+                        if (product != null) favoriteProducts.add(product);
+                    }
+                    resultLiveData.setValue(Result.success(favoriteProducts));
+                })
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to fetch favorites: " + e.getMessage())));
+
+        return resultLiveData;
+    }
+
+    // ✅ Add Product to Favorites
+    @Override
+    public LiveData<Result<String>> addProductToFavorites(Product product) {
+        MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
+        String userId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;
+
+        if (userId == null) {
+            resultLiveData.setValue(Result.error("User not authenticated!"));
+            return resultLiveData;
+        }
+
+        db.collection(COLLECTION_NAME_USERS).document(userId)
+                .collection(SUB_COLLECTION_FAVORITES)
+                .document(product.getId())
+                .set(product)
+                .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Product added to favorites.")))
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to add to favorites: " + e.getMessage())));
+
+        return resultLiveData;
+    }
+
+    // ✅ Remove Product from Favorites
+    @Override
+    public LiveData<Result<String>> removeProductFromFavorites(Product product) {
+        MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
+        String userId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;
+
+        if (userId == null) {
+            resultLiveData.setValue(Result.error("User not authenticated!"));
+            return resultLiveData;
+        }
+
+        db.collection(COLLECTION_NAME_USERS).document(userId)
+                .collection(SUB_COLLECTION_FAVORITES)
+                .document(product.getId())
+                .delete()
+                .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Product removed from favorites.")))
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to remove favorite: " + e.getMessage())));
+
+        return resultLiveData;
+    }
+
 
 }

@@ -9,6 +9,7 @@ import com.project.athath.MainActivity;
 import com.project.athath.R;
 import com.project.athath.databinding.FragmentUserProfileBinding;
 import com.project.athath.ui.base.BaseFragment;
+import com.project.athath.ui.utils.DialogUtils;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -35,10 +36,18 @@ public class UserProfileFragment extends BaseFragment<FragmentUserProfileBinding
         setToolbarVisibility(false);
         binding.btnLogout.setOnClickListener(v -> {
             // Logout user
-            ((MainActivity) requireActivity()).updateLoginState(false);
-            Intent intent = new Intent(requireContext(), MainActivity.class);
-            startActivity(intent);
-            requireActivity().finish();
+                DialogUtils.showConfirmationDialog(
+                        requireContext(),
+                        "Logout",
+                        "Are you sure you want to log out?",
+                        "Yes",
+                        "Cancel",
+                        (dialog, which) -> {
+                            ((MainActivity) requireActivity()).logout();
+                            Intent intent = new Intent(requireContext(), MainActivity.class);
+                            startActivity(intent);
+                            requireActivity().finish();
+                        });
         });
 
         binding.manageProfileCard.setOnClickListener(v -> {
