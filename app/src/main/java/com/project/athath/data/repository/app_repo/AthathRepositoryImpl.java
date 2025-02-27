@@ -13,7 +13,9 @@ import com.project.athath.data.model.Vendor;
 import com.project.athath.data.utils.Result;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -337,10 +339,24 @@ public class AthathRepositoryImpl implements AthathRepository {
             return resultLiveData;
         }
 
+        // ✅ Save only necessary fields (avoid overwriting unwanted fields)
+        Map<String, Object> favoriteData = new HashMap<>();
+        favoriteData.put("id", product.getId());
+        favoriteData.put("name", product.getName());
+        favoriteData.put("price", product.getPrice());
+        favoriteData.put("imageUrl", product.getImageUrl());
+        favoriteData.put("storeId", product.getStoreId());
+        favoriteData.put("roomType", product.getRoomType());
+        favoriteData.put("style", product.getStyle());
+        favoriteData.put("color", product.getColor());
+        favoriteData.put("productWidth", product.getProductWidth());
+        favoriteData.put("productLength", product.getProductLength());
+        favoriteData.put("description", product.getDescription());
+
         db.collection(COLLECTION_NAME_USERS).document(userId)
                 .collection(SUB_COLLECTION_FAVORITES)
                 .document(product.getId())
-                .set(product)
+                .set(favoriteData)
                 .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Product added to favorites.")))
                 .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to add to favorites: " + e.getMessage())));
 
@@ -376,6 +392,7 @@ public class AthathRepositoryImpl implements AthathRepository {
             isFavoriteLiveData.setValue(false);  // User not authenticated
             return isFavoriteLiveData;
         }
+        // 🔑 Generate ID BEFORE adding to Firestore
 
         db.collection(COLLECTION_NAME_USERS).document(userId)
                 .collection(SUB_COLLECTION_FAVORITES)
