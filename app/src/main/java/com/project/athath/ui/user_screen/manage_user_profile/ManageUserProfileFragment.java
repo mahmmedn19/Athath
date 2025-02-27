@@ -52,7 +52,7 @@ public class ManageUserProfileFragment extends BaseFragment<FragmentManageUserPr
     }
 
     private void observeViewModel() {
-        viewModel.getCustomerLiveData().observe(getViewLifecycleOwner(), result -> {
+        viewModel.getCustomerLiveData().observeForever( result -> {
             if (result.getStatus() == Result.Status.LOADING) showLoading(true);
             else {
                 showLoading(false);
@@ -62,14 +62,19 @@ public class ManageUserProfileFragment extends BaseFragment<FragmentManageUserPr
             }
         });
 
-        viewModel.getUpdateProfileResult().observe(getViewLifecycleOwner(), result -> {
+        viewModel.getUpdateProfileResult().observeForever( result -> {
             showLoading(false);
         });
 
         viewModel.getPasswordChangeResult().observe(getViewLifecycleOwner(), result -> {
             showLoading(false);
+            if (result.getStatus() == Result.Status.SUCCESS) {
+                DialogUtils.showCustomDialog(requireContext(), "Success", "Password changed successfully!");
+                Navigation.findNavController(requireView()).popBackStack();
+            }
         });
     }
+
 
     private void populateUserProfile(Customer customer) {
         binding.etUserName.setText(customer.getUsername());
@@ -81,9 +86,17 @@ public class ManageUserProfileFragment extends BaseFragment<FragmentManageUserPr
                 binding.etUserName.getText().toString().trim(),
                 binding.etEmail.getText().toString().trim()
         );
-        viewModel.updateCustomerProfile(customer);
-        Navigation.findNavController(requireView()).popBackStack();
+
+        viewModel.updateCustomerProfile(customer);  // Trigger profile update
+
+        // ✅ Show success dialog with confirmation
+        DialogUtils.showCustomDialog(requireContext(),
+                "Success", "Profile updated successfully!",
+                () -> {
+            Navigation.findNavController(requireView()).popBackStack();
+        });
     }
+
 
     private void changePassword() {
         String currentPassword = binding.etCurrentPassword.getText().toString().trim();
@@ -111,9 +124,5 @@ public class ManageUserProfileFragment extends BaseFragment<FragmentManageUserPr
 
     private void showLoading(boolean isLoading) {
         binding.progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.project.athath.R;
 import com.project.athath.data.utils.Result;
@@ -70,8 +71,7 @@ public class VendorChangePassFragment extends BaseFragment<FragmentVendorChangeP
             binding.progressBar.setVisibility(android.view.View.GONE);
             if (result.getStatus() == Result.Status.SUCCESS) {
                 DialogUtils.showCustomDialog(requireContext(), "Success", result.getData());
-            } else {
-                DialogUtils.showCustomDialog(requireContext(), "Error", result.getErrorMessage());
+                Navigation.findNavController(requireView()).popBackStack();
             }
         });
     }

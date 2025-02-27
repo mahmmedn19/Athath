@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.project.athath.data.model.Product;
 import com.project.athath.data.model.Vendor;
 import com.project.athath.data.repository.app_repo.AthathRepository;
+import com.project.athath.data.repository.auth.AuthRepository;
 import com.project.athath.data.utils.Result;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class ProductDetailsViewModel extends ViewModel {
 
     private final AthathRepository repository;
+    private final AuthRepository authRepository;
 
     private final MutableLiveData<Result<Product>> productLiveData = new MutableLiveData<>();
     private final MutableLiveData<Result<List<Product>>> recommendedProductsLiveData = new MutableLiveData<>();
@@ -27,7 +29,8 @@ public class ProductDetailsViewModel extends ViewModel {
     private final MutableLiveData<Result<String>> favoriteResultLiveData = new MutableLiveData<>();
 
     @Inject
-    public ProductDetailsViewModel(AthathRepository repository) {
+    public ProductDetailsViewModel(AthathRepository repository, AuthRepository authRepository) {
+        this.authRepository = authRepository;
         this.repository = repository;
     }
 
@@ -99,4 +102,32 @@ public class ProductDetailsViewModel extends ViewModel {
             }
         });
     }
+    public LiveData<Boolean> checkIfProductIsFavorite(String productId) {
+        return repository.checkIfProductIsFavorite(productId);  // Delegate to repository
+    }
+    public LiveData<Boolean> toggleFavoriteStatus(Product product) {
+        MutableLiveData<Boolean> favoriteStatusLiveData = new MutableLiveData<>();
+
+        if (product.isFavorite()) {
+            repository.removeProductFromFavorites(product).observeForever(result -> {
+                if (result.getStatus() == Result.Status.SUCCESS) {
+                    favoriteStatusLiveData.setValue(false);  // Removed from favorites
+                }
+            });
+        } else {
+            repository.addProductToFavorites(product).observeForever(result -> {
+                if (result.getStatus() == Result.Status.SUCCESS) {
+                    favoriteStatusLiveData.setValue(true);  // Added to favorites
+                }
+            });
+        }
+
+        return favoriteStatusLiveData;
+    }
+
+    public boolean isUserLoggedIn() {
+        return authRepository.isUserLoggedIn();  // Implement this in your repository
+    }
+
+
 }

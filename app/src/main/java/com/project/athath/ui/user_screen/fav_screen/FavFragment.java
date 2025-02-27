@@ -72,7 +72,6 @@ public class FavFragment extends BaseFragment<FragmentFavBinding> implements Fav
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerFav.setVisibility(View.GONE);
                 binding.imageNoDataFound.setVisibility(View.VISIBLE);
-                Toast.makeText(requireContext(), result.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

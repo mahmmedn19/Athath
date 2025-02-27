@@ -79,21 +79,13 @@ public class ManageProductsFragment extends BaseFragment<FragmentManageProductsB
         // Observe the result of fetching products
         viewModel.getFetchProductsResult().observe(getViewLifecycleOwner(), result -> {
             showLoading(false);  // Stop showing loading when data fetch is complete
-            if (result.getStatus() == Result.Status.ERROR) {
-                String errorMessage = result.getErrorMessage() != null ? result.getErrorMessage() : "Failed to load products.";
-                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
-            }
         });
 
         // Observe the result of deleting a product
         viewModel.getDeleteProductResult().observe(getViewLifecycleOwner(), result -> {
             showLoading(false);  // Stop loading after delete operation
             if (result.getStatus() == Result.Status.SUCCESS) {
-                Toast.makeText(requireContext(), "Product deleted successfully!", Toast.LENGTH_SHORT).show();
                 viewModel.fetchAllProducts(); // Refresh products after deletion
-            } else if (result.getStatus() == Result.Status.ERROR) {
-                String errorMessage = result.getErrorMessage() != null ? result.getErrorMessage() : "Failed to delete product.";
-                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }

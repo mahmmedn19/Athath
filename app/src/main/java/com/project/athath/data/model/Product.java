@@ -17,6 +17,8 @@ public class Product {
     private String imageUrl;           // Product image URL (Firebase Storage)
     private String catalogImageId;     // Reference to catalog image added by admin
     private String storeId;            // Reference to the vendor's store
+    private boolean isFavorite;  // ✅ Add this field
+
 
     public Product(String id, String style, String roomType, double price, double productWidth, double productLength, String imageUrl) {
         this.id = id;
@@ -182,4 +184,7 @@ public class Product {
     public void setStoreId(String storeId) {
         this.storeId = storeId;
     }
+    // Getter & Setter
+    public boolean isFavorite() { return isFavorite; }
+    public void setFavorite(boolean favorite) { isFavorite = favorite; }
 }

@@ -18,4 +18,5 @@ public interface AuthRepository {
     LiveData<Result<String>> updateCustomerProfile(Customer customer);
     LiveData<Result<String>> changePassword(String currentPassword, String newPassword);
     LiveData<Result<String>> logoutUser();
+    public boolean isUserLoggedIn();
 }

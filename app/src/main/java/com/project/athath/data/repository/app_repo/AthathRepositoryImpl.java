@@ -367,6 +367,24 @@ public class AthathRepositoryImpl implements AthathRepository {
 
         return resultLiveData;
     }
+    @Override
+    public LiveData<Boolean> checkIfProductIsFavorite(String productId) {
+        MutableLiveData<Boolean> isFavoriteLiveData = new MutableLiveData<>();
+        String userId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;
 
+        if (userId == null) {
+            isFavoriteLiveData.setValue(false);  // User not authenticated
+            return isFavoriteLiveData;
+        }
+
+        db.collection(COLLECTION_NAME_USERS).document(userId)
+                .collection(SUB_COLLECTION_FAVORITES)
+                .document(productId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> isFavoriteLiveData.setValue(documentSnapshot.exists()))
+                .addOnFailureListener(e -> isFavoriteLiveData.setValue(false));
+
+        return isFavoriteLiveData;
+    }
 
 }

@@ -34,7 +34,6 @@ public class HomeAdapter extends BaseAdapter<Product, HomeItemBinding> {
         Bitmap bitmap = ImageUtils.decodeBase64ToImage(currentItem.getImageUrl());
         binding.productImage.setImageBitmap(bitmap);
         binding.favIcon.setOnClickListener(view -> listener.onFavoriteClicked(currentItem));
-        binding.productImage.setOnClickListener(view -> listener.onCartClicked(currentItem));
         binding.executePendingBindings();
     }
 
@@ -47,6 +46,5 @@ public class HomeAdapter extends BaseAdapter<Product, HomeItemBinding> {
 
     public interface HomeInteractionListener extends BaseInteractionListener {
         void onFavoriteClicked(Product product);
-        void onCartClicked(Product product);
     }
 }

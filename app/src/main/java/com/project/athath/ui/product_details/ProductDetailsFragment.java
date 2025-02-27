@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.project.athath.R;
@@ -15,6 +16,7 @@ import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.FragmentProductDetailsBinding;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.home_screen.HomeAdapter;
+import com.project.athath.ui.utils.DialogUtils;
 
 import java.util.ArrayList;
 
@@ -68,8 +70,19 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
         viewModel.fetchProductById(productId);
         viewModel.fetchRecommendedProducts(productId);
         binding.ivFavoriteIcon.setOnClickListener(v -> {
+            if (!viewModel.isUserLoggedIn()) {
+                showLoginRequiredDialog();  // Show login dialog if not logged in
+                return;
+            }
+
             if (currentProduct != null) {
-                viewModel.addToFavorites(currentProduct);
+                viewModel.toggleFavoriteStatus(currentProduct).observe(getViewLifecycleOwner(), isFavorite -> {
+                    currentProduct.setFavorite(isFavorite);     // Update product state
+                    updateFavoriteIcon(isFavorite);            // Update icon color
+
+                    String message = isFavorite ? "Added to favorites!" : "Removed from favorites!";
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+                });
             }
         });
     }
@@ -89,6 +102,11 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
                 if (result.getData() != null) {
                     currentProduct = result.getData();
                     updateProductDetails(currentProduct);
+                    // Check initial favorite status
+                    viewModel.checkIfProductIsFavorite(currentProduct.getId()).observe(getViewLifecycleOwner(), isFavorite -> {
+                        currentProduct.setFavorite(isFavorite);
+                        updateFavoriteIcon(isFavorite);
+                    });
                 } else {
                     Toast.makeText(requireContext(), "Product not found", Toast.LENGTH_SHORT).show();
                 }
@@ -123,14 +141,29 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
         viewModel.getRecommendedProductsLiveData().observe(getViewLifecycleOwner(), result -> {
             if (result.getStatus() == Result.Status.LOADING) {
                 showFullScreenLoading(true);
+                binding.rvSuggestionItems.setVisibility(View.GONE);
+                binding.imageNoDataFoundProduct.setVisibility(View.GONE);
+
             } else if (result.getStatus() == Result.Status.SUCCESS) {
                 showFullScreenLoading(false);
-                adapter.updateProducts(result.getData());
+
+                if (result.getData() != null && !result.getData().isEmpty()) {
+                    binding.rvSuggestionItems.setVisibility(View.VISIBLE);
+                    binding.imageNoDataFoundProduct.setVisibility(View.GONE);
+                    adapter.updateProducts(result.getData());
+                } else {
+                    binding.rvSuggestionItems.setVisibility(View.GONE);
+                    binding.imageNoDataFoundProduct.setVisibility(View.VISIBLE);
+                }
+
             } else if (result.getStatus() == Result.Status.ERROR) {
                 showFullScreenLoading(false);
+                binding.rvSuggestionItems.setVisibility(View.GONE);
+                binding.imageNoDataFoundProduct.setVisibility(View.VISIBLE);
             }
         });
     }
+
 
 
     private void updateProductDetails(Product product) {
@@ -153,16 +186,40 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
     private void showFullScreenLoading(boolean isLoading) {
         binding.fullScreenLoader.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
+    private void updateFavoriteIcon(boolean isFavorite) {
+        if (isFavorite) {
+            binding.ivFavoriteIcon.setColorFilter(getResources().getColor(R.color.md_theme_errorContainer_mediumContrast)); // Primary color
+        } else {
+            binding.ivFavoriteIcon.setColorFilter(getResources().getColor(R.color.white));
+        }
+    }
+
+    private void showLoginRequiredDialog() {
+        DialogUtils.showConfirmationDialog(
+                requireContext(),
+                "Login Required",
+                "Please login to add this product to favorites.",
+                "Login",
+                "Cancel",
+                (dialog, which) -> {
+                    Navigation.findNavController(requireView()).navigate(R.id.action_productDetailsFragment_to_userSelectionFragment);
+                }
+        );
+    }
 
     @Override
     public void onFavoriteClicked(Product product) {
         if (product != null) {
-            viewModel.addToFavorites(product);
+            if (!viewModel.isUserLoggedIn()) {
+                showLoginRequiredDialog();  // Show login dialog if not logged in
+                return;
+            }
+            viewModel.toggleFavoriteStatus(product).observe(getViewLifecycleOwner(), isFavorite -> {
+                product.setFavorite(isFavorite);     // Update product state
+                updateFavoriteIcon(isFavorite);            // Update icon color
+                String message = isFavorite ? "Added to favorites!" : "Removed from favorites!";
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+            });
         }
-    }
-
-    @Override
-    public void onCartClicked(Product product) {
-        Toast.makeText(requireContext(), product.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
     }
 }

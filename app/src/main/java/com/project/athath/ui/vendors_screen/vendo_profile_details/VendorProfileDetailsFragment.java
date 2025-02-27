@@ -54,8 +54,6 @@ public class VendorProfileDetailsFragment extends BaseFragment<FragmentVendorPro
         profileViewModel.getVendorLiveData().observe(getViewLifecycleOwner(), vendor -> {
             if (vendor != null) {
                 populateVendorData(vendor);
-            } else {
-                Toast.makeText(requireContext(), "Failed to load vendor data", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -72,7 +70,6 @@ public class VendorProfileDetailsFragment extends BaseFragment<FragmentVendorPro
                 DialogUtils.showCustomDialog(requireContext(), "Success", "Profile updated successfully!");
             } else if (result.getStatus() == Result.Status.ERROR) {
                 binding.progressBar.setVisibility(View.GONE);
-                DialogUtils.showCustomDialog(requireContext(), "Error", "Failed to update profile: " + result.getErrorMessage());
             }
         });
     }
@@ -104,8 +101,6 @@ public class VendorProfileDetailsFragment extends BaseFragment<FragmentVendorPro
             currentVendor.setAddress(address);
 
             profileViewModel.updateVendorData(currentVendor);  // Save changes
-        } else {
-            Toast.makeText(requireContext(), "Vendor data not available", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -164,10 +164,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements
         Toast.makeText(requireContext(), product.getName() + " favorited!", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onCartClicked(Product product) {
-        Toast.makeText(requireContext(), product.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
-    }
+
 
     @Override
     public void onProductClicked(Product product) {

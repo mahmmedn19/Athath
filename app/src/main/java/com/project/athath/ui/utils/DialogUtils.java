@@ -48,4 +48,15 @@ public class DialogUtils {
         });
         builder.create().show();
     }
+    public static void showCustomDialog(Context context, String title, String message, Runnable onConfirm) {
+        new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    dialog.dismiss();
+                    if (onConfirm != null) onConfirm.run();  // Executes callback after dialog dismissal
+                })
+                .setCancelable(false)
+                .show();
+    }
 }

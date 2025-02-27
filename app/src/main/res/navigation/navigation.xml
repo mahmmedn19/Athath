@@ -75,7 +75,11 @@
     <fragment
         android:id="@+id/productDetailsFragment"
         android:name="com.project.athath.ui.product_details.ProductDetailsFragment"
-        android:label="ProductDetailsFragment" />
+        android:label="ProductDetailsFragment" >
+        <action
+            android:id="@+id/action_productDetailsFragment_to_userSelectionFragment"
+            app:destination="@id/userSelectionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="com.project.athath.ui.user_screen.UserProfileFragment"

@@ -260,6 +260,11 @@ public class AuthRepositoryImpl implements AuthRepository {
         resultLiveData.setValue(Result.success("Logged out successfully"));
         return resultLiveData;
     }
+    @Override
+    public boolean isUserLoggedIn() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
+    }
+
     private String getFirebaseAuthErrorMessage(Exception e) {
         if (e instanceof FirebaseAuthUserCollisionException) {
             return "This email is already registered. Please use a different email.";

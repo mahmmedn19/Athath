@@ -77,8 +77,6 @@ public class AddProductFragment extends BaseFragment<FragmentAddProductBinding> 
                 if (product != null) {
                     fillProductFields(product);
                 }
-            } else {
-                Toast.makeText(requireContext(), "Failed to load product data.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -139,8 +137,6 @@ public class AddProductFragment extends BaseFragment<FragmentAddProductBinding> 
                 if (result.getStatus() == com.project.athath.data.utils.Result.Status.SUCCESS) {
                     Toast.makeText(requireContext(), "Product updated successfully!", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(requireView()).navigateUp();
-                } else if (result.getStatus() == Result.Status.ERROR){
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
                 }
             });
         } else { // Add Product
@@ -149,8 +145,6 @@ public class AddProductFragment extends BaseFragment<FragmentAddProductBinding> 
                 if (result.getStatus() == com.project.athath.data.utils.Result.Status.SUCCESS) {
                     Toast.makeText(requireContext(), "Product added successfully!", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(requireView()).navigateUp();
-                } else if (result.getStatus() == Result.Status.ERROR){
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
                 }
             });
         }

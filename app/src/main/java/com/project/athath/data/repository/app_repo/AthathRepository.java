@@ -44,4 +44,7 @@ public interface AthathRepository {
     LiveData<Result<String>> addProductToFavorites(Product product);
 
     LiveData<Result<String>> removeProductFromFavorites(Product product);
+
+    LiveData<Boolean> checkIfProductIsFavorite(String productId);
+
 }
