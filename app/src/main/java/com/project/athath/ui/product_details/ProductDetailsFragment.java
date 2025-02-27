@@ -97,21 +97,18 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
         viewModel.getProductLiveData().observe(getViewLifecycleOwner(), result -> {
             if (result.getStatus() == Result.Status.LOADING) {
                 showFullScreenLoading(true);
+                binding.llProductDetailsContainer.setVisibility(View.GONE);  // Hide all UI components
             } else if (result.getStatus() == Result.Status.SUCCESS) {
-                showFullScreenLoading(false);
-                if (result.getData() != null) {
-                    currentProduct = result.getData();
-                    updateProductDetails(currentProduct);
-                    // Check initial favorite status
-                    viewModel.checkIfProductIsFavorite(currentProduct.getId()).observe(getViewLifecycleOwner(), isFavorite -> {
-                        currentProduct.setFavorite(isFavorite);
-                        updateFavoriteIcon(isFavorite);
-                    });
-                } else {
-                    Toast.makeText(requireContext(), "Product not found", Toast.LENGTH_SHORT).show();
-                }
-            } else if (result.getStatus() == Result.Status.ERROR) {
-                showFullScreenLoading(false);
+                new android.os.Handler().postDelayed(() -> {  // Add delay to avoid flickering
+                    showFullScreenLoading(false);
+                    if (result.getData() != null) {
+                        currentProduct = result.getData();
+                        updateProductDetails(currentProduct);
+                        binding.llProductDetailsContainer.setVisibility(View.VISIBLE);  // Show UI after loading
+                    } else {
+                        Toast.makeText(requireContext(), "Product not found", Toast.LENGTH_SHORT).show();
+                    }
+                }, 1500); // 1.5 seconds delay
             }
         });
     }
@@ -140,13 +137,12 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
     private void observeRecommendedProducts() {
         viewModel.getRecommendedProductsLiveData().observe(getViewLifecycleOwner(), result -> {
             if (result.getStatus() == Result.Status.LOADING) {
-                showFullScreenLoading(true);
+                binding.progressBarSuggestion.setVisibility(View.VISIBLE);
                 binding.rvSuggestionItems.setVisibility(View.GONE);
                 binding.imageNoDataFoundProduct.setVisibility(View.GONE);
 
             } else if (result.getStatus() == Result.Status.SUCCESS) {
-                showFullScreenLoading(false);
-
+                binding.progressBarSuggestion.setVisibility(View.GONE);
                 if (result.getData() != null && !result.getData().isEmpty()) {
                     binding.rvSuggestionItems.setVisibility(View.VISIBLE);
                     binding.imageNoDataFoundProduct.setVisibility(View.GONE);
@@ -157,7 +153,7 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
                 }
 
             } else if (result.getStatus() == Result.Status.ERROR) {
-                showFullScreenLoading(false);
+                binding.progressBarSuggestion.setVisibility(View.GONE);
                 binding.rvSuggestionItems.setVisibility(View.GONE);
                 binding.imageNoDataFoundProduct.setVisibility(View.VISIBLE);
             }
@@ -184,7 +180,13 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
     }
 
     private void showFullScreenLoading(boolean isLoading) {
-        binding.fullScreenLoader.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        if (isLoading) {
+            binding.fullScreenLoader.setVisibility(View.VISIBLE);
+        } else {
+            new android.os.Handler().postDelayed(() -> {
+                binding.fullScreenLoader.setVisibility(View.GONE);
+            }, 1500); // 1.5 seconds delay
+        }
     }
     private void updateFavoriteIcon(boolean isFavorite) {
         if (isFavorite) {

@@ -47,24 +47,27 @@ public class ProductDetailsViewModel extends ViewModel {
     }
 
     public void fetchProductById(String productId) {
-        productLiveData.setValue(Result.loading());
-        repository.getAllProducts().observeForever(result -> {
-            if (result.getStatus() == Result.Status.SUCCESS && result.getData() != null) {
-                Product foundProduct = result.getData().stream()
-                        .filter(product -> product.getId().equals(productId))
-                        .findFirst()
-                        .orElse(null);
+        productLiveData.postValue(Result.loading());  // Show loading state
 
-                if (foundProduct != null) {
-                    productLiveData.setValue(Result.success(foundProduct));
-                    fetchVendorById(foundProduct.getStoreId()); // Fetch vendor details using storeId
+        new android.os.Handler().postDelayed(() -> {
+            repository.getAllProducts().observeForever(result -> {
+                if (result.getStatus() == Result.Status.SUCCESS && result.getData() != null) {
+                    Product foundProduct = result.getData().stream()
+                            .filter(product -> product.getId().equals(productId))
+                            .findFirst()
+                            .orElse(null);
+
+                    if (foundProduct != null) {
+                        productLiveData.postValue(Result.success(foundProduct));
+                        fetchVendorById(foundProduct.getStoreId()); // Fetch vendor details
+                    } else {
+                        productLiveData.postValue(Result.error("Product not found"));
+                    }
                 } else {
-                    productLiveData.setValue(Result.error("Product not found"));
+                    productLiveData.postValue(Result.error("Failed to fetch product."));
                 }
-            } else {
-                productLiveData.setValue(Result.error("Failed to fetch product."));
-            }
-        });
+            });
+        }, 2000); // 2 seconds delay
     }
 
     public void fetchRecommendedProducts(String productId) {

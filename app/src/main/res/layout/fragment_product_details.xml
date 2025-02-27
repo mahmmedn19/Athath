@@ -14,6 +14,7 @@
             android:paddingHorizontal="16dp">
 
             <LinearLayout
+                android:id="@+id/llProductDetailsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -169,7 +170,13 @@
                     android:text="Suggestions"
                     android:textColor="@color/md_theme_primary"
                     android:textSize="20sp" />
-
+                <ProgressBar
+                    android:id="@+id/progressBarSuggestion"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:indeterminate="true" />
                 <ImageView
                     android:id="@+id/imageNoDataFoundProduct"
                     android:layout_width="100dp"
@@ -195,13 +202,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#80000000"
-            android:gravity="center"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:visibility="gone">
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
+                android:layout_gravity="center_vertical|center_horizontal"
                 android:indeterminate="true" />
         </FrameLayout>
     </FrameLayout>
