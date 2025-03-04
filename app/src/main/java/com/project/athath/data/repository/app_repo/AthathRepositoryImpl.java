@@ -10,12 +10,12 @@ import com.project.athath.data.model.CatalogItem;
 import com.project.athath.data.model.Customer;
 import com.project.athath.data.model.Product;
 import com.project.athath.data.model.Vendor;
+import com.project.athath.data.network.ApiService;
 import com.project.athath.data.utils.Result;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -26,12 +26,25 @@ public class AthathRepositoryImpl implements AthathRepository {
     private static final String COLLECTION_NAME_CATALOG = "CatalogItems";
     private final String COLLECTION_NAME_PRODUCTS = "products";
     private static final String COLLECTION_NAME_USERS = "Customers";
-    private static final String SUB_COLLECTION_FAVORITES = "favorites";
+    private final ApiService apiService;
+    private static AthathRepositoryImpl instance;
 
     @Inject
-    public AthathRepositoryImpl(FirebaseAuth auth, FirebaseFirestore db) {
+    public AthathRepositoryImpl(FirebaseAuth auth, FirebaseFirestore db, ApiService apiService) {
         this.auth = auth;
         this.db = db;
+        this.apiService = apiService;
+    }
+
+    public static synchronized AthathRepositoryImpl getInstance(ApiService apiService) {
+        if (instance == null) {
+            instance = new AthathRepositoryImpl(
+                    FirebaseAuth.getInstance(),
+                    FirebaseFirestore.getInstance(),
+                    apiService
+            );
+        }
+        return instance;
     }
 
     @Override
@@ -300,7 +313,6 @@ public class AthathRepositoryImpl implements AthathRepository {
         return vendorLiveData;
     }
 
-    // ✅ Fetch Favorites
     @Override
     public LiveData<Result<List<Product>>> getFavoriteProducts() {
         MutableLiveData<Result<List<Product>>> resultLiveData = new MutableLiveData<>();
@@ -312,23 +324,48 @@ public class AthathRepositoryImpl implements AthathRepository {
         }
 
         resultLiveData.setValue(Result.loading());
+
         db.collection(COLLECTION_NAME_USERS).document(userId)
-                .collection(SUB_COLLECTION_FAVORITES)
                 .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<Product> favoriteProducts = new ArrayList<>();
-                    for (var document : querySnapshot.getDocuments()) {
-                        Product product = document.toObject(Product.class);
-                        if (product != null) favoriteProducts.add(product);
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Customer customer = documentSnapshot.toObject(Customer.class);
+                        if (customer != null && customer.getFavoriteProductIds() != null) {
+                            List<String> productIds = customer.getFavoriteProductIds();
+                            fetchProductsByIds(productIds, resultLiveData);
+                        } else {
+                            resultLiveData.setValue(Result.success(new ArrayList<>()));
+                        }
+                    } else {
+                        resultLiveData.setValue(Result.success(new ArrayList<>()));
                     }
-                    resultLiveData.setValue(Result.success(favoriteProducts));
                 })
                 .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to fetch favorites: " + e.getMessage())));
 
         return resultLiveData;
     }
 
-    // ✅ Add Product to Favorites
+    // ✅ Helper method to fetch product details using IDs
+    private void fetchProductsByIds(List<String> productIds, MutableLiveData<Result<List<Product>>> resultLiveData) {
+        if (productIds.isEmpty()) {
+            resultLiveData.setValue(Result.success(new ArrayList<>()));
+            return;
+        }
+
+        db.collection(COLLECTION_NAME_PRODUCTS)
+                .whereIn("id", productIds)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<Product> products = new ArrayList<>();
+                    for (var document : querySnapshot.getDocuments()) {
+                        Product product = document.toObject(Product.class);
+                        if (product != null) products.add(product);
+                    }
+                    resultLiveData.setValue(Result.success(products));
+                })
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to fetch product details: " + e.getMessage())));
+    }
+
     @Override
     public LiveData<Result<String>> addProductToFavorites(Product product) {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
@@ -339,26 +376,26 @@ public class AthathRepositoryImpl implements AthathRepository {
             return resultLiveData;
         }
 
-        // ✅ Save only necessary fields (avoid overwriting unwanted fields)
-        Map<String, Object> favoriteData = new HashMap<>();
-        favoriteData.put("id", product.getId());
-        favoriteData.put("name", product.getName());
-        favoriteData.put("price", product.getPrice());
-        favoriteData.put("imageUrl", product.getImageUrl());
-        favoriteData.put("storeId", product.getStoreId());
-        favoriteData.put("roomType", product.getRoomType());
-        favoriteData.put("style", product.getStyle());
-        favoriteData.put("color", product.getColor());
-        favoriteData.put("productWidth", product.getProductWidth());
-        favoriteData.put("productLength", product.getProductLength());
-        favoriteData.put("description", product.getDescription());
-
         db.collection(COLLECTION_NAME_USERS).document(userId)
-                .collection(SUB_COLLECTION_FAVORITES)
-                .document(product.getId())
-                .set(favoriteData)
-                .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Product added to favorites.")))
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to add to favorites: " + e.getMessage())));
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Customer customer = documentSnapshot.toObject(Customer.class);
+                        if (customer != null) {
+                            List<String> favoriteProductIds = customer.getFavoriteProductIds();
+                            if (!favoriteProductIds.contains(product.getId())) {
+                                favoriteProductIds.add(product.getId());
+                                db.collection(COLLECTION_NAME_USERS).document(userId)
+                                        .update("favoriteProductIds", favoriteProductIds)
+                                        .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Product added to favorites.")))
+                                        .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to add to favorites: " + e.getMessage())));
+                            } else {
+                                resultLiveData.setValue(Result.success("Product already in favorites."));
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to fetch user data: " + e.getMessage())));
 
         return resultLiveData;
     }
@@ -375,33 +412,84 @@ public class AthathRepositoryImpl implements AthathRepository {
         }
 
         db.collection(COLLECTION_NAME_USERS).document(userId)
-                .collection(SUB_COLLECTION_FAVORITES)
-                .document(product.getId())
-                .delete()
-                .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Product removed from favorites.")))
-                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to remove favorite: " + e.getMessage())));
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Customer customer = documentSnapshot.toObject(Customer.class);
+                        if (customer != null) {
+                            List<String> favoriteProductIds = customer.getFavoriteProductIds();
+                            if (favoriteProductIds.contains(product.getId())) {
+                                favoriteProductIds.remove(product.getId());
+                                db.collection(COLLECTION_NAME_USERS).document(userId)
+                                        .update("favoriteProductIds", favoriteProductIds)
+                                        .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Product removed from favorites.")))
+                                        .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to remove favorite: " + e.getMessage())));
+                            } else {
+                                resultLiveData.setValue(Result.success("Product was not in favorites."));
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> resultLiveData.setValue(Result.error("Failed to fetch user data: " + e.getMessage())));
 
         return resultLiveData;
     }
+
     @Override
     public LiveData<Boolean> checkIfProductIsFavorite(String productId) {
         MutableLiveData<Boolean> isFavoriteLiveData = new MutableLiveData<>();
         String userId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;
 
         if (userId == null) {
-            isFavoriteLiveData.setValue(false);  // User not authenticated
+            isFavoriteLiveData.setValue(false);
             return isFavoriteLiveData;
         }
-        // 🔑 Generate ID BEFORE adding to Firestore
 
         db.collection(COLLECTION_NAME_USERS).document(userId)
-                .collection(SUB_COLLECTION_FAVORITES)
-                .document(productId)
                 .get()
-                .addOnSuccessListener(documentSnapshot -> isFavoriteLiveData.setValue(documentSnapshot.exists()))
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Customer customer = documentSnapshot.toObject(Customer.class);
+                        isFavoriteLiveData.setValue(customer != null && customer.getFavoriteProductIds().contains(productId));
+                    } else {
+                        isFavoriteLiveData.setValue(false);
+                    }
+                })
                 .addOnFailureListener(e -> isFavoriteLiveData.setValue(false));
 
         return isFavoriteLiveData;
+    }
+
+    @Override
+    public LiveData<Result<String>> addAILink(String link) {
+        MutableLiveData<Result<String>> result = new MutableLiveData<>();
+        result.setValue(Result.loading());
+
+        db.collection("AiLink").document("single_ai_link") // Use a fixed document ID
+                .set(Collections.singletonMap("link", link)) // Store as a key-value pair
+                .addOnSuccessListener(aVoid -> result.setValue(Result.success("AI link updated successfully.")))
+                .addOnFailureListener(e -> result.setValue(Result.error("Failed to update AI link: " + e.getMessage())));
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Result<String>> getSingleAILink() {
+        MutableLiveData<Result<String>> result = new MutableLiveData<>();
+        result.setValue(Result.loading());
+
+        db.collection("AiLink").document("single_ai_link").get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists() && documentSnapshot.contains("link")) {
+                        String link = documentSnapshot.getString("link");
+                        result.setValue(Result.success(link));
+                    } else {
+                        result.setValue(Result.error("No AI link found."));
+                    }
+                })
+                .addOnFailureListener(e -> result.setValue(Result.error("Failed to fetch AI link: " + e.getMessage())));
+
+        return result;
     }
 
 }

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -65,21 +66,18 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
         observeProductDetails();
         observeVendorDetails();
         observeRecommendedProducts();
-
+        observeFavoriteStatus(productId);
         // Fetch product details and recommended products
         viewModel.fetchProductById(productId);
         viewModel.fetchRecommendedProducts(productId);
         binding.ivFavoriteIcon.setOnClickListener(v -> {
             if (!viewModel.isUserLoggedIn()) {
-                showLoginRequiredDialog();  // Show login dialog if not logged in
+                showLoginRequiredDialog();
                 return;
             }
-
             if (currentProduct != null) {
                 viewModel.toggleFavoriteStatus(currentProduct).observe(getViewLifecycleOwner(), isFavorite -> {
-                    currentProduct.setFavorite(isFavorite);     // Update product state
-                    updateFavoriteIcon(isFavorite);            // Update icon color
-
+                    updateFavoriteIcon(isFavorite);
                     String message = isFavorite ? "Added to favorites!" : "Removed from favorites!";
                     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
                 });
@@ -188,6 +186,11 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
             }, 1500); // 1.5 seconds delay
         }
     }
+
+    private void observeFavoriteStatus(String productId) {
+        viewModel.checkIfProductIsFavorite(productId).observe(getViewLifecycleOwner(), this::updateFavoriteIcon);
+    }
+
     private void updateFavoriteIcon(boolean isFavorite) {
         if (isFavorite) {
             binding.ivFavoriteIcon.setColorFilter(getResources().getColor(R.color.md_theme_errorContainer_mediumContrast)); // Primary color
@@ -216,12 +219,17 @@ public class ProductDetailsFragment extends BaseFragment<FragmentProductDetailsB
                 showLoginRequiredDialog();  // Show login dialog if not logged in
                 return;
             }
+
             viewModel.toggleFavoriteStatus(product).observe(getViewLifecycleOwner(), isFavorite -> {
-                product.setFavorite(isFavorite);     // Update product state
-                updateFavoriteIcon(isFavorite);            // Update icon color
+                adapter.notifyDataSetChanged();  // ✅ Ensure RecyclerView updates
                 String message = isFavorite ? "Added to favorites!" : "Removed from favorites!";
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
             });
         }
+    }
+
+    @Override
+    public LiveData<Boolean> checkIfProductIsFavorite(String productId) {
+        return viewModel.checkIfProductIsFavorite(productId);
     }
 }

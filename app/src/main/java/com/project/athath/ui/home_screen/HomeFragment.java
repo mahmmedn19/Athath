@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -161,9 +162,12 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements
 
     @Override
     public void onFavoriteClicked(Product product) {
-        Toast.makeText(requireContext(), product.getName() + " favorited!", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public LiveData<Boolean> checkIfProductIsFavorite(String productId) {
+        return null;
+    }
 
 
     @Override

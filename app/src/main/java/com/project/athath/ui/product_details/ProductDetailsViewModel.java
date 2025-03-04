@@ -95,35 +95,28 @@ public class ProductDetailsViewModel extends ViewModel {
             }
         });
     }
-    public void addToFavorites(Product product) {
-        favoriteResultLiveData.setValue(Result.loading());
-        repository.addProductToFavorites(product).observeForever(result -> {
-            if (result.getStatus() == Result.Status.SUCCESS) {
-                favoriteResultLiveData.setValue(Result.success("Added to favorites"));
-            } else {
-                favoriteResultLiveData.setValue(Result.error("Failed to add to favorites"));
-            }
-        });
-    }
+
     public LiveData<Boolean> checkIfProductIsFavorite(String productId) {
         return repository.checkIfProductIsFavorite(productId);  // Delegate to repository
     }
     public LiveData<Boolean> toggleFavoriteStatus(Product product) {
         MutableLiveData<Boolean> favoriteStatusLiveData = new MutableLiveData<>();
 
-        if (product.isFavorite()) {
-            repository.removeProductFromFavorites(product).observeForever(result -> {
-                if (result.getStatus() == Result.Status.SUCCESS) {
-                    favoriteStatusLiveData.setValue(false);  // Removed from favorites
-                }
-            });
-        } else {
-            repository.addProductToFavorites(product).observeForever(result -> {
-                if (result.getStatus() == Result.Status.SUCCESS) {
-                    favoriteStatusLiveData.setValue(true);  // Added to favorites
-                }
-            });
-        }
+        repository.checkIfProductIsFavorite(product.getId()).observeForever(isFavorite -> {
+            if (isFavorite) {
+                repository.removeProductFromFavorites(product).observeForever(result -> {
+                    if (result.getStatus() == Result.Status.SUCCESS) {
+                        favoriteStatusLiveData.postValue(false);  // Removed from favorites
+                    }
+                });
+            } else {
+                repository.addProductToFavorites(product).observeForever(result -> {
+                    if (result.getStatus() == Result.Status.SUCCESS) {
+                        favoriteStatusLiveData.postValue(true);  // Added to favorites
+                    }
+                });
+            }
+        });
 
         return favoriteStatusLiveData;
     }

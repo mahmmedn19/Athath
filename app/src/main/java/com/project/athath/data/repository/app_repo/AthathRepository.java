@@ -47,4 +47,8 @@ public interface AthathRepository {
 
     LiveData<Boolean> checkIfProductIsFavorite(String productId);
 
+    LiveData<Result<String>> addAILink(String link);
+
+
+    LiveData<Result<String>> getSingleAILink() ;
 }

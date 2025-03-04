@@ -2,6 +2,7 @@ package com.project.athath.di;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.project.athath.data.network.ApiService;
 import com.project.athath.data.repository.app_repo.AthathRepository;
 import com.project.athath.data.repository.app_repo.AthathRepositoryImpl;
 import com.project.athath.data.repository.auth.AuthRepository;
@@ -38,7 +39,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public AthathRepository provideAthathRepository(FirebaseAuth auth, FirebaseFirestore db) {
-        return new AthathRepositoryImpl(auth, db);
+    public AthathRepository provideAthathRepository(FirebaseAuth auth, FirebaseFirestore db, ApiService apiService) {
+        return new AthathRepositoryImpl(auth, db, apiService);
     }
 }

@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 
+import androidx.lifecycle.LiveData;
+
+import com.project.athath.R;
 import com.project.athath.data.utils.ImageUtils;
 import com.project.athath.databinding.HomeItemBinding;
 import com.project.athath.data.model.Product;
@@ -33,8 +36,22 @@ public class HomeAdapter extends BaseAdapter<Product, HomeItemBinding> {
         binding.setItem(currentItem);
         Bitmap bitmap = ImageUtils.decodeBase64ToImage(currentItem.getImageUrl());
         binding.productImage.setImageBitmap(bitmap);
+        // ✅ Observe favorite status and update icon
+        listener.checkIfProductIsFavorite(currentItem.getId()).observeForever(isFavorite -> {
+            updateFavoriteIcon(binding, isFavorite);
+        });
+
         binding.favIcon.setOnClickListener(view -> listener.onFavoriteClicked(currentItem));
         binding.executePendingBindings();
+    }
+
+    // ✅ Update icon dynamically
+    private void updateFavoriteIcon(HomeItemBinding binding, boolean isFavorite) {
+        if (isFavorite) {
+            binding.favIcon.setColorFilter(binding.getRoot().getContext().getResources().getColor(R.color.md_theme_errorContainer_mediumContrast));
+        } else {
+            binding.favIcon.setColorFilter(binding.getRoot().getContext().getResources().getColor(R.color.white));
+        }
     }
 
     public void updateProducts(List<Product> products) {
@@ -46,5 +63,6 @@ public class HomeAdapter extends BaseAdapter<Product, HomeItemBinding> {
 
     public interface HomeInteractionListener extends BaseInteractionListener {
         void onFavoriteClicked(Product product);
+        LiveData<Boolean> checkIfProductIsFavorite(String productId); // ✅ Added method
     }
 }

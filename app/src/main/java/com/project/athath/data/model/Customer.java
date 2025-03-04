@@ -1,14 +1,18 @@
 package com.project.athath.data.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Customer {
     private String id;
     private String username;
     private String email;
     private String status;
     private String role = "Customers";
-
+    private List<String> favoriteProductIds; // ✅ List of Favorite Product IDs
 
     public Customer() {
+        this.favoriteProductIds = new ArrayList<>(); // Initialize list
     } // Required empty constructor for Firebase
 
     public Customer(String username, String email, String status) {
@@ -16,12 +20,14 @@ public class Customer {
         this.email = email;
         this.status = status;
         this.role = "Customers";
+        this.favoriteProductIds = new ArrayList<>();
     }
 
     public Customer(String username, String email) {
         this.username = username;
         this.email = email;
         this.role = "Customers";
+        this.favoriteProductIds = new ArrayList<>();
     }
 
     public String getId() {
@@ -56,8 +62,6 @@ public class Customer {
         this.status = status;
     }
 
-
-
     public String getRole() {
         return role;
     }
@@ -66,4 +70,11 @@ public class Customer {
         this.role = role;
     }
 
+    public List<String> getFavoriteProductIds() {
+        return favoriteProductIds;
+    }
+
+    public void setFavoriteProductIds(List<String> favoriteProductIds) {
+        this.favoriteProductIds = favoriteProductIds;
+    }
 }
