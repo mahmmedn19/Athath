@@ -24,6 +24,9 @@ public class InputValidator {
         if (isEmpty(text)) {
             setError(textInputLayout, "This field cannot be empty");
             return false;
+        } else if (text.length() < 4) {
+            setError(textInputLayout, "At least 4 char");
+            return false;
         }
         clearError(textInputLayout);
         return true;

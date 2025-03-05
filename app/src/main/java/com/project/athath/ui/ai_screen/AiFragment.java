@@ -2,21 +2,24 @@ package com.project.athath.ui.ai_screen;
 
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ObservableArrayList;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.project.athath.R;
+import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.FragmentAiBinding;
 import com.project.athath.databinding.ItemQuestionBinding;
 import com.project.athath.ui.base.BaseFragment;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -24,8 +27,9 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class AiFragment extends BaseFragment<FragmentAiBinding> {
 
     private LinearLayout questionContainer;
+    private AiViewModel viewModel;
 
-    private final List<Question> questions = Arrays.asList(
+    public static final List<Question> questions = Arrays.asList(
             new Question("1. What type of room are you looking for?",
                     Arrays.asList("Bedroom", "Living Room", "Office", "Kids' Room", "Dining Room")),
 
@@ -84,7 +88,8 @@ public class AiFragment extends BaseFragment<FragmentAiBinding> {
 
     @Override
     protected ViewModel getViewModel() {
-        return null;
+        viewModel = new ViewModelProvider(this).get(AiViewModel.class);
+        return viewModel;
     }
 
     @Override
@@ -95,36 +100,61 @@ public class AiFragment extends BaseFragment<FragmentAiBinding> {
         setToolbarTitle("AI Suggestions");
         showBackButton(false);
 
-        // Handle navigation to Catalog
-        binding.btnShowCatelog.setOnClickListener(view ->
-                Navigation.findNavController(view).navigate(R.id.action_aiFragment_to_catalogFragment)
-        );
-
         questionContainer = binding.questionContainer;
         addQuestions();
+
+
+        // Handle navigation to Catalog
+        binding.btnShowCatelog.setOnClickListener(view -> {
+            if (validateAllQuestionsAnswered()) {
+                viewModel.submitAnswers();
+            } else {
+                Toast.makeText(requireContext(), "Please answer all questions before submitting!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        observeViewModel();
     }
 
     private void addQuestions() {
         LayoutInflater inflater = getLayoutInflater();
 
         for (Question question : questions) {
-            // Inflate item_question layout
             ItemQuestionBinding itemBinding = DataBindingUtil.inflate(inflater, R.layout.item_question, questionContainer, false);
             itemBinding.setQuestionText(question.getQuestionText());
-            itemBinding.setOptions(new ObservableArrayList<>());
 
-            // Find ChipGroup and add chips dynamically
             ChipGroup chipGroup = itemBinding.getRoot().findViewById(R.id.chipGroup);
             for (String option : question.getOptions()) {
                 Chip chip = new Chip(requireContext());
                 chip.setText(option);
                 chip.setCheckable(true);
+                chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        viewModel.updateAnswer(question.getQuestionText(), option);
+                    }
+                });
                 chipGroup.addView(chip);
             }
 
-            // Add the inflated question layout to the container
             questionContainer.addView(itemBinding.getRoot());
         }
+    }
+
+    private boolean validateAllQuestionsAnswered() {
+        return Objects.requireNonNull(viewModel.getUserAnswers().getValue()).size() == questions.size();
+    }
+
+    private void observeViewModel() {
+        viewModel.getSubmissionResult().observe(getViewLifecycleOwner(), result -> {
+            if (result.getStatus() == Result.Status.LOADING) {
+                Toast.makeText(requireContext(), "Submitting...", Toast.LENGTH_SHORT).show();
+            } else if (result.getStatus() == Result.Status.SUCCESS) {
+                Toast.makeText(requireContext(), "Submitted successfully!", Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(requireView()).navigate(R.id.action_aiFragment_to_catalogFragment);
+            } else if (result.getStatus() == Result.Status.ERROR) {
+                Toast.makeText(requireContext(), result.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // Helper class to hold question data
