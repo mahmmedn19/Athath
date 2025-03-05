@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.project.athath.R;
-import com.project.athath.data.model.Component;
 import com.project.athath.data.model.Product;
+import com.project.athath.data.model.ResponseModel;
 import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.FragmentCatalogDetailsBinding;
 import com.project.athath.ui.base.BaseFragment;
@@ -28,8 +28,9 @@ public class CatalogDetailsFragment extends BaseFragment<FragmentCatalogDetailsB
     private ProductsAdapter productAdapter;
     private List<Product> products = new ArrayList<>();
     private CatalogDetailsViewModel viewModel;
-    private CategoryDetailsAdapter componentAdapter;
-    private List<Component> components;
+    private CategoryDetailsAdapter detectedObjectsAdapter;
+    private List<ResponseModel.DetectedObject> detectedObjects = new ArrayList<>();
+
     @Override
     protected String getTAG() {
         return "CatalogDetailsFragment";
@@ -52,33 +53,33 @@ public class CatalogDetailsFragment extends BaseFragment<FragmentCatalogDetailsB
         setToolbarVisibility(true);
         setToolbarTitle("Catalog Details");
         showBackButton(true);
-        // Set up catalog components list (horizontal)
-        binding.recyclerComponents.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
-        components = generateFakeComponents(3);
-        componentAdapter = new CategoryDetailsAdapter(components);
-        binding.recyclerComponents.setAdapter(componentAdapter);
 
+        // ✅ Retrieve detected objects from arguments
+        if (getArguments() != null) {
+            List<ResponseModel.DetectedObject> receivedObjects = getArguments().getParcelableArrayList("detectedObjects");
+            if (receivedObjects != null) {
+                detectedObjects.clear();
+                detectedObjects.addAll(receivedObjects);
+            }
+        }
 
+        // ✅ Set up detected objects RecyclerView (replaces fake components)
+        setupDetectedObjectsRecyclerView();
+
+        // ✅ Set up products RecyclerView
         setupRecyclerView();
         observeProducts();
 
         // Fetch products
         viewModel.fetchProducts();
     }
-    // Generate Fake Components Data
-    private List<Component> generateFakeComponents(int count) {
-        List<Component> componentList = new ArrayList<>();
-        for (int i = 1; i <= count; i++) {
-            int imageRes = switch (i % 5) {
-                case 0 -> R.drawable.image_1;
-                case 1 -> R.drawable.image_2;
-                default -> R.drawable.image_4;
-            };
 
-            componentList.add(new Component("Component " + i, imageRes));
-        }
-        return componentList;
+    private void setupDetectedObjectsRecyclerView() {
+        binding.recyclerComponents.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+        detectedObjectsAdapter = new CategoryDetailsAdapter(detectedObjects);
+        binding.recyclerComponents.setAdapter(detectedObjectsAdapter);
     }
+
     private void setupRecyclerView() {
         productAdapter = new ProductsAdapter(products, this);
         binding.rvProducts.setLayoutManager(new GridLayoutManager(requireContext(), 2));

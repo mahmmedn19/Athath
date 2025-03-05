@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.google.gson.GsonBuilder;
 import com.project.athath.data.network.ApiService;
-import com.project.athath.data.repository.app_repo.AthathRepositoryImpl;
+import com.project.athath.data.network.CookieManager;
 import com.project.athath.ui.utils.SharedPrefUtils;
 
 import javax.inject.Singleton;
@@ -26,9 +26,8 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public static Retrofit provideRetrofit(@ApplicationContext Context context, GsonConverterFactory gson, OkHttpClient okHttpClient, ApiService apiService) {
+    public static Retrofit provideRetrofit(@ApplicationContext Context context, GsonConverterFactory gson, OkHttpClient okHttpClient) {
         String baseUrl = SharedPrefUtils.getAiLink(context);
-        //AthathRepositoryImpl.getInstance(apiService).getAiLink(baseUrl);
         return new Retrofit.Builder()
                 .baseUrl(baseUrl) // ✅ Use AI Link as Base URL
                 .addConverterFactory(gson)
@@ -49,9 +48,10 @@ public class NetworkModule {
     }
 
     @Provides
-    public static OkHttpClient provideOkHttpClient(HttpLoggingInterceptor loggingInterceptor) {
+    public static OkHttpClient provideOkHttpClient(@ApplicationContext Context context, HttpLoggingInterceptor loggingInterceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(new CookieManager(context))
                 .build();
     }
 

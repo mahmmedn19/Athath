@@ -4,6 +4,7 @@ package com.project.athath;
 import static com.project.athath.ui.utils.LocalLang.setLocale;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,8 +21,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.ActivityMainBinding;
 import com.project.athath.ui.base.BaseFragment;
+import com.project.athath.ui.utils.SharedPrefUtils;
 
 import java.util.Objects;
 
@@ -46,6 +49,14 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(0, systemBars.top, 0, 0);
             return insets;
+        });
+        // ✅ Fetch AI link and observe the LiveData
+        mainViewModel.getSingleAILink().observe(this, result -> {
+            if (Objects.requireNonNull(result.getStatus()) == Result.Status.SUCCESS) {
+                String aiLink = result.getData();
+                Log.d("AI_LINK", aiLink);
+                SharedPrefUtils.saveAiLink(this, aiLink); // ✅ Save AI link to SharedPreferences
+            }
         });
         // Dynamically update bottom navigation menu
         observeLoginState();
@@ -163,5 +174,11 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
         } else {
             binding.toolbar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mainViewModel.fetchAILink(); // ✅ Always fetch AI link on start
     }
 }

@@ -135,8 +135,8 @@
         android:name="com.project.athath.ui.ai_screen.AiFragment"
         android:label="AiFragment" >
         <action
-            android:id="@+id/action_aiFragment_to_catalogFragment"
-            app:destination="@id/catalogFragment" />
+            android:id="@+id/action_aiFragment_to_catalogDetailsFragment"
+            app:destination="@id/catalogDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/catalogDetailsFragment"

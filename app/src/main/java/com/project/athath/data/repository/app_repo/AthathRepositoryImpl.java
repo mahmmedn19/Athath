@@ -6,18 +6,30 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.project.athath.data.model.AiRecommendationResponse;
 import com.project.athath.data.model.CatalogItem;
 import com.project.athath.data.model.Customer;
+import com.project.athath.data.model.NextRecommendationResponse;
 import com.project.athath.data.model.Product;
+import com.project.athath.data.model.ResponseModel;
 import com.project.athath.data.model.Vendor;
 import com.project.athath.data.network.ApiService;
 import com.project.athath.data.utils.Result;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AthathRepositoryImpl implements AthathRepository {
 
@@ -492,4 +504,81 @@ public class AthathRepositoryImpl implements AthathRepository {
         return result;
     }
 
+    @Override
+    public LiveData<Result<List<ResponseModel.DetectedObject>>> uploadImage(File file) {
+        MutableLiveData<Result<List<ResponseModel.DetectedObject>>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
+
+        // ✅ Convert File to RequestBody
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
+        // ✅ Call the API
+        apiService.uploadImage(body).enqueue(new retrofit2.Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, retrofit2.Response<ResponseModel> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<ResponseModel.DetectedObject> objects = response.body().getObjects();
+                    resultLiveData.setValue(Result.success(objects)); // ✅ Return the detected objects list
+                } else {
+                    resultLiveData.setValue(Result.error("Failed to upload image."));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                resultLiveData.setValue(Result.error("Error uploading image: " + t.getMessage()));
+            }
+        });
+
+        return resultLiveData;
+    }
+
+    @Override
+    public LiveData<Result<AiRecommendationResponse>> getRecommendations(Map<String, String> userPreferences) {
+        MutableLiveData<Result<AiRecommendationResponse>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
+
+        apiService.getRecommendations(userPreferences).enqueue(new Callback<AiRecommendationResponse>() {
+            @Override
+            public void onResponse(Call<AiRecommendationResponse> call, Response<AiRecommendationResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    resultLiveData.setValue(Result.success(response.body()));
+                } else {
+                    resultLiveData.setValue(Result.error("Failed to fetch recommendations"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AiRecommendationResponse> call, Throwable t) {
+                resultLiveData.setValue(Result.error("Error: " + t.getMessage()));
+            }
+        });
+
+        return resultLiveData;
+    }
+
+    @Override
+    public LiveData<Result<NextRecommendationResponse>> getNextRecommendation() {
+        MutableLiveData<Result<NextRecommendationResponse>> resultLiveData = new MutableLiveData<>();
+        resultLiveData.setValue(Result.loading());
+
+        apiService.getNextRecommendation().enqueue(new Callback<NextRecommendationResponse>() {
+            @Override
+            public void onResponse(Call<NextRecommendationResponse> call, Response<NextRecommendationResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    resultLiveData.setValue(Result.success(response.body()));
+                } else {
+                    resultLiveData.setValue(Result.error("No more recommendations available"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NextRecommendationResponse> call, Throwable t) {
+                resultLiveData.setValue(Result.error("Error: " + t.getMessage()));
+            }
+        });
+
+        return resultLiveData;
+    }
 }

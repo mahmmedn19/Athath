@@ -2,13 +2,18 @@ package com.project.athath.data.repository.app_repo;
 
 import androidx.lifecycle.LiveData;
 
+import com.project.athath.data.model.AiRecommendationResponse;
 import com.project.athath.data.model.CatalogItem;
 import com.project.athath.data.model.Customer;
+import com.project.athath.data.model.NextRecommendationResponse;
 import com.project.athath.data.model.Product;
+import com.project.athath.data.model.ResponseModel;
 import com.project.athath.data.model.Vendor;
 import com.project.athath.data.utils.Result;
 
+import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 public interface AthathRepository {
     LiveData<Result<List<Vendor>>> getAllVendors();
@@ -50,5 +55,11 @@ public interface AthathRepository {
     LiveData<Result<String>> addAILink(String link);
 
 
-    LiveData<Result<String>> getSingleAILink() ;
+    LiveData<Result<String>> getSingleAILink();
+
+    LiveData<Result<List<ResponseModel.DetectedObject>>> uploadImage(File file);
+
+    LiveData<Result<AiRecommendationResponse>> getRecommendations(Map<String, String> userPreferences);
+
+    LiveData<Result<NextRecommendationResponse>> getNextRecommendation();
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.project.athath.data.model.Customer;
+import com.project.athath.data.repository.app_repo.AthathRepository;
 import com.project.athath.data.repository.auth.AuthRepository;
 import com.project.athath.data.utils.Result;
 
@@ -18,15 +19,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class MainViewModel extends ViewModel {
 
     private final AuthRepository authRepository;
+    private final AthathRepository aiRepository;
     private final FirebaseAuth firebaseAuth;
-
     private final MutableLiveData<Boolean> isCustomerLoggedIn = new MutableLiveData<>();
     private final MutableLiveData<Result<Customer>> customerProfileLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Result<String>> aiLinkLiveData = new MutableLiveData<>();
 
     @Inject
-    public MainViewModel(AuthRepository authRepository, FirebaseAuth firebaseAuth) {
+    public MainViewModel(AuthRepository authRepository, FirebaseAuth firebaseAuth , AthathRepository aiRepository) {
         this.authRepository = authRepository;
+        this.aiRepository = aiRepository;
         this.firebaseAuth = firebaseAuth;
+        fetchAILink(); // Auto-fetch on ViewModel creation
         checkCustomerLoginState();
     }
 
@@ -62,5 +66,20 @@ public class MainViewModel extends ViewModel {
                 isCustomerLoggedIn.setValue(false);
             }
         });
+    }
+    public void fetchAILink() {
+        aiLinkLiveData.setValue(Result.loading());
+
+        aiRepository.getSingleAILink().observeForever(result -> {
+            if (result.getStatus() == Result.Status.SUCCESS) {
+                aiLinkLiveData.setValue(Result.success(result.getData()));
+            } else {
+                aiLinkLiveData.setValue(Result.error(result.getErrorMessage()));
+            }
+        });
+    }
+
+    public LiveData<Result<String>> getSingleAILink() {
+        return aiLinkLiveData;
     }
 }

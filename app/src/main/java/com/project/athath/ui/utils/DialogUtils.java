@@ -1,12 +1,44 @@
 package com.project.athath.ui.utils;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.project.athath.R;
+
 public class DialogUtils {
+    private static Dialog loadingDialog;
+
+    // ✅ Show Loading Dialog
+    public static void showLoadingDialog(Context context, String message) {
+        if (loadingDialog != null && loadingDialog.isShowing()) {
+            return; // Prevent duplicate dialogs
+        }
+
+        // Inflate custom layout
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_loading, null);
+        TextView messageTextView = view.findViewById(R.id.loadingMessage);
+        messageTextView.setText(message);
+
+        loadingDialog = new Dialog(context);
+        loadingDialog.setContentView(view);
+        loadingDialog.setCancelable(false);
+        loadingDialog.show();
+    }
+
+    // ✅ Hide Loading Dialog
+    public static void hideLoadingDialog() {
+        if (loadingDialog != null && loadingDialog.isShowing()) {
+            loadingDialog.dismiss();
+            loadingDialog = null;
+        }
+    }
 
     public static void showConfirmationDialog(Context context, String title, String message,
                                               String positiveButtonText, String negativeButtonText,
