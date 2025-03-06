@@ -15,7 +15,6 @@ public class Product {
     private double productWidth;       // Product width
     private double productLength;      // Product length
     private String imageUrl;           // Product image URL (Firebase Storage)
-    private String catalogImageId;     // Reference to catalog image added by admin
     private String storeId;            // Reference to the vendor's store
 
 
@@ -45,7 +44,7 @@ public class Product {
     // ✅ Full constructor
     public Product(String id, String name, String category, String description, double price, String color,
                    String style, String roomType, double productWidth, double productLength,
-                   String imageUrl, String catalogImageId) {
+                   String imageUrl) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -57,13 +56,12 @@ public class Product {
         this.productWidth = productWidth;
         this.productLength = productLength;
         this.imageUrl = imageUrl;
-        this.catalogImageId = catalogImageId;
     }
 
     // ✅ Constructor for product addition (without Firestore ID)
-    public Product(String name, String category, String description, double price, String color,
+    public Product(String id ,String name, String category, String description, double price, String color,
                    String style, String roomType, double productWidth, double productLength,
-                   String imageUrl, String catalogImageId, String storeId) {
+                   String imageUrl, String storeId) {
         this.name = name;
         this.category = category;
         this.description = description;
@@ -74,9 +72,10 @@ public class Product {
         this.productWidth = productWidth;
         this.productLength = productLength;
         this.imageUrl = imageUrl;
-        this.catalogImageId = catalogImageId;
         this.storeId = storeId;
     }
+
+
 
 
     // 🔑 Getters & Setters
@@ -168,13 +167,6 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public String getCatalogImageId() {
-        return catalogImageId;
-    }
-
-    public void setCatalogImageId(String catalogImageId) {
-        this.catalogImageId = catalogImageId;
-    }
 
     public String getStoreId() {
         return storeId;

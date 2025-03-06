@@ -128,7 +128,7 @@ public class AddProductFragment extends BaseFragment<FragmentAddProductBinding> 
 
         Product product = new Product(
                 productId, name, category, description, price, color, style,
-                roomType, width, length, encodedImage, null
+                roomType, width, length, encodedImage
         );
 
         if (productId != null) { // Update Product

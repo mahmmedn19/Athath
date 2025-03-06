@@ -191,7 +191,7 @@ public class AiFragment extends BaseFragment<FragmentAiBinding> {
         viewModel.uploadImage(imageFile);
         viewModel.getUploadResult().observe(getViewLifecycleOwner(), result -> {
             if (result.getStatus() == Result.Status.LOADING) {
-                DialogUtils.showLoadingDialog(requireContext(), "Uploading image...");
+                DialogUtils.showLoadingDialog(requireContext(), "Analyzing image...");
             } else if (result.getStatus() == Result.Status.SUCCESS && result.getData() != null) {
                 DialogUtils.hideLoadingDialog();
                 Bundle bundle = new Bundle();
@@ -230,6 +230,8 @@ public class AiFragment extends BaseFragment<FragmentAiBinding> {
     public void onResume() {
         super.onResume();
         if (dialog != null && dialog.isShowing()) dialog.dismiss();
+
+        viewModel.resetUserAnswers();
     }
 
     // Helper class to hold question data

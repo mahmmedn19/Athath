@@ -129,7 +129,7 @@ public class CatalogFragment extends BaseFragment<FragmentCatalogBinding> implem
         // ✅ Observe Upload Result
         viewModel.getUploadResult().observe(getViewLifecycleOwner(), result -> {
             if (result.getStatus() == Result.Status.LOADING) {
-                DialogUtils.showLoadingDialog(requireContext(), "Uploading image...");
+                DialogUtils.showLoadingDialog(requireContext(), "Analyzing image...");
             } else {
                 DialogUtils.hideLoadingDialog();
 
@@ -139,8 +139,8 @@ public class CatalogFragment extends BaseFragment<FragmentCatalogBinding> implem
                         // ✅ Show success dialog and navigate
                         DialogUtils.showConfirmationDialog(requireContext(),
                                 "Upload Successful",
-                                "Image uploaded successfully!",
-                                "View Details", "Cancel",
+                                "Image Analyzing successfully!",
+                                "View Catalog Details", "Cancel",
                                 (dialog, which) -> {
                                     Bundle bundle = new Bundle();
                                     bundle.putParcelableArrayList("detectedObjects", new ArrayList<>(detectedObjects));
@@ -160,7 +160,7 @@ public class CatalogFragment extends BaseFragment<FragmentCatalogBinding> implem
                     DialogUtils.showConfirmationDialog(
                             requireContext(),
                             "Upload Failed",
-                            "Failed to upload image.",
+                            "Failed to analyzing image.",
                             "OK", null,
                             (dialog, which) -> dialog.dismiss()
                     );

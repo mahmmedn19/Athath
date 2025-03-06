@@ -88,4 +88,8 @@ public class AiViewModel extends ViewModel {
     public LiveData<Result<List<ResponseModel.DetectedObject>>> getUploadResult() {
         return uploadResult;
     }
+
+    public void resetUserAnswers() {
+        userAnswers.postValue(new HashMap<>()); // Reset answers
+    }
 }

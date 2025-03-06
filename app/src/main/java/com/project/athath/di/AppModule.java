@@ -1,5 +1,7 @@
 package com.project.athath.di;
 
+import android.content.Context;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.athath.data.network.ApiService;
@@ -13,6 +15,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 
 @Module
@@ -39,7 +42,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public AthathRepository provideAthathRepository(FirebaseAuth auth, FirebaseFirestore db, ApiService apiService) {
-        return new AthathRepositoryImpl(auth, db, apiService);
+    public AthathRepository provideAthathRepository(@ApplicationContext Context context, FirebaseAuth auth, FirebaseFirestore db, ApiService apiService) {
+        return new AthathRepositoryImpl(context,auth, db, apiService);
     }
 }

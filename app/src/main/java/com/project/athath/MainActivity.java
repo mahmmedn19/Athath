@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
         EdgeToEdge.enable(this);
         setLocale("en", this);
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(0, systemBars.top, 0, 0);
@@ -116,11 +115,13 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
             return true;
         });
     }
+
     private void observeLoginState() {
         mainViewModel.getIsCustomerLoggedIn().observe(this, isLoggedIn -> {
             updateBottomNavigationMenu(isLoggedIn);
         });
     }
+
     // Update Bottom Navigation dynamically
     private void updateBottomNavigationMenu(boolean isLoggedIn) {
         Menu menu = binding.bottomNav.getMenu();

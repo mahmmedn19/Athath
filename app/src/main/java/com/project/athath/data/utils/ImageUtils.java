@@ -19,6 +19,7 @@ public class ImageUtils {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
+
     // ✅ Convert Base64 String to Bitmap (To Display in ImageView)
     public static Bitmap decodeBase64ToImage(String base64Str) {
         byte[] decodedBytes = Base64.decode(base64Str, Base64.DEFAULT);
