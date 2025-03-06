@@ -83,8 +83,4 @@ public class MainViewModel extends ViewModel {
         return aiLinkLiveData;
     }
 
-    // ✅ Populate Fake Data in Firestore
-    public void populateFakeData() {
-        aiRepository.addFakeProductsToFirestore();
-    }
 }

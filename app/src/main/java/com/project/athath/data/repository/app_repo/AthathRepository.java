@@ -62,6 +62,4 @@ public interface AthathRepository {
     LiveData<Result<AiRecommendationResponse>> getRecommendations(Map<String, String> userPreferences);
 
     LiveData<Result<NextRecommendationResponse>> getNextRecommendation();
-
-    public void addFakeProductsToFirestore();
 }
