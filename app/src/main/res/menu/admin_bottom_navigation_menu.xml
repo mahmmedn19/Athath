@@ -16,6 +16,12 @@
         android:icon="@drawable/ic_room_config"
         android:title="Room Config" />
 
+    <!--AI Link-->
+    <item
+        android:id="@+id/addLinkFragment"
+        android:icon="@drawable/ic_add_link"
+        android:title="AI Link" />
+
     <!-- Logout -->
     <item
         android:id="@+id/admin_logout"

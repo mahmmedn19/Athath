@@ -41,6 +41,11 @@
         android:name="com.project.athath.ui.admin_screen.add_room_catalog.AddRoomCatalogFragment"
         android:label="Add Room Ca"
         tools:layout="@layout/fragment_add_room_catalog" />
+    <fragment
+        android:id="@+id/addLinkFragment"
+        android:name="com.project.athath.ui.admin_screen.add_ai_link.AddLinkFragment"
+        android:label="AddLinkFragment"
+        />
 
 
 </navigation>
