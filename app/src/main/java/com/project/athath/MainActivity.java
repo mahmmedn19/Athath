@@ -23,6 +23,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.ActivityMainBinding;
+import com.project.athath.di.NetworkModule;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.utils.SharedPrefUtils;
 
@@ -54,7 +55,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
             if (Objects.requireNonNull(result.getStatus()) == Result.Status.SUCCESS) {
                 String aiLink = result.getData();
                 Log.d("AI_LINK", aiLink);
-                SharedPrefUtils.saveAiLink(this, aiLink); // ✅ Save AI link to SharedPreferences
+                if (aiLink != null) {
+                    SharedPrefUtils.saveAiLink(this, aiLink); // ✅ Save AI link to SharedPreferences
+                    updateNetworkBaseUrl(aiLink);
+                }
             }
         });
         // Dynamically update bottom navigation menu
@@ -181,5 +185,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
     protected void onStart() {
         super.onStart();
         mainViewModel.fetchAILink(); // ✅ Always fetch AI link on start
+    }
+    private void updateNetworkBaseUrl(String newBaseUrl) {
+        // ✅ Reinitialize Retrofit when AI link changes
+        NetworkModule.refreshRetrofitInstance(newBaseUrl);
+        NetworkModule.BASE_URL = newBaseUrl;
     }
 }

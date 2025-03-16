@@ -10,7 +10,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.project.athath.R;
 import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.FragmentAddLinkBinding;
+import com.project.athath.di.NetworkModule;
 import com.project.athath.ui.base.BaseFragment;
+import com.project.athath.ui.utils.SharedPrefUtils;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -67,6 +69,8 @@ public class AddLinkFragment extends BaseFragment<FragmentAddLinkBinding> {
             if (viewModel.validateUrl()) {
                 viewModel.addAILink().observe(getViewLifecycleOwner(), result -> {
                     if (result.getStatus() == Result.Status.SUCCESS) {
+                        updateNetworkBaseUrl(viewModel.url.getValue());
+                        SharedPrefUtils.saveAiLink(requireContext(), viewModel.url.getValue());
                         Toast.makeText(getContext(), "URL is valid and added successfully", Toast.LENGTH_SHORT).show();
                     } else if (result.getStatus() == Result.Status.ERROR) {
                         Toast.makeText(getContext(), "Error: " + result.getErrorMessage(), Toast.LENGTH_SHORT).show();
@@ -78,5 +82,10 @@ public class AddLinkFragment extends BaseFragment<FragmentAddLinkBinding> {
                 binding.urlInputLayout.setError("Invalid URL format");
             }
         });
+    }
+    private void updateNetworkBaseUrl(String newBaseUrl) {
+        // ✅ Reinitialize Retrofit when AI link changes
+        NetworkModule.refreshRetrofitInstance(newBaseUrl);
+        NetworkModule.BASE_URL = newBaseUrl;
     }
 }

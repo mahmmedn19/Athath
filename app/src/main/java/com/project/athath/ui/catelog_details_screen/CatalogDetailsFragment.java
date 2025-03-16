@@ -60,15 +60,23 @@ public class CatalogDetailsFragment extends BaseFragment<FragmentCatalogDetailsB
             if (receivedObjects != null) {
                 detectedObjects.clear();
                 detectedObjects.addAll(receivedObjects);
+
+                // ✅ Extract labels from detected objects and pass them to ViewModel
+                List<String> detectedLabels = new ArrayList<>();
+                for (ResponseModel.DetectedObject obj : detectedObjects) {
+                    detectedLabels.add(obj.getLabel());
+                }
+                viewModel.setDetectedLabels(detectedLabels);
             }
         }
+
 
         // ✅ Set up detected objects RecyclerView (replaces fake components)
         setupDetectedObjectsRecyclerView();
 
         // ✅ Set up products RecyclerView
         setupRecyclerView();
-        observeProducts();
+        observeFilteredProducts();
 
         // Fetch products
         viewModel.fetchProducts();
@@ -86,8 +94,8 @@ public class CatalogDetailsFragment extends BaseFragment<FragmentCatalogDetailsB
         binding.rvProducts.setAdapter(productAdapter);
     }
 
-    private void observeProducts() {
-        viewModel.getProductsLiveData().observe(getViewLifecycleOwner(), result -> {
+    private void observeFilteredProducts() {
+        viewModel.getFilteredProductsLiveData().observe(getViewLifecycleOwner(), result -> {
             handleLoadingState(result.getStatus());
 
             if (result.getStatus() == Result.Status.SUCCESS && result.getData() != null) {

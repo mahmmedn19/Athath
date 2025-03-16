@@ -27,12 +27,14 @@ public class HomeViewModel extends ViewModel {
     private final MutableLiveData<Result<Customer>> customerLiveData = new MutableLiveData<>();
     private final MutableLiveData<Result<List<CatalogItem>>> catalogItemsLiveData = new MutableLiveData<>();
     private final MutableLiveData<Result<List<Product>>> productsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Result<String>> aiLinkLiveData = new MutableLiveData<>();
 
     @Inject
     public HomeViewModel(AthathRepository repository, AuthRepository authRepository) {
         this.repository = repository;
         this.authRepository = authRepository;
         fetchCustomerProfile();
+        fetchAILink(); // Auto-fetch on ViewModel creation
     }
 
     public LiveData<Result<List<CatalogItem>>> getCatalogItems() {
@@ -77,5 +79,20 @@ public class HomeViewModel extends ViewModel {
                 productsLiveData.setValue(Result.error(result.getErrorMessage()));
             }
         });
+    }
+    public void fetchAILink() {
+        aiLinkLiveData.setValue(Result.loading());
+
+        repository.getSingleAILink().observeForever(result -> {
+            if (result.getStatus() == Result.Status.SUCCESS) {
+                aiLinkLiveData.setValue(Result.success(result.getData()));
+            } else {
+                aiLinkLiveData.setValue(Result.error(result.getErrorMessage()));
+            }
+        });
+    }
+
+    public LiveData<Result<String>> getSingleAILink() {
+        return aiLinkLiveData;
     }
 }
