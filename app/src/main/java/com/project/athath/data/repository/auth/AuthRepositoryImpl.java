@@ -56,17 +56,13 @@ public class AuthRepositoryImpl implements AuthRepository {
 
     // ✅ Check User Type and Status
     private void checkUserStatus(String userId, String expectedUserType, MutableLiveData<Result<String>> resultLiveData) {
+        resultLiveData.setValue(Result.loading());
         db.collection(expectedUserType).document(userId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
                 if ("Admins".equalsIgnoreCase(expectedUserType)) {
                     resultLiveData.setValue(Result.success("Admins"));
                 } else {
-                    String status = task.getResult().getString("status");
-                    if ("Blocked".equalsIgnoreCase(status)) {
-                        resultLiveData.setValue(Result.error("Your account is blocked. Contact support."));
-                    } else {
                         resultLiveData.setValue(Result.success(expectedUserType));
-                    }
                 }
             } else {
                 resultLiveData.setValue(Result.error("No user found for this role."));
@@ -271,7 +267,7 @@ public class AuthRepositoryImpl implements AuthRepository {
         } else if (e instanceof FirebaseAuthWeakPasswordException) {
             return "Password should be at least 6 characters.";
         } else if (e instanceof FirebaseAuthInvalidCredentialsException) {
-            return "Invalid email format.";
+            return "Invalid email or password.";
         } else {
             return "Registration failed: " + e.getMessage();
         }

@@ -110,21 +110,22 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
     }
 
     private void handleLoginResult(Result<String> result) {
-        if (result.getStatus() == Result.Status.SUCCESS) {
-            binding.loadingProgressBar.setVisibility(View.GONE);
-            navigateToMainScreen(result.getData());
-        } else if (result.getStatus() == Result.Status.ERROR) {
-            binding.loadingProgressBar.setVisibility(View.GONE);
-            showToast(result.getErrorMessage());
-        } else if (result.getStatus() == Result.Status.LOADING) {
+        if (result.getStatus() == Result.Status.LOADING) {
             binding.loadingProgressBar.setVisibility(View.VISIBLE);
             binding.loginButton.setEnabled(false);
-            return; // Exit early for loading state
+            binding.tvInvalidEmail.setVisibility(View.GONE);
         }
+        else if (result.getStatus() == Result.Status.SUCCESS) {
+            binding.loadingProgressBar.setVisibility(View.GONE);
+            navigateToMainScreen(result.getData());
+            binding.tvInvalidEmail.setVisibility(View.GONE);
 
-        // Enable button and hide progress bar after handling SUCCESS or ERROR
-        binding.loadingProgressBar.setVisibility(View.GONE);
-        binding.loginButton.setEnabled(true);
+        } else if (result.getStatus() == Result.Status.ERROR) {
+            binding.loadingProgressBar.setVisibility(View.GONE);
+            binding.tvInvalidEmail.setVisibility(View.VISIBLE);
+            binding.tvInvalidEmail.setText(result.getErrorMessage());
+            showToast(result.getErrorMessage());
+        }
     }
 
 
