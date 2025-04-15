@@ -20,7 +20,7 @@ public class InputValidator {
     private static final String PHONE_REGEX = "^\\+966[0-9]{9}$";
     private static final Map<EditText, TextWatcher> textWatcherMap = new HashMap<>();
 
-    public static boolean validateData(TextInputLayout textInputLayout, String text) {
+    public static boolean validateDataWithConstraint(TextInputLayout textInputLayout, String text) {
         if (isEmpty(text)) {
             setError(textInputLayout, "This field cannot be empty");
             return false;
@@ -31,6 +31,16 @@ public class InputValidator {
         clearError(textInputLayout);
         return true;
     }
+
+    public static boolean validateData(TextInputLayout textInputLayout, String text) {
+        if (isEmpty(text)) {
+            setError(textInputLayout, "This field cannot be empty");
+            return false;
+        }
+        clearError(textInputLayout);
+        return true;
+    }
+
 
     public static boolean validateEmail(TextInputLayout emailTextInputLayout, String email) {
         if (isEmpty(email)) {
@@ -170,5 +180,9 @@ public class InputValidator {
             editText.removeTextChangedListener(textWatcherMap.get(editText));
             textWatcherMap.remove(editText); // Remove reference after unbinding
         }
+    }
+    public static void setupFieldHelperText(TextInputLayout inputLayout, String helperText) {
+        inputLayout.setHelperText(helperText);
+        inputLayout.setHelperTextEnabled(true);
     }
 }

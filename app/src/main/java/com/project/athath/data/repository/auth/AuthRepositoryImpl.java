@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.athath.data.model.Customer;
 import com.project.athath.data.model.Vendor;
@@ -59,10 +60,16 @@ public class AuthRepositoryImpl implements AuthRepository {
         resultLiveData.setValue(Result.loading());
         db.collection(expectedUserType).document(userId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
-                if ("Admins".equalsIgnoreCase(expectedUserType)) {
+                DocumentSnapshot document = task.getResult();
+                String status = document.getString("status");
+
+                if ("Blocked".equals(status)) {
+                    resultLiveData.setValue(Result.error("Your account has been blocked. Please contact support."));
+                    auth.signOut(); // Sign out the blocked user
+                } else if ("Admins".equalsIgnoreCase(expectedUserType)) {
                     resultLiveData.setValue(Result.success("Admins"));
                 } else {
-                        resultLiveData.setValue(Result.success(expectedUserType));
+                    resultLiveData.setValue(Result.success(expectedUserType));
                 }
             } else {
                 resultLiveData.setValue(Result.error("No user found for this role."));
@@ -79,7 +86,7 @@ public class AuthRepositoryImpl implements AuthRepository {
                 .addOnSuccessListener(authResult -> {
                     String userId = Objects.requireNonNull(authResult.getUser()).getUid();
                     vendor.setId(userId);
-                    vendor.setStatus("Pending");
+                    vendor.setStatus("Approved");
 
                     db.collection("Vendors").document(userId).set(vendor)
                             .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Vendor Registered Successfully")))
@@ -104,7 +111,7 @@ public class AuthRepositoryImpl implements AuthRepository {
                 .addOnSuccessListener(authResult -> {
                     String userId = Objects.requireNonNull(authResult.getUser()).getUid();
                     customer.setId(userId);
-                    customer.setStatus("Pending");
+                    customer.setStatus("Approved");
 
                     db.collection("Customers").document(userId).set(customer)
                             .addOnSuccessListener(aVoid -> resultLiveData.setValue(Result.success("Customer Registered Successfully")))
@@ -188,7 +195,7 @@ public class AuthRepositoryImpl implements AuthRepository {
         String userId = currentUser.getUid();
 
         db.collection("Customers").document(userId).get()
-                .addOnSuccessListener(documentSnapshot  -> {
+                .addOnSuccessListener(documentSnapshot -> {
                     Customer customer = documentSnapshot.toObject(Customer.class);
                     if (customer != null) {
                         resultLiveData.setValue(Result.success(customer));
@@ -244,11 +251,11 @@ public class AuthRepositoryImpl implements AuthRepository {
     }
 
 
-
     @Override
     public LiveData<Result<String>> getUserType(String userId) {
         return null;
     }
+
     @Override
     public LiveData<Result<String>> logoutUser() {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
@@ -256,6 +263,7 @@ public class AuthRepositoryImpl implements AuthRepository {
         resultLiveData.setValue(Result.success("Logged out successfully"));
         return resultLiveData;
     }
+
     @Override
     public boolean isUserLoggedIn() {
         return FirebaseAuth.getInstance().getCurrentUser() != null;

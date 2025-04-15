@@ -44,13 +44,16 @@ public class HomeViewModel extends ViewModel {
     public LiveData<Result<List<Product>>> getProducts() {
         return productsLiveData;
     }
+
     public void fetchCustomerProfile() {
         customerLiveData.setValue(Result.loading());
         authRepository.getCustomerProfile().observeForever(customerLiveData::postValue);
     }
+
     public LiveData<Result<Customer>> getCustomerLiveData() {
         return customerLiveData;
     }
+
     public void fetchCatalogItems() {
         catalogItemsLiveData.setValue(Result.loading());
 
@@ -80,6 +83,7 @@ public class HomeViewModel extends ViewModel {
             }
         });
     }
+
     public void fetchAILink() {
         aiLinkLiveData.setValue(Result.loading());
 

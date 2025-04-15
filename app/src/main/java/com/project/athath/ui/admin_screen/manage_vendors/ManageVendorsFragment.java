@@ -87,13 +87,6 @@ public class ManageVendorsFragment extends BaseFragment<FragmentManageVendorsBin
         });
     }
 
-    @Override
-    public void onAcceptVendor(Vendor vendor) {
-        viewModel.updateVendorStatus(vendor.getId(), "Approved");
-        vendor.setStatus("Approved");
-        vendorAdapter.notifyDataSetChanged();
-        DialogUtils.showCustomDialog(requireContext(), "Success", "Vendor has been approved.");
-    }
 
     @Override
     public void onBlockVendor(Vendor vendor) {

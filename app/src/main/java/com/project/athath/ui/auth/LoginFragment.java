@@ -89,7 +89,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
         String password = Objects.requireNonNull(binding.passwordInput.getText()).toString().trim();
 
         if (!InputValidator.validateEmail(binding.emailLayout, email) ||
-                !InputValidator.validateData(binding.passwordLayout, password)) {
+                !InputValidator.validateDataWithConstraint(binding.passwordLayout, password)) {
             return;
         }
 

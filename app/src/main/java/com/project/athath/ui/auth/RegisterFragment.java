@@ -1,15 +1,15 @@
 package com.project.athath.ui.auth;
 
 import static com.project.athath.ui.utils.InputValidator.clearErrorOnTextChange;
+import static com.project.athath.ui.utils.InputValidator.setupFieldHelperText;
+
+import android.content.Intent;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
 import com.project.athath.MainActivity;
 import com.project.athath.R;
@@ -18,6 +18,7 @@ import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.FragmentRegisterBinding;
 import com.project.athath.ui.base.BaseFragment;
 import com.project.athath.ui.utils.InputValidator;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -51,6 +52,14 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
         clearErrorOnTextChange(binding.customerPasswordLayout);
         clearErrorOnTextChange(binding.customerConfirmPasswordLayout);
 
+        // Example for name field
+        setupFieldHelperText(binding.customerNameLayout, "Enter your full name (e.g., John Doe)");
+        // Setting helper text for email example
+        setupFieldHelperText(binding.customerEmailLayout, "Example: user@gmail.com");
+        // Setting helper text for password format example
+        setupFieldHelperText(binding.customerPasswordLayout, "Password must contain at least 1 uppercase letter, 1 number, and 1 special character");
+        // Setting helper text for confirm password
+        setupFieldHelperText(binding.customerConfirmPasswordLayout, "Must match the password above");
 
         registerViewModel = new ViewModelProvider(this).get(AuthViewModels.RegisterViewModel.class);
         binding.setViewModel(registerViewModel);

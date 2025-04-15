@@ -3,11 +3,13 @@ package com.project.athath.ui.admin_screen.manage_vendors;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import com.project.athath.databinding.ItemVendorBinding;
+
 import com.project.athath.data.model.Vendor;
+import com.project.athath.databinding.ItemVendorBinding;
 import com.project.athath.ui.base.BaseAdapter;
 import com.project.athath.ui.base.BaseInteractionListener;
 import com.project.athath.ui.utils.DialogUtils;
+
 import java.util.List;
 
 public class VendorAdapter extends BaseAdapter<Vendor, ItemVendorBinding> {
@@ -29,14 +31,6 @@ public class VendorAdapter extends BaseAdapter<Vendor, ItemVendorBinding> {
         ItemVendorBinding binding = holder.binding;
         binding.setVendor(currentItem);
 
-        // Accept Vendor
-        binding.btnAccept.setOnClickListener(view ->
-                DialogUtils.showConfirmationDialog(view.getContext(),
-                        "Accept Vendor", "Are you sure you want to approve this vendor?",
-                        "Yes", "Cancel",
-                        (dialog, which) -> listener.onAcceptVendor(currentItem))
-        );
-
         // Block Vendor
         binding.btnBlock.setOnClickListener(view ->
                 DialogUtils.showConfirmationDialog(view.getContext(),
@@ -54,8 +48,8 @@ public class VendorAdapter extends BaseAdapter<Vendor, ItemVendorBinding> {
     }
 
     public interface VendorInteractionListener extends BaseInteractionListener {
-        void onAcceptVendor(Vendor vendor);
         void onBlockVendor(Vendor vendor);
+
         void onViewVendor(Vendor vendor);
     }
 }

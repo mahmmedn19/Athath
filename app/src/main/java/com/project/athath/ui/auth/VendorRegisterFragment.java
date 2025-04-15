@@ -1,5 +1,8 @@
 package com.project.athath.ui.auth;
 
+import static com.project.athath.ui.utils.InputValidator.clearErrorOnTextChange;
+import static com.project.athath.ui.utils.InputValidator.setupFieldHelperText;
+
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
@@ -43,6 +46,23 @@ public class VendorRegisterFragment extends BaseFragment<FragmentVendorRegisterB
         setToolbarVisibility(true);
         setToolbarTitle("Vendor Register");
         showBackButton(true);
+        // Clear error on text change
+        clearErrorOnTextChange(binding.nameInputLayout);
+        clearErrorOnTextChange(binding.storeNameInputLayout);
+        clearErrorOnTextChange(binding.phoneInputLayout);
+        clearErrorOnTextChange(binding.addressInputLayout);
+        clearErrorOnTextChange(binding.vendorEmailInputLayout);
+        clearErrorOnTextChange(binding.vendorPasswordInputLayout);
+        clearErrorOnTextChange(binding.vendorConfirmPasswordInputLayout);
+
+        // Example for name field
+        setupFieldHelperText(binding.nameInputLayout, "Enter your full name (e.g., John Doe)");
+        setupFieldHelperText(binding.storeNameInputLayout, "Enter your store name (e.g., Store ABC)");
+        setupFieldHelperText(binding.phoneInputLayout, "Enter a valid phone number (e.g., +966503103249)");
+        setupFieldHelperText(binding.addressInputLayout, "Enter your store address (e.g., Saudi Arabia, Riyadh)");
+        setupFieldHelperText(binding.vendorEmailInputLayout, "Example: vendor@example.com");
+        setupFieldHelperText(binding.vendorPasswordInputLayout, "Password must contain at least 1 uppercase letter, 1 number, and 1 special character");
+        setupFieldHelperText(binding.vendorConfirmPasswordInputLayout, "Must match the password above");
 
         registerViewModel = new ViewModelProvider(this).get(AuthViewModels.RegisterViewModel.class);
         binding.setViewModel(registerViewModel);
@@ -66,7 +86,7 @@ public class VendorRegisterFragment extends BaseFragment<FragmentVendorRegisterB
         if (!InputValidator.validateUsername(binding.nameInputLayout, name) ||
                 !InputValidator.validateData(binding.storeNameInputLayout, storeName) ||
                 !InputValidator.validatePhone(binding.phoneInputLayout, phone) ||
-                !InputValidator.validateData(binding.addressInputLayout, address) ||
+                !InputValidator.validateDataWithConstraint(binding.addressInputLayout, address) ||
                 !InputValidator.validateEmail(binding.vendorEmailInputLayout, email) ||
                 !InputValidator.validatePassword(binding.vendorPasswordInputLayout, password) ||
                 !InputValidator.validateConfirmPassword(binding.vendorConfirmPasswordInputLayout, password, confirmPassword)) {
