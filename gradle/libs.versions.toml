@@ -2,6 +2,7 @@
 # Android SDK
 compileSdk = "34"
 minSdk = "24"
+onboarder = "1.0.4"
 targetSdk = "34"
 
 # Version Numbers
@@ -30,6 +31,9 @@ firebaseAuth = "22.3.1"
 firebaseFirestore = "24.10.3"
 firebaseCrashlytics = "18.3.3"
 firebaseStorage = "19.2.2"
+activityVersion = "1.10.0"
+navigationFragment = "2.8.5"
+navigationUi = "2.8.5"
 
 [plugins]
 androidApplication = { id = "com.android.application" }
@@ -73,6 +77,7 @@ hiltAndroid = { group = "com.google.dagger", name = "hilt-android", version.ref 
 hiltCompiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 
 # Networking
+onboarder = { module = "com.codemybrainsout.onboarding:onboarder", version.ref = "onboarder" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofitGson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 retrofitRxjava3 = { group = "com.squareup.retrofit2", name = "adapter-rxjava3", version.ref = "retrofit" }
@@ -94,3 +99,6 @@ espresso = { group = "androidx.test.espresso", name = "espresso-core", version.r
 # Fragment and Activity
 fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment" }
 activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
+androidxActivity = { group = "androidx.activity", name = "activity", version.ref = "activityVersion" }
+androidxNavigationFragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
+androidxNavigationUi = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }

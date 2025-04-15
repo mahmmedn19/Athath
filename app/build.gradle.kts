@@ -1,5 +1,4 @@
-plugins {
-    alias(libs.plugins.androidApplication)
+plugins { alias(libs.plugins.androidApplication)
     alias(libs.plugins.firebaseCrashlytics)
     alias(libs.plugins.kotlinKapt)
     alias(libs.plugins.kotlinAndroid)
@@ -8,11 +7,11 @@ plugins {
     alias(libs.plugins.googleServices)
 }
 android {
-    namespace = "com.project.asas"
-    compileSdk = 34
+    namespace = "com.project.athath"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.project.asas"
+        applicationId = "com.project.athath"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -61,6 +60,9 @@ dependencies {
     implementation(libs.imageslideshow)
 
     implementation(libs.hiltAndroid)
+    implementation(libs.androidxActivity)
+    implementation(libs.androidxNavigationFragment)
+    implementation(libs.androidxNavigationUi)
     kapt(libs.hiltCompiler)
 
     implementation(libs.retrofit)
@@ -80,6 +82,9 @@ dependencies {
 
     implementation(libs.fragment)
     implementation(libs.activity)
+
+    implementation (libs.onboarder)
+
 }
 hilt {
     enableAggregatingTask = true

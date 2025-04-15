@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <!-- Data binding variables can be added if needed -->
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="16dp">
+
+            <!-- Product Image -->
+            <ImageView
+                android:id="@+id/productImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/logo"
+                android:scaleType="centerCrop"
+                android:background="@drawable/rounded_background_primary_2"
+                android:contentDescription="Product Image"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Select Image Button -->
+            <Button
+                android:id="@+id/btnSelectImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Image"
+                android:backgroundTint="@color/md_theme_primary"
+                android:textColor="@android:color/white"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Product Name -->
+            <EditText
+                android:id="@+id/etProductName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Product Name"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Category -->
+            <EditText
+                android:id="@+id/etProductCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Category (e.g., Sofa, Table)"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Description -->
+            <EditText
+                android:id="@+id/etProductDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description"
+                android:textSize="16sp"
+                android:gravity="top"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"
+                android:inputType="textMultiLine"
+                android:minLines="3"/>
+
+            <!-- Price -->
+            <EditText
+                android:id="@+id/etProductPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Price"
+                android:inputType="numberDecimal"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Color -->
+            <EditText
+                android:id="@+id/etProductColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Color"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Style -->
+            <EditText
+                android:id="@+id/etProductStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Style (Modern, Classic, etc.)"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Room Type -->
+            <EditText
+                android:id="@+id/etProductRoomType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Room Type (Living Room, Bedroom, etc.)"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Product Width -->
+            <EditText
+                android:id="@+id/etProductWidth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Product Width (cm)"
+                android:inputType="numberDecimal"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Product Length -->
+            <EditText
+                android:id="@+id/etProductLength"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Product Length (cm)"
+                android:inputType="numberDecimal"
+                android:textSize="16sp"
+                android:background="@android:drawable/edit_text"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"/>
+
+
+
+            <!-- Save Product Button -->
+            <Button
+                android:id="@+id/btnSaveProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save Product"
+                android:backgroundTint="@color/md_theme_primary"
+                android:textColor="@android:color/white"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.project.athath.data.model.CatalogItem"
+            />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <!-- Catalog Image -->
+            <ImageView
+                android:id="@+id/ivCatalogImage"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/furniture_5"
+                android:contentDescription="Catalog Image"/>
+            <!-- Show Products Button -->
+            <ImageView
+                android:id="@+id/btn_show_details"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/rounded_background_primary"
+                android:padding="4dp"
+                android:layout_marginVertical="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_add"
+                app:tint="@android:color/white" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
