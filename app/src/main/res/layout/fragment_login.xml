@@ -1,21 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable name="viewModel" type="com.project.athath.ui.auth.AuthViewModels.LoginViewModel"/>
     </data>
 
     <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp"
         android:background="@color/md_theme_background">
-        <!-- App Logo -->
+
+
+
         <ImageView
             android:id="@+id/appLogo"
             android:layout_width="150dp"
@@ -23,15 +22,12 @@
             android:src="@drawable/logo"
             android:layout_gravity="center_horizontal"
             android:contentDescription="App Logo"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"/>
 
-
-
-        <!-- Email Field -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:hint="Email"
             app:boxStrokeColor="@color/md_theme_primary">
 
@@ -39,34 +35,61 @@
                 android:id="@+id/emailInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Password Field -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
             android:layout_marginTop="16dp"
+            app:endIconMode="password_toggle"
             app:boxStrokeColor="@color/md_theme_primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Forgot Password TextView -->
+        <TextView
+            android:id="@+id/tv_invalid_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            android:text="Invalid email or password"
+            android:textColor="@color/md_theme_error"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+
+
+
         <!-- Forgot Password -->
-<!--        <TextView
+        <TextView
+            android:id="@+id/forgotPasswordText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Forgot Password?"
             android:textSize="14sp"
             android:textColor="@color/md_theme_primary"
             android:layout_marginTop="16dp"
+            android:gravity="end"
             android:layout_marginBottom="16dp"
-            android:textStyle="bold" />-->
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            app:isLoading="@{viewModel.loadingState}" />
 
         <!-- Login Button -->
         <Button
@@ -76,9 +99,9 @@
             android:text="Login"
             android:layout_marginTop="24dp"
             android:backgroundTint="@color/md_theme_primary"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+           />
 
-        <!-- Register Text -->
         <TextView
             android:id="@+id/registerText"
             android:layout_width="match_parent"
@@ -89,6 +112,6 @@
             android:textColor="@color/md_theme_primary"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
 </layout>

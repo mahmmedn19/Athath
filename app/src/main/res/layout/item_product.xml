@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.project.asas.model.Product" />
+            type="com.project.athath.data.model.Product" />
 
     </data>
 
@@ -14,7 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="10dp"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/rounded_background_primary_2"
         android:gravity="center"
         >
 
@@ -28,25 +30,50 @@
             android:contentDescription="Product Image"
             android:src="@drawable/icon_furniture" />
 
-        <!-- Product Name -->
+        <!-- Product Section -->
+        <TextView
+            android:id="@+id/productName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Product Name"
+            android:text="@{item.name}"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/md_theme_primary"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            android:maxLines="1" />
 
+        <TextView
+            android:id="@+id/productStore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginTop="4dp"
+            android:text="@{item.description}"
+            tools:text="Address: 1234, Street Name, City, Country"
+            android:textColor="@color/brown_1"
+            android:layout_marginBottom="4dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            />
         <!-- Horizontal Layout -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:gravity="center"
             android:orientation="horizontal">
-            <!-- Product Section -->
             <TextView
-                android:id="@+id/productName"
+                android:id="@+id/productPrice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:text="Product Name"
-                android:text="@{item.style}"
-                android:gravity="center"
+                tools:text="Price: $10.0"
+                android:text='@{"Price: $" + String.format("%.2f", item.price)}'
                 android:layout_weight="1"
-                android:textColor="@color/md_theme_primary"
+                android:textColor="@color/brown_1"
                 android:textSize="14sp"
                 android:ellipsize="end"
                 android:textStyle="bold"
@@ -58,11 +85,14 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:background="@drawable/rounded_background_primary"
-                android:padding="4dp"
+                android:padding="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_gravity="end"
                 android:src="@drawable/ic_add"
                 app:tint="@android:color/white" />
         </LinearLayout>
+
+
     </LinearLayout>
 </layout>

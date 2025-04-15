@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.project.asas.model.CatalogItem"
+            type="com.project.athath.data.model.CatalogItem"
             />
 
     </data>
@@ -30,7 +30,6 @@
                 android:layout_height="180dp"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/furniture_5"
-                android:src="@{item.imageRes}"
                 android:contentDescription="Catalog Image"/>
 
             <!-- Show Products Button -->

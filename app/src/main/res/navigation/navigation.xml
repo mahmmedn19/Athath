@@ -7,7 +7,7 @@
     >
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.project.asas.ui.home_screen.HomeFragment"
+        android:name="com.project.athath.ui.home_screen.HomeFragment"
         android:label="Home Fragment" >
         <action
             android:id="@+id/action_homeFragment_to_userSelectionFragment"
@@ -25,10 +25,16 @@
         <action
             android:id="@+id/action_homeFragment_to_catalogDetailsFragment"
             app:destination="@id/catalogDetailsFragment" />
+        <argument
+            android:name="catalogItemId"
+            app:argType="string" />
+        <argument
+            android:name="productId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/userSelectionFragment"
-        android:name="com.project.asas.ui.user_selection_fragment.UserSelectionFragment"
+        android:name="com.project.athath.ui.user_selection_fragment.UserSelectionFragment"
         android:label="User Selection Fragment" >
         <action
             android:id="@+id/action_userSelectionFragment_to_loginFragment"
@@ -36,13 +42,13 @@
             <argument
                 android:name="userType"
                 app:argType="string"
-                android:defaultValue="Customer" />
+                android:defaultValue="Customers" />
         </action>
     </fragment>
     <!-- Login Fragment -->
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.project.asas.ui.LoginFragment"
+        android:name="com.project.athath.ui.auth.LoginFragment"
         android:label="Login Fragment" >
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
@@ -52,24 +58,56 @@
             android:id="@+id/action_loginFragment_to_vendorRegisterFragment"
             app:destination="@id/vendorRegisterFragment"
             />
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
     <!-- Register Fragment -->
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.project.asas.ui.RegisterFragment"
+        android:name="com.project.athath.ui.auth.RegisterFragment"
         android:label="Register Fragment" />
     <!-- Vendor Register Fragment -->
     <fragment
         android:id="@+id/vendorRegisterFragment"
-        android:name="com.project.asas.VendorRegisterFragment"
+        android:name="com.project.athath.ui.auth.VendorRegisterFragment"
         android:label="Vendor Register Fragment" />
     <fragment
         android:id="@+id/productDetailsFragment"
-        android:name="com.project.asas.ui.product_details.ProductDetailsFragment"
-        android:label="ProductDetailsFragment" />
+        android:name="com.project.athath.ui.product_details.ProductDetailsFragment"
+        android:label="ProductDetailsFragment" >
+        <action
+            android:id="@+id/action_productDetailsFragment_to_userSelectionFragment"
+            app:destination="@id/userSelectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.project.athath.ui.user_screen.UserProfileFragment"
+        android:label="UserProfileFragment" >
+        <action
+            android:id="@+id/action_userProfileFragment_to_manageProfileFragment"
+            app:destination="@id/manageProfileFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_favFragment"
+            app:destination="@id/favFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/manageProfileFragment"
+        android:name="com.project.athath.ui.user_screen.manage_user_profile.ManageUserProfileFragment"
+        android:label="ManageProfileFragment" />
+
+    <fragment
+        android:id="@+id/favFragment"
+        android:name="com.project.athath.ui.user_screen.fav_screen.FavFragment"
+        android:label="UserProfileFragment" >
+        <action
+            android:id="@+id/action_favFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/catalogFragment"
-        android:name="com.project.asas.ui.catelog_screen.CatalogFragment"
+        android:name="com.project.athath.ui.catelog_screen.CatalogFragment"
         android:label="CatalogFragment" >
         <action
             android:id="@+id/action_catalogFragment_to_productDetailsFragment2"
@@ -77,25 +115,42 @@
         <action
             android:id="@+id/action_catalogFragment_to_catalogDetailsFragment"
             app:destination="@id/catalogDetailsFragment" />
+        <argument
+            android:name="catalogItemId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/productsFragment"
-        android:name="com.project.asas.ui.products_screen.ProductsFragment"
+        android:name="com.project.athath.ui.products_screen.ProductsFragment"
         android:label="ProductsFragment" >
         <action
             android:id="@+id/action_productsFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
+        <argument
+            android:name="productId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/aiFragment"
-        android:name="com.project.asas.ui.ai_screen.AiFragment"
-        android:label="AiFragment" />
+        android:name="com.project.athath.ui.ai_screen.AiFragment"
+        android:label="AiFragment" >
+        <action
+            android:id="@+id/action_aiFragment_to_catalogDetailsFragment"
+            app:destination="@id/catalogDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/catalogDetailsFragment"
-        android:name="com.project.asas.ui.catelog_details_screen.CatalogDetailsFragment"
+        android:name="com.project.athath.ui.catelog_details_screen.CatalogDetailsFragment"
         android:label="CatalogDetailsFragment" >
         <action
             android:id="@+id/action_catalogDetailsFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
+        <argument
+            android:name="productId"
+            app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.project.athath.ui.auth.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment" />
 </navigation>

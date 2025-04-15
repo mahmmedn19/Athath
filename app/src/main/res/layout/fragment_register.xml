@@ -1,15 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable name="viewModel" type="com.project.athath.ui.auth.AuthViewModels.RegisterViewModel"/>
     </data>
 
     <ScrollView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/md_theme_background"
@@ -20,7 +17,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- App Logo -->
+
+
             <ImageView
                 android:id="@+id/appLogo"
                 android:layout_width="150dp"
@@ -28,12 +26,10 @@
                 android:src="@drawable/logo"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="App Logo"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"/>
 
-
-
-            <!-- Customer Name -->
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/customerNameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Full Name"
@@ -43,11 +39,11 @@
                     android:id="@+id/customerNameInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Email -->
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/customerEmailLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
@@ -58,40 +54,50 @@
                     android:id="@+id/customerEmailInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Password -->
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/customerPasswordLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:layout_marginTop="16dp"
+                app:endIconMode="password_toggle"
                 app:boxStrokeColor="@color/md_theme_primary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/customerPasswordInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Confirm Password -->
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/customerConfirmPasswordLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Confirm Password"
                 android:layout_marginTop="16dp"
+                app:endIconMode="password_toggle"
                 app:boxStrokeColor="@color/md_theme_primary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/customerConfirmPasswordInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Register Button -->
+            <ProgressBar
+                android:id="@+id/loadingProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:isLoading="@{viewModel.loadingState}"/>
+
             <Button
                 android:id="@+id/registerButton"
                 android:layout_width="match_parent"
@@ -99,9 +105,9 @@
                 android:text="Register"
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/md_theme_primary"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                />
 
-            <!-- Login Text -->
             <TextView
                 android:id="@+id/loginText"
                 android:layout_width="match_parent"
@@ -112,7 +118,7 @@
                 android:textColor="@color/md_theme_primary"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
         </LinearLayout>
     </ScrollView>
 </layout>

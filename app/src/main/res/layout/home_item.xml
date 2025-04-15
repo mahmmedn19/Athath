@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
             name="item"
-            type="com.project.asas.model.Product"
-            />
-
+            type="com.project.athath.data.model.Product" />
     </data>
 
     <androidx.cardview.widget.CardView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -29,8 +26,7 @@
                 android:id="@+id/productImage"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:src="@drawable/furniture_3"
-                android:contentDescription="Product Image" />
+                />
 
             <!-- Favorite Icon -->
             <ImageView
@@ -57,7 +53,7 @@
                     android:id="@+id/productName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Product Title"
+                    android:text="@{item.name}"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/md_theme_primary"
@@ -69,7 +65,7 @@
                     android:id="@+id/productDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Short description about the product."
+                    android:text="@{item.description}"
                     android:textSize="14sp"
                     android:textColor="@color/md_theme_secondary"
                     android:maxLines="2"
@@ -81,20 +77,10 @@
                     android:id="@+id/productPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$120"
+                    android:text='@{`Price: $` + String.valueOf(item.price)}'
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/md_theme_primaryContainer"
-                    android:layout_marginTop="8dp" />
-
-                <!-- Quantity -->
-                <TextView
-                    android:id="@+id/productQuantity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Available: 3 pcs"
-                    android:textSize="14sp"
-                    android:textColor="@color/black"
                     android:layout_marginTop="8dp" />
             </LinearLayout>
         </RelativeLayout>

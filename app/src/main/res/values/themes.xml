@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.Asas"
+    <style name="Theme.Athath"
         parent="Theme.Material3.Light.NoActionBar">
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/md_theme_primary</item>
@@ -50,5 +50,10 @@
         <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer</item>
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
+    </style>
+  <!-- Base application theme. -->
+    <style name="Base.Theme.Asas" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 </resources>

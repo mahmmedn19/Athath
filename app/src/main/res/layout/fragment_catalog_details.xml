@@ -1,9 +1,9 @@
-<layout xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-    </data>
+    <data></data>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -20,43 +20,57 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="8dp"
                 android:text="Components"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 android:textColor="@color/md_theme_primary"
-                android:paddingTop="8dp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_components"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:orientation="vertical"
-                tools:itemCount="4"
-                tools:listitem="@layout/item_catelog_component"
+                android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:clipToPadding="false" />
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_catelog_component" />
 
             <!-- Products Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Available Products"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 android:textColor="@color/md_theme_primary"
-                android:layout_marginTop="16dp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <!-- ProgressBar for Loading -->
+            <ProgressBar
+                android:id="@+id/loadingProgressBarProduct"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/imageNoDataFoundProduct"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/image_no_data_found"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2"
-                tools:listitem="@layout/item_product"
-                android:nestedScrollingEnabled="false" />
+                tools:listitem="@layout/item_product" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

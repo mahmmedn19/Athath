@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/admin_manage_vendors">
+
+    <!-- Admin Dashboard Fragment (Home Screen for Admin) -->
+
+    <!-- Manage Vendors Fragment -->
+    <fragment
+        android:id="@+id/admin_manage_vendors"
+        android:name="com.project.athath.ui.admin_screen.manage_vendors.ManageVendorsFragment"
+        android:label="Manage Vendors"
+        tools:layout="@layout/fragment_manage_vendors" />
+
+    <!-- Manage Customers Fragment -->
+    <fragment
+        android:id="@+id/admin_manage_customers"
+        android:name="com.project.athath.ui.admin_screen.manage_customers.ManageCustomersFragment"
+        android:label="Manage Customers"
+        tools:layout="@layout/fragment_manage_customers" />
+
+    <!-- Room catalog Fragment -->
+    <fragment
+        android:id="@+id/admin_room_configurations"
+        android:name="com.project.athath.ui.admin_screen.room_catalog.ManageRoomCatalogFragment"
+        android:label="Room Configurations"
+        tools:layout="@layout/fragment_manage_room_catalog" >
+        <action
+            android:id="@+id/action_admin_room_configurations_to_admin_add_room_configurations"
+            app:destination="@id/admin_add_room_configurations" />
+        <argument
+            android:name="catalogItemId"
+            app:argType="string"
+            />
+    </fragment>
+
+    <!-- Add Room Configurations Fragment -->
+    <fragment
+        android:id="@+id/admin_add_room_configurations"
+        android:name="com.project.athath.ui.admin_screen.add_room_catalog.AddRoomCatalogFragment"
+        android:label="Add Room Ca"
+        tools:layout="@layout/fragment_add_room_catalog" />
+    <fragment
+        android:id="@+id/addLinkFragment"
+        android:name="com.project.athath.ui.admin_screen.add_ai_link.AddLinkFragment"
+        android:label="AddLinkFragment"
+        />
+
+
+</navigation>

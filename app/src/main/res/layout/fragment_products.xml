@@ -1,64 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="viewModel"
+            type="com.project.athath.ui.products_screen.ProductsViewModel" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <!-- Category Selection -->
-        <TextView
-            android:id="@+id/tvCategoryTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select a Category"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/md_theme_primary" />
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroupProductCategories"
+        <!-- Main Content -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:singleSelection="true">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipProductCategory"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+            <!-- Category Selection -->
+            <TextView
+                android:id="@+id/tvCategoryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:iconStartPadding="8dp"
-                app:chipIconSize="24dp"
-                app:chipBackgroundColor="@color/md_theme_surface"
-                app:checkedIconVisible="false"
-                android:textColor="@color/md_theme_primary" />
-        </com.google.android.material.chip.ChipGroup>
+                android:text="Select a Category"
+                android:textColor="@color/md_theme_primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <!-- Product List -->
-        <TextView
-            android:id="@+id/tvProductListTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Products"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/md_theme_primary"
-            android:layout_marginTop="16dp" />
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:scrollbars="none">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvProducts"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupProductCategories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    app:singleLine="true"
+                    app:singleSelection="true" />
+            </HorizontalScrollView>
+
+            <!-- Product List -->
+            <TextView
+                android:id="@+id/tvProductListTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Products"
+                android:textColor="@color/md_theme_primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvProducts"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="32dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                tools:listitem="@layout/item_product" />
+        </LinearLayout>
+
+        <!-- Full-Screen Loading Overlay -->
+        <FrameLayout
+            android:id="@+id/fullScreenLoader"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
-            tools:listitem="@layout/item_product" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:background="#80000000"
+            android:gravity="center"
+            android:visibility="visible">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:indeterminate="true" />
+        </FrameLayout>
+    </FrameLayout>
 </layout>
