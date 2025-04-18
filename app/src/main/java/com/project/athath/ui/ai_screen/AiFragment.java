@@ -125,7 +125,7 @@ public class AiFragment extends BaseFragment<FragmentAiBinding> {
                 showRecommendationDialog(result.getData().getImageBase64());
             } else if (result.getStatus() == Result.Status.ERROR) {
                 DialogUtils.hideLoadingDialog();
-                Toast.makeText(requireContext(), "Error: " + result.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), result.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -170,7 +170,7 @@ public class AiFragment extends BaseFragment<FragmentAiBinding> {
                     showRecommendationDialog(result.getData().getImageBase64()); // Show new recommendation
                 } else if (result.getStatus() == Result.Status.ERROR) {
                     DialogUtils.hideLoadingDialog();
-                    Toast.makeText(requireContext(), "Error: " + result.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), result.getErrorMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -197,7 +197,7 @@ public class AiFragment extends BaseFragment<FragmentAiBinding> {
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_aiFragment_to_catalogDetailsFragment, bundle);
             } else if (result.getStatus() == Result.Status.ERROR) {
                 DialogUtils.hideLoadingDialog();
-                Toast.makeText(requireContext(), "Error: " + result.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), result.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

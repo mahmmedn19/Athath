@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
                 Log.d("AI_LINK", aiLink);
                 if (aiLink != null) {
                     SharedPrefUtils.saveAiLink(this, aiLink); // ✅ Save AI link to SharedPreferences
-                    updateNetworkBaseUrl(aiLink);
                 }
             }
         });
@@ -185,10 +184,5 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
     protected void onStart() {
         super.onStart();
         mainViewModel.fetchAILink(); // ✅ Always fetch AI link on start
-    }
-    private void updateNetworkBaseUrl(String newBaseUrl) {
-        // ✅ Reinitialize Retrofit when AI link changes
-        NetworkModule.refreshRetrofitInstance(newBaseUrl);
-        NetworkModule.BASE_URL = newBaseUrl;
     }
 }

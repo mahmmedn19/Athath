@@ -67,7 +67,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements
                 Log.d("AI_LINK", aiLink);
                 if (aiLink != null) {
                     SharedPrefUtils.saveAiLink(requireContext(), aiLink); // ✅ Save AI link to SharedPreferences
-                    updateNetworkBaseUrl(aiLink);
                 }
             }
         });
@@ -80,10 +79,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements
         viewModel.fetchProducts();
     }
 
-    private void updateNetworkBaseUrl(String newBaseUrl) {
-        // ✅ Reinitialize Retrofit when AI link changes
-        NetworkModule.refreshRetrofitInstance(newBaseUrl);
-    }
+
 
     private void initRecyclerViews() {
         catalogAdapter = new CatalogHomeAdapter(catalogItems, this);
