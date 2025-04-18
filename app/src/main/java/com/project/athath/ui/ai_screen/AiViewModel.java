@@ -66,8 +66,6 @@ public class AiViewModel extends ViewModel {
         formattedRequest.put("Primary_Purpose", userAnswers.getValue().get("What is the primary purpose of the room?"));
         formattedRequest.put("Design_Style", userAnswers.getValue().get("What is your preferred design style?"));
         formattedRequest.put("Furniture_Type", userAnswers.getValue().get("Do you prefer ready-made or multifunctional furniture?"));
-        formattedRequest.put("Room_Size", "More than 20 sqm");
-        formattedRequest.put("Dimension_Constraints", "No");
         formattedRequest.put("Budget", userAnswers.getValue().get("What is your budget for furniture?"));
         formattedRequest.put("Storage_Needs", userAnswers.getValue().get("Do you need additional storage solutions?"));
 
