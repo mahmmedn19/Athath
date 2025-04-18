@@ -62,7 +62,6 @@ public class AdminMainActivity extends AppCompatActivity implements BaseFragment
             if (destination.getId() != R.id.admin_manage_vendors &&
                     destination.getId() != R.id.admin_manage_customers &&
                     destination.getId() != R.id.admin_room_configurations &&
-                    destination.getId() != R.id.addLinkFragment &&
                     destination.getId() != R.id.admin_logout) {
                 binding.bottomNavAdmin.setVisibility(View.GONE);
             } else {
@@ -78,8 +77,6 @@ public class AdminMainActivity extends AppCompatActivity implements BaseFragment
                 navController.navigate(R.id.admin_manage_customers);
             } else if (item.getItemId() == R.id.admin_room_configurations) {
                 navController.navigate(R.id.admin_room_configurations);
-            } else if (item.getItemId() == R.id.addLinkFragment) {
-                navController.navigate(R.id.addLinkFragment);
             } else if (item.getItemId() == R.id.admin_logout) {
                 DialogUtils.showConfirmationDialog(
                         this,
