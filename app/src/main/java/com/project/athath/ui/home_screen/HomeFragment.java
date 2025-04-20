@@ -1,9 +1,7 @@
 package com.project.athath.ui.home_screen;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -17,13 +15,10 @@ import com.project.athath.data.model.CatalogItem;
 import com.project.athath.data.model.Product;
 import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.FragmentHomeBinding;
-import com.project.athath.di.NetworkModule;
 import com.project.athath.ui.base.BaseFragment;
-import com.project.athath.ui.utils.SharedPrefUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -61,15 +56,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements
         setToolbarVisibility(true);
         setToolbarTitle("Home");
         showBackButton(false);
-        viewModel.getSingleAILink().observe(this, result -> {
-            if (Objects.requireNonNull(result.getStatus()) == Result.Status.SUCCESS) {
-                String aiLink = result.getData();
-                Log.d("AI_LINK", aiLink);
-                if (aiLink != null) {
-                    SharedPrefUtils.saveAiLink(requireContext(), aiLink); // ✅ Save AI link to SharedPreferences
-                }
-            }
-        });
         initRecyclerViews();
         setupListeners();
         observeCatalogItems();
@@ -78,7 +64,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements
         viewModel.fetchCatalogItems();
         viewModel.fetchProducts();
     }
-
 
 
     private void initRecyclerViews() {
@@ -166,13 +151,13 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> implements
 
     private void observeViewModel() {
         viewModel.getCustomerLiveData().observe(getViewLifecycleOwner(), result -> {
-            if ( result!= null) {
+            if (result != null) {
                 if (result.getStatus() == Result.Status.SUCCESS) {
                     binding.profileName.setText(result.getData().getUsername() + "!");
                 }
             }
         });
-        }
+    }
 
     @Override
     public void onFavoriteClicked(Product product) {

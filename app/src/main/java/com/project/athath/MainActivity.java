@@ -25,6 +25,7 @@ import com.project.athath.data.utils.Result;
 import com.project.athath.databinding.ActivityMainBinding;
 import com.project.athath.di.NetworkModule;
 import com.project.athath.ui.base.BaseFragment;
+import com.project.athath.ui.utils.DialogUtils;
 import com.project.athath.ui.utils.SharedPrefUtils;
 
 import java.util.Objects;
@@ -49,16 +50,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(0, systemBars.top, 0, 0);
             return insets;
-        });
-        // ✅ Fetch AI link and observe the LiveData
-        mainViewModel.getSingleAILink().observe(this, result -> {
-            if (Objects.requireNonNull(result.getStatus()) == Result.Status.SUCCESS) {
-                String aiLink = result.getData();
-                Log.d("AI_LINK", aiLink);
-                if (aiLink != null) {
-                    SharedPrefUtils.saveAiLink(this, aiLink); // ✅ Save AI link to SharedPreferences
-                }
-            }
         });
         // Dynamically update bottom navigation menu
         observeLoginState();
@@ -102,22 +93,46 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
         });
 
         binding.bottomNav.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.home) {
+            boolean isLoggedIn = mainViewModel.getIsCustomerLoggedIn().getValue() != null
+                    && mainViewModel.getIsCustomerLoggedIn().getValue();
+
+            int itemId = item.getItemId();
+
+            // Require login for AI and Catalog
+            if ((itemId == R.id.ai || itemId == R.id.catalog) && !isLoggedIn) {
+                showLoginDialog();
+                return false; // Don’t proceed to navigate
+            }
+
+            if (itemId == R.id.home) {
                 navController.navigate(R.id.homeFragment);
-            } else if (item.getItemId() == R.id.catalog) {
+            } else if (itemId == R.id.catalog) {
                 navController.navigate(R.id.catalogFragment);
-            } else if (item.getItemId() == R.id.products) {
+            } else if (itemId == R.id.products) {
                 navController.navigate(R.id.productsFragment);
-            } else if (item.getItemId() == R.id.ai) {
+            } else if (itemId == R.id.ai) {
                 navController.navigate(R.id.aiFragment);
-            } else if (item.getItemId() == R.id.userSelectionFragment) {
+            } else if (itemId == R.id.userSelectionFragment) {
                 navController.navigate(R.id.userSelectionFragment);
-            } else if (item.getItemId() == R.id.userProfileFragment) {
+            } else if (itemId == R.id.userProfileFragment) {
                 navController.navigate(R.id.userProfileFragment);
             }
             return true;
         });
+
     }
+    private void showLoginDialog() {
+        DialogUtils.showConfirmationDialog(
+                this,
+                "Login Required",
+                "You need to be logged in to access this feature.",
+                "Login", "Cancel",
+                (dialog, which) -> {
+                    navController.navigate(R.id.userSelectionFragment);
+                }
+        );
+    }
+
 
     private void observeLoginState() {
         mainViewModel.getIsCustomerLoggedIn().observe(this, isLoggedIn -> {

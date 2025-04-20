@@ -41,10 +41,7 @@ public class AiFragment extends BaseFragment<FragmentAiBinding> {
     private AiViewModel viewModel;
     Dialog dialog = null;
     public static final List<Question> questions = Arrays.asList(
-            new Question("What is the primary purpose of the room?", Arrays.asList("Work", "Relaxation", "Play", "Dining")),
             new Question("What is your preferred design style?", Arrays.asList("Modern", "Traditional", "Rustic", "Industrial", "Scandinavian")),
-            new Question("What colors do you prefer for furniture?", Arrays.asList("White", "Beige", "Gray", "Brown", "Black", "Bright Colors")),
-            new Question("What materials do you prefer for furniture?", Arrays.asList("Wood", "Metal", "Glass", "Fabric")),
             new Question("Do you prefer ready-made or multifunctional furniture?", Arrays.asList("Ready-made", "Multifunctional")),
             new Question("What is your budget for furniture?", Arrays.asList("Less than 1000 SAR", "Between 1000 and 5000 SAR", "More than 5000 SAR")),
             new Question("Do you prefer eco-friendly furniture?", Arrays.asList("Yes", "No")),
