@@ -86,7 +86,7 @@ public class VendorRegisterFragment extends BaseFragment<FragmentVendorRegisterB
         if (!InputValidator.validateUsername(binding.nameInputLayout, name) ||
                 !InputValidator.validateData(binding.storeNameInputLayout, storeName) ||
                 !InputValidator.validatePhone(binding.phoneInputLayout, phone) ||
-                !InputValidator.validateDataWithConstraint(binding.addressInputLayout, address) ||
+                !InputValidator.validateStoreName(binding.addressInputLayout, address) ||
                 !InputValidator.validateEmail(binding.vendorEmailInputLayout, email) ||
                 !InputValidator.validatePassword(binding.vendorPasswordInputLayout, password) ||
                 !InputValidator.validateConfirmPassword(binding.vendorConfirmPasswordInputLayout, password, confirmPassword)) {

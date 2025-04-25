@@ -48,6 +48,8 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
     @Override
     protected void setup() {
         super.setup();
+        clearErrorOnTextChange(binding.emailLayout);
+        clearErrorOnTextChange(binding.passwordLayout);
         configureToolbar();
         setupBindings();
         extractUserType();
@@ -89,7 +91,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
         String password = Objects.requireNonNull(binding.passwordInput.getText()).toString().trim();
 
         if (!InputValidator.validateEmail(binding.emailLayout, email) ||
-                !InputValidator.validateDataWithConstraint(binding.passwordLayout, password)) {
+                !InputValidator.validatePassword(binding.passwordLayout, password)) {
             return;
         }
 

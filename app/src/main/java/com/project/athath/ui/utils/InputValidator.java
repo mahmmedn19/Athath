@@ -60,11 +60,15 @@ public class InputValidator {
         if (isEmpty(password)) {
             setError(passwordTextInputLayout, "Password field cannot be empty");
             return false;
+
+        } else if (!isValidPasswordFormat(password)) {
+            setError(passwordTextInputLayout, "Password must contain at least 1 uppercase letter, 1 number, and 1 special character");
+            return false;
         } else if (password.length() < 8) {
             setError(passwordTextInputLayout, "Password must be at least 8 characters long");
             return false;
-        } else if (!isValidPasswordFormat(password)) {
-            setError(passwordTextInputLayout, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character");
+        } else if (password.length() > 12) {
+            setError(passwordTextInputLayout, "Password must not exceed 12 characters");
             return false;
         }
         clearError(passwordTextInputLayout);
@@ -90,10 +94,33 @@ public class InputValidator {
         } else if (!isValidUsernameFormat(name)) {
             setError(nameTextInputLayout, "Name can only contain letters");
             return false;
+        } else if (name.length() < 3) {
+            setError(nameTextInputLayout, "Name must be at least 3 characters long");
+            return false;
+        } else if (name.length() > 25) {
+            setError(nameTextInputLayout, "Name must not exceed 25 characters");
+            return false;
         }
         clearError(nameTextInputLayout);
         return true;
     }
+
+    public static boolean validateStoreName(TextInputLayout storeNameTextInputLayout, String storeName) {
+        if (isEmpty(storeName)) {
+            setError(storeNameTextInputLayout, "Store name cannot be empty");
+            return false;
+        }
+        else if (storeName.length() < 3) {
+            setError(storeNameTextInputLayout, "Store name must be at least 3 characters long");
+            return false;
+        } else if (storeName.length() > 25) {
+            setError(storeNameTextInputLayout, "Store name must not exceed 25 characters");
+            return false;
+        }
+        clearError(storeNameTextInputLayout);
+        return true;
+    }
+
 
     public static boolean validatePhone(TextInputLayout phoneTextInputLayout, String phone) {
         if (isEmpty(phone)) {
