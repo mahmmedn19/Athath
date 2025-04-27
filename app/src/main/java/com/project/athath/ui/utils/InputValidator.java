@@ -15,7 +15,7 @@ public class InputValidator {
 
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
     private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-    private static final String USERNAME_REGEX = "^[a-zA-Z]+$"; // Only letters allowed
+    private static final String USERNAME_REGEX = "^[a-zA-Z]+$";
     //phone start with +966 and 9 digits
     private static final String PHONE_REGEX = "^\\+966[0-9]{9}$";
     private static final Map<EditText, TextWatcher> textWatcherMap = new HashMap<>();
@@ -89,16 +89,16 @@ public class InputValidator {
 
     public static boolean validateUsername(TextInputLayout nameTextInputLayout, String name) {
         if (isEmpty(name)) {
-            setError(nameTextInputLayout, "Name field cannot be empty");
+            setError(nameTextInputLayout, "Full Name field cannot be empty");
             return false;
         } else if (!isValidUsernameFormat(name)) {
-            setError(nameTextInputLayout, "Name can only contain letters");
+            setError(nameTextInputLayout, "Full Name can only contain letters");
             return false;
         } else if (name.length() < 3) {
-            setError(nameTextInputLayout, "Name must be at least 3 characters long");
+            setError(nameTextInputLayout, "Full Name must be at least 3 characters long");
             return false;
         } else if (name.length() > 25) {
-            setError(nameTextInputLayout, "Name must not exceed 25 characters");
+            setError(nameTextInputLayout, "Full Name must not exceed 25 characters");
             return false;
         }
         clearError(nameTextInputLayout);
