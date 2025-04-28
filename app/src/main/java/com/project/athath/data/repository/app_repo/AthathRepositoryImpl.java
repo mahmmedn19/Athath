@@ -1,12 +1,6 @@
 package com.project.athath.data.repository.app_repo;
 
-import static com.project.athath.data.utils.ImageUtils.encodeImageToBase64;
-
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,7 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.project.athath.R;
 import com.project.athath.data.model.AiRecommendationResponse;
 import com.project.athath.data.model.CatalogItem;
 import com.project.athath.data.model.Customer;
@@ -25,14 +18,10 @@ import com.project.athath.data.model.Vendor;
 import com.project.athath.data.network.ApiService;
 import com.project.athath.data.utils.Result;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -52,7 +41,7 @@ public class AthathRepositoryImpl implements AthathRepository {
     private static final String COLLECTION_NAME_USERS = "Customers";
     private final ApiService apiService;
     private static AthathRepositoryImpl instance;
-    private  static Context context;
+    private static Context context;
 
     @Inject
     public AthathRepositoryImpl(Context context, FirebaseAuth auth, FirebaseFirestore db, ApiService apiService) {
@@ -487,37 +476,6 @@ public class AthathRepositoryImpl implements AthathRepository {
         return isFavoriteLiveData;
     }
 
-    @Override
-    public LiveData<Result<String>> addAILink(String link) {
-        MutableLiveData<Result<String>> result = new MutableLiveData<>();
-        result.setValue(Result.loading());
-
-        db.collection("AiLink").document("single_ai_link") // Use a fixed document ID
-                .set(Collections.singletonMap("link", link)) // Store as a key-value pair
-                .addOnSuccessListener(aVoid -> result.setValue(Result.success(link)))
-                .addOnFailureListener(e -> result.setValue(Result.error("Failed to update AI link: " + e.getMessage())));
-
-        return result;
-    }
-
-    @Override
-    public LiveData<Result<String>> getSingleAILink() {
-        MutableLiveData<Result<String>> result = new MutableLiveData<>();
-        result.setValue(Result.loading());
-
-        db.collection("AiLink").document("single_ai_link").get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists() && documentSnapshot.contains("link")) {
-                        String link = documentSnapshot.getString("link");
-                        result.setValue(Result.success(link));
-                    } else {
-                        result.setValue(Result.error("No AI link found."));
-                    }
-                })
-                .addOnFailureListener(e -> result.setValue(Result.error("Failed to fetch AI link: " + e.getMessage())));
-
-        return result;
-    }
 
     @Override
     public LiveData<Result<List<ResponseModel.DetectedObject>>> uploadImage(File file) {

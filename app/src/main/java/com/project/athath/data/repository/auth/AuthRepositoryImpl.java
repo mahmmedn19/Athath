@@ -252,11 +252,6 @@ public class AuthRepositoryImpl implements AuthRepository {
 
 
     @Override
-    public LiveData<Result<String>> getUserType(String userId) {
-        return null;
-    }
-
-    @Override
     public LiveData<Result<String>> logoutUser() {
         MutableLiveData<Result<String>> resultLiveData = new MutableLiveData<>();
         auth.signOut();

@@ -26,7 +26,7 @@
             android:id="@+id/action_homeFragment_to_catalogDetailsFragment"
             app:destination="@id/catalogDetailsFragment" />
         <argument
-            android:name="catalogItemId"
+            android:name="detectedObjects"
             app:argType="string" />
         <argument
             android:name="productId"

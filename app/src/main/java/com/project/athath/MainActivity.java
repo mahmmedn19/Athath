@@ -194,10 +194,4 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Tool
             binding.toolbar.setVisibility(View.GONE);
         }
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mainViewModel.fetchAILink(); // ✅ Always fetch AI link on start
-    }
 }

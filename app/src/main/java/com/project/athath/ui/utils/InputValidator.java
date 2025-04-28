@@ -15,7 +15,7 @@ public class InputValidator {
 
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
     private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-    private static final String USERNAME_REGEX = "^[a-zA-Z]+$";
+    private static final String USERNAME_REGEX = "^[a-zA-Z ]+$";
     //phone start with +966 and 9 digits
     private static final String PHONE_REGEX = "^\\+966[0-9]{9}$";
     private static final Map<EditText, TextWatcher> textWatcherMap = new HashMap<>();
@@ -147,7 +147,7 @@ public class InputValidator {
     }
 
     private static boolean isValidUsernameFormat(String name) {
-        return Pattern.compile(USERNAME_REGEX).matcher(name).matches();
+        return Pattern.compile(USERNAME_REGEX).matcher(name.trim()).matches();
     }
 
     private static void setError(TextInputLayout textInputLayout, String errorMessage) {
