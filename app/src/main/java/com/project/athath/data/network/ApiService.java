@@ -1,11 +1,9 @@
 package com.project.athath.data.network;
 
-import androidx.lifecycle.LiveData;
 
 import com.project.athath.data.model.AiRecommendationResponse;
 import com.project.athath.data.model.NextRecommendationResponse;
 import com.project.athath.data.model.ResponseModel;
-import com.project.athath.data.utils.Result;
 
 import java.util.Map;
 

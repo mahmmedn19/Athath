@@ -107,11 +107,11 @@ public class InputValidator {
 
     public static boolean validateStoreName(TextInputLayout storeNameTextInputLayout, String storeName) {
         if (isEmpty(storeName)) {
-            setError(storeNameTextInputLayout, "Store name cannot be empty");
+            setError(storeNameTextInputLayout, "Store name must be at least 1 characters long");
             return false;
         }
-        else if (storeName.length() < 3) {
-            setError(storeNameTextInputLayout, "Store name must be at least 3 characters long");
+        else if (storeName.length() < 1) {
+            setError(storeNameTextInputLayout, "Store name must be at least 1 characters long");
             return false;
         } else if (storeName.length() > 25) {
             setError(storeNameTextInputLayout, "Store name must not exceed 25 characters");
